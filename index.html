@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thryvix AI - AI Orchestration Reimagined</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon: #00FF88;
+            --electric: #00E676;
+            --dark-green: #00C853;
+            --black: #000000;
+            --deep-black: #0A0A0A;
+            --white: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(0, 255, 136, 0.2);
+            --glass-strong: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            position: relative;
+            cursor: none; /* Hide default cursor for the glow effect */
+            line-height: 1.6; /* Improved readability */
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(180deg, #000 0%, var(--deep-black) 100%);
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, var(--neon), transparent 70%);
+            opacity: 0.03;
+            animation: rotate 60s linear infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 136, 0.05) 50.1%),
+                              linear-gradient(to right, transparent 50%, rgba(0, 255, 136, 0.05) 50.1%);
+            background-size: 100% 2px;
+            animation: scanline 2s infinite;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: gridMove 10s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: fixed;
+            background: var(--neon);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(-10vh) scale(1);
+            }
+        }
+        
+        /* Cursor Glow Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--neon), transparent);
+            border-radius: 50%;
+            opacity: 0.15;
+            pointer-events: none;
+            filter: blur(50px);
+            z-index: 10;
+            transition: transform 0.1s ease-out;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon), var(--electric));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon);
+        }
+
+        .currency-switcher {
+            margin-left: 2rem;
+        }
+        
+        .currency-switcher select {
+            background: var(--glass);
+            color: var(--white);
+            border: 1px solid var(--border);
+            padding: 0.5rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--neon);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        
+        .hero-content.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--neon);
+            backdrop-filter: blur(10px);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--neon) 50%, var(--electric) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            min-height: 44px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon), var(--electric));
+            color: var(--black);
+            border: none;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.7);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--neon);
+            border: 2px solid var(--neon);
+        }
+
+        .btn-secondary:hover {
+            background: var(--neon);
+            color: var(--black);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Floating AI Orbs */
+        .ai-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon), transparent);
+            opacity: 0.1;
+            filter: blur(40px);
+            will-change: transform;
+            transition: transform 0.2s ease-out;
+        }
+
+        .ai-orb:nth-child(1) {
+            top: -150px;
+            right: -150px;
+        }
+
+        .ai-orb:nth-child(2) {
+            bottom: -150px;
+            left: -150px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--neon);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            animation: scanline-card 3s linear infinite;
+        }
+
+        @keyframes scanline-card {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--neon);
+            background: rgba(0, 255, 136, 0.05);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3), inset 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--neon), var(--electric));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transform: rotateY(0deg);
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotateY(360deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--neon);
+            transition: color 0.3s ease;
+        }
+        
+        .feature-card:hover h3 {
+            color: var(--white);
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon), var(--electric));
+            border-radius: 3px;
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .price-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            text-align: center;
+        }
+
+        .price-card.featured {
+            border-color: var(--neon);
+            transform: scale(1.05);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .price-card.featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--neon);
+            color: var(--black);
+            padding: 0.3rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--neon);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .price-card.featured:hover {
+            transform: scale(1.08) translateY(-10px);
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon);
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .plan-features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: var(--neon);
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section {
+            flex-grow: 1;
+            flex-basis: 250px;
+            text-align: left;
+        }
+
+        .footer-section h3 {
+            color: var(--neon);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: var(--neon);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: scale(1.1);
+            background: var(--neon);
+            color: var(--black);
+            box-shadow: 0 0 15px var(--neon);
+        }
+
+        .footer-form input {
+            padding: 0.8rem 1rem;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 50px;
+            color: white;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-form input:focus {
+            outline: none;
+            border-color: var(--neon);
+            box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+        }
+
+        .footer-form .btn-primary {
+            width: 100%;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-form .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            /* Navbar adjustments for better mobile experience */
+            nav.scrolled {
+                padding: 0.5rem 1rem;
+            }
+            .nav-container {
+                padding: 0 1rem;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: left 0.3s ease;
+                padding-top: 60px; /* Add some space for the logo/toggle */
+            }
+            .nav-links.active {
+                left: 0;
+            }
+            .nav-links li {
+                margin: 1.5rem 0; /* Increase spacing between links */
+            }
+            .nav-links a {
+                font-size: 1.5rem; /* Make links larger for easier tapping */
+            }
+            .currency-switcher {
+                margin-left: 0;
+                margin-top: 2rem;
+            }
+            .menu-toggle {
+                display: flex;
+                z-index: 1001;
+            }
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            /* Hero section adjustments */
+            .hero {
+                padding: 1rem; /* Reduce padding on small screens */
+            }
+            .hero-badge {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+                margin-bottom: 1.5rem;
+            }
+            .hero h1 {
+                font-size: 2.2rem; /* Make heading smaller */
+            }
+            .hero-description {
+                font-size: 1rem; /* Make description smaller and more readable */
+                line-height: 1.5;
+                margin-bottom: 2rem;
+            }
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                padding: 0.8rem 2rem; /* Adjust button padding */
+                font-size: 0.9rem;
+            }
+
+            /* Sections adjustments */
+            .features, .pricing {
+                padding: 3rem 1rem; /* Reduce padding on sections */
+            }
+            .section-header {
+                margin-bottom: 2rem; /* Adjust spacing below header */
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .feature-grid, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .price-card.featured {
+                transform: scale(1);
+            }
+
+            /* Footer adjustments */
+            .footer-content {
+                flex-direction: column;
+                gap: 3rem; /* Increase spacing between footer sections */
+            }
+            .footer-section {
+                text-align: center;
+            }
+            .social-links {
+                justify-content: center;
+            }
+            .footer-form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-form input {
+                width: 80%; /* Ensure input is a good size on mobile */
+            }
+            .footer-form .btn-primary {
+                width: 80%;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 1s forwards 2s;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .loader-text {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--neon), var(--electric));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow"></div>
+
+    <div class="loader">
+        <div class="loader-text">THRYVIX AI</div>
+    </div>
+
+    <div class="bg-animation"></div>
+    <div class="grid-overlay"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">THRYVIX.AI</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="currency-switcher">
+                    <select id="currencySelect">
+                        <option value="usd">USD</option>
+                        <option value="inr">INR</option>
+                    </select>
+                </li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="ai-orb" id="orb1"></div>
+        <div class="ai-orb" id="orb2"></div>
+        <div class="hero-content">
+            <div class="hero-badge">🚀 Next-Gen AI Platform</div>
+            <h1>AI Orchestration That Thinks Ahead</h1>
+            <p class="hero-description">
+                Transform your business with autonomous AI agents that collaborate, learn, and evolve. 
+                Experience the future of intelligent automation today.
+            </p>
+            <div class="cta-group">
+                <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-primary" target="_blank">Start Free Trial</a>
+                <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Live Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Features</div>
+                <h2 class="section-title">Powered by Advanced AI</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <h3>Multi-Agent Collaboration</h3>
+                    <p>Deploy specialized AI agents that work together seamlessly, sharing context and insights to solve complex business challenges.</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-progress="95"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Real-Time Adaptation</h3>
+                    <p>Our AI learns from every interaction, continuously optimizing workflows and improving decision-making capabilities.</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-progress="90"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Predictive Intelligence</h3>
+                    <p>Anticipate customer needs and market trends with advanced predictive models that give you a competitive edge.</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-progress="85"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-grade encryption and compliance with global standards ensure your data remains secure and private.</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-progress="99"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Visualize AI performance, track KPIs, and gain actionable insights through our intuitive analytics platform.</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-progress="92"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h3>Seamless Integration</h3>
+                    <p>Connect with 100+ popular tools and platforms. Our API-first approach ensures smooth integration with your tech stack.</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-progress="97"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Pricing</div>
+                <h2 class="section-title">Scale With Confidence</h2>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3 class="plan-name">Starter</h3>
+                    <div class="plan-price" data-usd="$99" data-inr="₹8,250">$99<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>2 AI Agents</li>
+                        <li>10,000 Tasks/month</li>
+                        <li>Basic Analytics</li>
+                        <li>Standard Support</li>
+                    </ul>
+                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Get Started</a>
+                </div>
+                <div class="price-card featured">
+                    <h3 class="plan-name">Growth</h3>
+                    <div class="plan-price" data-usd="$299" data-inr="₹25,000">$299<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>5 AI Agents</li>
+                        <li>50,000 Tasks/month</li>
+                        <li>Advanced Analytics</li>
+                        <li>Priority Email Support</li>
+                        <li>Team Collaboration</li>
+                    </ul>
+                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-primary" target="_blank">Get Started</a>
+                </div>
+                <div class="price-card">
+                    <h3 class="plan-name">Pro</h3>
+                    <div class="plan-price" data-usd="$599" data-inr="₹49,900">$599<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>10 AI Agents</li>
+                        <li>100,000 Tasks/month</li>
+                        <li>Advanced Analytics + Reports</li>
+                        <li>Priority Support 24/7</li>
+                        <li>Custom Integrations</li>
+                    </ul>
+                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Get Started</a>
+                </div>
+                <div class="price-card">
+                    <h3 class="plan-name">Enterprise</h3>
+                    <div class="plan-price" data-usd="Custom" data-inr="Custom">Custom</div>
+                    <ul class="plan-features">
+                        <li>Unlimited AI Agents</li>
+                        <li>Custom Task Limits (>100,000)</li>
+                        <li>Dedicated Account Manager</li>
+                        <li>24/7 Priority Support</li>
+                        <li>Full Custom Integrations & Onboarding</li>
+                    </ul>
+                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Thryvix AI</h3>
+                <p>Revolutionizing business automation with intelligent AI orchestration.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/thryvixai/" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://twitter.com/thryvixai" class="social-link" target="_blank"><i class="fa-solid fa-x"></i></a>
+                    <a href="https://www.linkedin.com/company/thryvixai" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="#features">Features</a></p>
+                <p><a href="#pricing">Pricing</a></p>
+                <p><a href="#contact">Contact</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>contact.thryvixai@gmail.com</p>
+                <p>+91 7592063527</p>
+                <p>Kerala, India</p>
+            </div>
+            <div class="footer-section">
+                <h3>Stay Updated</h3>
+                <p>Get the latest AI insights and product updates.</p>
+                <form action="https://formspree.io/f/youremail" method="POST" style="margin-top: 1rem;" class="footer-form">
+                    <input type="email" name="email" placeholder="Enter your email">
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); color: rgba(255,255,255,0.5);">
+            <p>&copy; 2024 Thryvix AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hero content fade-in animation
+        window.addEventListener('load', () => {
+            const heroContent = document.querySelector('.hero-content');
+            setTimeout(() => {
+                heroContent.classList.add('fade-in');
+            }, 100);
+        });
+
+        // Create floating particles
+        function createParticles() {
+            const numParticles = 20;
+            const body = document.body;
+            for(let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = 15 + Math.random() * 10 + 's';
+                body.appendChild(particle);
+            }
+        }
+        
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when link clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    // Animate progress bars
+                    if (entry.target.classList.contains('feature-card')) {
+                        const progressBar = entry.target.querySelector('.progress-bar');
+                        if (progressBar) {
+                            const progressValue = progressBar.getAttribute('data-progress');
+                            progressBar.style.width = `${progressValue}%`;
+                        }
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.querySelectorAll('.feature-card, .price-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Parallax effect on hero section
+        const hero = document.querySelector('.hero');
+        const heroContent = document.querySelector('.hero-content');
+        
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.5;
+            if(heroContent) {
+                heroContent.style.transform = `translateY(${parallax}px)`;
+                heroContent.style.opacity = 1 - scrolled / 800;
+            }
+        });
+
+        // New Interactive Features
+        const cursorGlow = document.querySelector('.cursor-glow');
+        const aiOrbs = document.querySelectorAll('.ai-orb');
+
+        document.addEventListener('mousemove', (e) => {
+            // Update cursor glow position
+            if (cursorGlow) {
+                cursorGlow.style.left = `${e.clientX}px`;
+                cursorGlow.style.top = `${e.clientY}px`;
+            }
+
+            // Update parallax orb positions
+            aiOrbs.forEach(orb => {
+                const speed = orb.id === 'orb1' ? 0.05 : 0.03; // Different speeds for a better effect
+                const x = (window.innerWidth / 2 - e.clientX) * speed;
+                const y = (window.innerHeight / 2 - e.clientY) * speed;
+                orb.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Currency switcher logic
+        const currencySelect = document.getElementById('currencySelect');
+        const priceElements = document.querySelectorAll('.plan-price');
+
+        currencySelect.addEventListener('change', (event) => {
+            const selectedCurrency = event.target.value;
+            priceElements.forEach(priceElement => {
+                if (priceElement.dataset.usd && priceElement.dataset.inr) {
+                    if (selectedCurrency === 'usd') {
+                        priceElement.innerHTML = priceElement.dataset.usd + (priceElement.dataset.usd === 'Custom' ? '' : '<span>/month</span>');
+                    } else if (selectedCurrency === 'inr') {
+                        priceElement.innerHTML = priceElement.dataset.inr + (priceElement.dataset.inr === 'Custom' ? '' : '<span>/month</span>');
+                    }
+                }
+            });
+        });
+        
+        // Remove old mouse glow effect and old orb animation
+        document.removeEventListener('click', createGlow);
+
+        // Remove loader
+        window.addEventListener('load', () => {
+            createParticles(); // Call this function on page load
+            setTimeout(() => {
+                document.querySelector('.loader').style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
