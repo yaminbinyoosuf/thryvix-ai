@@ -1,1212 +1,501 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thryvix AI - AI Orchestration Reimagined</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Thryvix AI | Revenue Ops Engineering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        'brand-accent': '#10b981', 
+                        'brand-dark': '#050505',
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'tilt': 'tilt 10s infinite linear',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --neon: #00FF88;
-            --electric: #00E676;
-            --dark-green: #00C853;
-            --black: #000000;
-            --deep-black: #0A0A0A;
-            --white: #FFFFFF;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(0, 255, 136, 0.2);
-            --glass-strong: rgba(255, 255, 255, 0.1);
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--black);
-            color: var(--white);
+            background-color: #030303;
+            color: #e2e8f0;
             overflow-x: hidden;
-            position: relative;
-            cursor: none; /* Hide default cursor for the glow effect */
-            line-height: 1.6; /* Improved readability */
         }
 
-        /* Animated Background */
-        .bg-animation {
+        /* 1. Grainy Noise Overlay */
+        .noise-bg {
             position: fixed;
-            width: 100%;
-            height: 100%;
             top: 0;
             left: 0;
-            z-index: -1;
-            background: linear-gradient(180deg, #000 0%, var(--deep-black) 100%);
+            width: 100vw;
+            height: 100vh;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* 2. The Spotlight Card Effect */
+        .spotlight-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             overflow: hidden;
+            transition: transform 0.2s;
         }
-
-        .bg-animation::before {
-            content: '';
+        
+        .spotlight-card::before {
+            content: "";
             position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(circle, var(--neon), transparent 70%);
-            opacity: 0.03;
-            animation: rotate 60s linear infinite;
-        }
-
-        .bg-animation::after {
-            content: '';
-            position: absolute;
-            width: 100%;
             height: 100%;
-            background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 136, 0.05) 50.1%),
-                              linear-gradient(to right, transparent 50%, rgba(0, 255, 136, 0.05) 50.1%);
-            background-size: 100% 2px;
-            animation: scanline 2s infinite;
-            opacity: 0.2;
-            pointer-events: none;
-        }
-
-        @keyframes scanline {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .grid-overlay {
-            position: fixed;
-            top: 0;
+            width: 100%;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            opacity: 0.3;
-            animation: gridMove 10s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Floating Particles */
-        .particle {
-            position: fixed;
-            background: var(--neon);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
-            animation: float 15s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { 
-                opacity: 0;
-                transform: translateY(100vh) scale(0);
-            }
-            10% {
-                opacity: 1;
-                transform: translateY(90vh) scale(1);
-            }
-            90% {
-                opacity: 1;
-                transform: translateY(-10vh) scale(1);
-            }
-        }
-        
-        /* Cursor Glow Effect */
-        .cursor-glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--neon), transparent);
-            border-radius: 50%;
-            opacity: 0.15;
-            pointer-events: none;
-            filter: blur(50px);
-            z-index: 10;
-            transition: transform 0.1s ease-out;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
             top: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid var(--border);
-        }
-
-        nav.scrolled {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 0.7rem 2rem;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--neon), var(--electric));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-            text-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--neon);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: var(--neon);
-        }
-
-        .currency-switcher {
-            margin-left: 2rem;
-        }
-        
-        .currency-switcher select {
-            background: var(--glass);
-            color: var(--white);
-            border: 1px solid var(--border);
-            padding: 0.5rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            outline: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-        
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            cursor: pointer;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 2px;
-            background: var(--neon);
-            transition: all 0.3s ease;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-content {
-            max-width: 1200px;
-            text-align: center;
-            z-index: 2;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(16, 185, 129, 0.06), transparent 40%);
+            z-index: 1;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            transition: opacity 0.5s;
         }
         
-        .hero-content.fade-in {
+        .spotlight-card:hover::before {
             opacity: 1;
-            transform: translateY(0);
         }
         
-        .hero-badge {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            color: var(--neon);
-            backdrop-filter: blur(10px);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--white) 0%, var(--neon) 50%, var(--electric) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 5s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero-description {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.6;
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-            min-height: 44px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--neon), var(--electric));
-            color: var(--black);
-            border: none;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.7);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--neon);
-            border: 2px solid var(--neon);
-        }
-
-        .btn-secondary:hover {
-            background: var(--neon);
-            color: var(--black);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-        }
-
-        /* Floating AI Orbs */
-        .ai-orb {
+        .spotlight-card::after {
+            content: "";
             position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--neon), transparent);
-            opacity: 0.1;
-            filter: blur(40px);
-            will-change: transform;
-            transition: transform 0.2s ease-out;
-        }
-
-        .ai-orb:nth-child(1) {
-            top: -150px;
-            right: -150px;
-        }
-
-        .ai-orb:nth-child(2) {
-            bottom: -150px;
-            left: -150px;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 5rem 2rem;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-badge {
-            display: inline-block;
-            padding: 0.3rem 1rem;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--neon);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon), transparent);
-            animation: scanline-card 3s linear infinite;
-        }
-
-        @keyframes scanline-card {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--neon);
-            background: rgba(0, 255, 136, 0.05);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3), inset 0 0 10px rgba(0, 255, 136, 0.3);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--neon), var(--electric));
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            transform: rotateY(0deg);
-            transition: transform 0.5s ease;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: rotateY(360deg);
-        }
-
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--neon);
-            transition: color 0.3s ease;
-        }
-        
-        .feature-card:hover h3 {
-            color: var(--white);
-        }
-
-        .feature-card p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
-        }
-        
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin-top: 1rem;
-        }
-        
-        .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--neon), var(--electric));
-            border-radius: 3px;
-            width: 0;
-            transition: width 1.5s ease-out;
-        }
-
-        /* Pricing */
-        .pricing {
-            padding: 5rem 2rem;
-            position: relative;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .price-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            text-align: center;
-        }
-
-        .price-card.featured {
-            border-color: var(--neon);
-            transform: scale(1.05);
-            background: rgba(0, 255, 136, 0.05);
-        }
-
-        .price-card.featured::before {
-            content: 'POPULAR';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--neon);
-            color: var(--black);
-            padding: 0.3rem 1.5rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        .price-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--neon);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
-        }
-
-        .price-card.featured:hover {
-            transform: scale(1.08) translateY(-10px);
-        }
-
-        .plan-name {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--neon);
-        }
-
-        .plan-price {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .plan-price span {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .plan-features {
-            list-style: none;
-            margin: 2rem 0;
-            text-align: left;
-        }
-
-        .plan-features li {
-            padding: 0.5rem 0;
-            color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .plan-features li::before {
-            content: '✓';
-            color: var(--neon);
-            font-weight: bold;
-        }
-        
-        /* Footer */
-        footer {
-            padding: 3rem 2rem;
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-section {
-            flex-grow: 1;
-            flex-basis: 250px;
-            text-align: left;
-        }
-
-        .footer-section h3 {
-            color: var(--neon);
-            margin-bottom: 1rem;
-        }
-
-        .footer-section p, .footer-section a {
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            line-height: 1.8;
-        }
-
-        .footer-section a:hover {
-            color: var(--neon);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-start;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--neon);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .social-link:hover {
-            transform: scale(1.1);
-            background: var(--neon);
-            color: var(--black);
-            box-shadow: 0 0 15px var(--neon);
-        }
-
-        .footer-form input {
-            padding: 0.8rem 1rem;
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 50px;
-            color: white;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-form input:focus {
-            outline: none;
-            border-color: var(--neon);
-            box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
-        }
-
-        .footer-form .btn-primary {
-            width: 100%;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-            transition: all 0.3s ease;
-        }
-        
-        .footer-form .btn-primary:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            /* Navbar adjustments for better mobile experience */
-            nav.scrolled {
-                padding: 0.5rem 1rem;
-            }
-            .nav-container {
-                padding: 0 1rem;
-            }
-            .logo {
-                font-size: 1.5rem;
-            }
-            .nav-links {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.98);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: left 0.3s ease;
-                padding-top: 60px; /* Add some space for the logo/toggle */
-            }
-            .nav-links.active {
-                left: 0;
-            }
-            .nav-links li {
-                margin: 1.5rem 0; /* Increase spacing between links */
-            }
-            .nav-links a {
-                font-size: 1.5rem; /* Make links larger for easier tapping */
-            }
-            .currency-switcher {
-                margin-left: 0;
-                margin-top: 2rem;
-            }
-            .menu-toggle {
-                display: flex;
-                z-index: 1001;
-            }
-            .menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-            .menu-toggle.active span:nth-child(2) {
-                opacity: 0;
-            }
-            .menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(5px, -5px);
-            }
-
-            /* Hero section adjustments */
-            .hero {
-                padding: 1rem; /* Reduce padding on small screens */
-            }
-            .hero-badge {
-                padding: 0.4rem 1rem;
-                font-size: 0.8rem;
-                margin-bottom: 1.5rem;
-            }
-            .hero h1 {
-                font-size: 2.2rem; /* Make heading smaller */
-            }
-            .hero-description {
-                font-size: 1rem; /* Make description smaller and more readable */
-                line-height: 1.5;
-                margin-bottom: 2rem;
-            }
-            .cta-group {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                padding: 0.8rem 2rem; /* Adjust button padding */
-                font-size: 0.9rem;
-            }
-
-            /* Sections adjustments */
-            .features, .pricing {
-                padding: 3rem 1rem; /* Reduce padding on sections */
-            }
-            .section-header {
-                margin-bottom: 2rem; /* Adjust spacing below header */
-            }
-            .section-title {
-                font-size: 2rem;
-            }
-            .feature-grid, .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-            .price-card.featured {
-                transform: scale(1);
-            }
-
-            /* Footer adjustments */
-            .footer-content {
-                flex-direction: column;
-                gap: 3rem; /* Increase spacing between footer sections */
-            }
-            .footer-section {
-                text-align: center;
-            }
-            .social-links {
-                justify-content: center;
-            }
-            .footer-form {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .footer-form input {
-                width: 80%; /* Ensure input is a good size on mobile */
-            }
-            .footer-form .btn-primary {
-                width: 80%;
-            }
-        }
-
-        /* Loading Animation */
-        .loader {
-            position: fixed;
-            top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            animation: fadeOut 1s forwards 2s;
+            top: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(16, 185, 129, 0.4), transparent 40%);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s;
         }
 
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
+        .spotlight-card:hover::after {
+            opacity: 1;
         }
 
-        .loader-text {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--neon), var(--electric));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: pulse 1s infinite;
+        .card-content {
+            position: relative;
+            z-index: 2;
+            background-color: #050505; 
+            border-radius: inherit;
+            height: calc(100% - 2px);
+            width: calc(100% - 2px);
+            margin: 1px;
+        }
+
+        /* 3. The 3D Perspective Hero */
+        .perspective-container {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: transform 0.5s ease-out;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
-<body>
-    <div class="cursor-glow"></div>
+<body class="selection:bg-brand-accent selection:text-black">
 
-    <div class="loader">
-        <div class="loader-text">THRYVIX AI</div>
+    <div class="noise-bg"></div>
+
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-accent/20 rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob animation-delay-2000"></div>
     </div>
 
-    <div class="bg-animation"></div>
-    <div class="grid-overlay"></div>
-
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo">THRYVIX.AI</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="currency-switcher">
-                    <select id="currencySelect">
-                        <option value="usd">USD</option>
-                        <option value="inr">INR</option>
-                    </select>
-                </li>
-            </ul>
-            <div class="menu-toggle" id="menuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
+    <nav class="fixed w-full z-[60] border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-brand-accent shadow-[0_0_10px_#10b981]"></span>
+                    <span class="text-lg md:text-xl font-bold text-white tracking-tighter font-mono">THRYVIX_AI</span>
+                </div>
+                <a href="#audit" class="group relative px-4 md:px-6 py-2 text-[10px] md:text-xs font-mono font-bold text-white overflow-hidden rounded-full bg-white/5 border border-white/10 hover:border-brand-accent/50 transition-colors">
+                    <span class="relative z-10 flex items-center gap-2">
+                        INIT_AUDIT <span class="text-brand-accent">-></span>
+                    </span>
+                    <div class="absolute inset-0 bg-brand-accent/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </a>
             </div>
         </div>
     </nav>
 
-    <section class="hero" id="home">
-        <div class="ai-orb" id="orb1"></div>
-        <div class="ai-orb" id="orb2"></div>
-        <div class="hero-content">
-            <div class="hero-badge">🚀 Next-Gen AI Platform</div>
-            <h1>AI Orchestration That Thinks Ahead</h1>
-            <p class="hero-description">
-                Transform your business with autonomous AI agents that collaborate, learn, and evolve. 
-                Experience the future of intelligent automation today.
-            </p>
-            <div class="cta-group">
-                <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-primary" target="_blank">Start Free Trial</a>
-                <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Live Demo</a>
+    <section class="relative pt-32 md:pt-40 pb-20 px-4 md:px-6 max-w-7xl mx-auto z-10">
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+            
+            <div class="lg:w-1/2 relative text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-brand-accent text-[10px] font-mono tracking-widest uppercase mb-8">
+                    <span class="animate-pulse">●</span> REVENUE OPS ENGINEERING
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl lg:text-8xl font-semibold text-white leading-[1.1] md:leading-[0.95] mb-6 md:mb-8 tracking-tighter">
+                    We Build The<br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-slate-600">Backend Logic</span><br/>
+                    Your Business Runs On.
+                </h1>
+                
+                <p class="text-base md:text-lg text-slate-400 mb-8 md:mb-10 max-w-md mx-auto lg:mx-0 font-light leading-relaxed">
+                    From marketing agencies to e-commerce brands—if your team is drowning in manual data work, we build the <span class="text-white font-mono text-sm">Python + n8n</span> infrastructure to automate it.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-6">
+                    <a href="#audit" class="relative group w-full sm:w-auto">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-blue-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
+                        <button class="relative w-full sm:w-auto bg-black text-white font-mono text-sm px-8 py-4 rounded-lg border border-white/10 group-hover:text-brand-accent transition-colors">
+                            // BOOK_TECHNICAL_AUDIT
+                        </button>
+                    </a>
+                    <a href="#products" class="text-sm font-mono text-slate-400 hover:text-white transition-colors border-b border-transparent hover:border-brand-accent py-2">
+                        VIEW_SOLUTIONS
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
+            
+            <div class="lg:w-1/2 w-full perspective-container hidden lg:block" id="hero-visual">
+                <div class="preserve-3d relative w-full aspect-video bg-black/80 rounded-xl border border-white/10 shadow-2xl shadow-brand-accent/10 backdrop-blur-xl flex items-center justify-center">
+                    
+                    <div class="absolute -top-6 -right-6 glass-panel px-4 py-2 rounded-lg border border-brand-accent/30 text-xs font-mono text-brand-accent shadow-[0_0_20px_rgba(16,185,129,0.2)]" style="transform: translateZ(40px);">
+                        SAVINGS: 20HRS/WK
+                    </div>
 
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Features</div>
-                <h2 class="section-title">Powered by Advanced AI</h2>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
-                    <h3>Multi-Agent Collaboration</h3>
-                    <p>Deploy specialized AI agents that work together seamlessly, sharing context and insights to solve complex business challenges.</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" data-progress="95"></div>
+                    <div class="text-center transform translate-z-20">
+                        <div class="w-20 h-20 mx-auto bg-brand-accent/20 rounded-full flex items-center justify-center mb-4 text-brand-accent border border-brand-accent/20 shadow-[0_0_30px_rgba(16,185,129,0.15)] animate-pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                            </svg>
+                        </div>
+                        <p class="font-mono text-xs text-slate-500">RUNNING: workflow_v2.py</p>
                     </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                    <h3>Real-Time Adaptation</h3>
-                    <p>Our AI learns from every interaction, continuously optimizing workflows and improving decision-making capabilities.</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" data-progress="90"></div>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Predictive Intelligence</h3>
-                    <p>Anticipate customer needs and market trends with advanced predictive models that give you a competitive edge.</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" data-progress="85"></div>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Enterprise Security</h3>
-                    <p>Bank-grade encryption and compliance with global standards ensure your data remains secure and private.</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" data-progress="99"></div>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3>Analytics Dashboard</h3>
-                    <p>Visualize AI performance, track KPIs, and gain actionable insights through our intuitive analytics platform.</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" data-progress="92"></div>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
-                    <h3>Seamless Integration</h3>
-                    <p>Connect with 100+ popular tools and platforms. Our API-first approach ensures smooth integration with your tech stack.</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" data-progress="97"></div>
-                    </div>
+
+                    <div class="absolute -bottom-12 left-0 right-0 h-12 bg-gradient-to-t from-transparent to-brand-accent/10 blur-xl opacity-50 transform scale-y-[-1]"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Pricing</div>
-                <h2 class="section-title">Scale With Confidence</h2>
+    <section class="py-16 md:py-20 max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        <div class="mb-10 text-center md:text-left">
+            <h2 class="text-2xl md:text-3xl font-semibold text-white tracking-tight mb-4">Who We Serve</h2>
+            <div class="h-px w-20 bg-brand-accent mx-auto md:mx-0"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="spotlight-card rounded-2xl group cursor-default">
+                <div class="card-content p-6 md:p-8 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center border border-white/5 text-brand-accent">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-brand-accent/10 border border-brand-accent/30 text-brand-accent text-[10px] font-mono uppercase tracking-wide">PRIMARY_FOCUS</span>
+                    </div>
+                    <h3 class="text-xl font-medium text-white mb-2">Marketing Agencies</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                        Automate client reporting, lead triage, and CRM sync. Save 20+ hours/week per account manager.
+                    </p>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="#audit" class="text-xs font-mono text-brand-accent hover:text-white transition-colors">View Agency Solutions →</a>
+                    </div>
+                </div>
             </div>
-            <div class="pricing-grid">
-                <div class="price-card">
-                    <h3 class="plan-name">Starter</h3>
-                    <div class="plan-price" data-usd="$99" data-inr="₹8,250">$99<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>2 AI Agents</li>
-                        <li>10,000 Tasks/month</li>
-                        <li>Basic Analytics</li>
-                        <li>Standard Support</li>
-                    </ul>
-                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Get Started</a>
+
+            <div class="spotlight-card rounded-2xl group cursor-default">
+                <div class="card-content p-6 md:p-8 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center border border-white/5 text-brand-accent">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-white/5 border border-white/10 text-slate-400 text-[10px] font-mono uppercase tracking-wide">AVAILABLE</span>
+                    </div>
+                    <h3 class="text-xl font-medium text-white mb-2">Shopify/E-Commerce</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                        Real-time inventory sync across Amazon & Shopify. Automated order processing and revenue reporting.
+                    </p>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="#audit" class="text-xs font-mono text-slate-400 hover:text-white transition-colors">View E-Commerce Solutions →</a>
+                    </div>
                 </div>
-                <div class="price-card featured">
-                    <h3 class="plan-name">Growth</h3>
-                    <div class="plan-price" data-usd="$299" data-inr="₹25,000">$299<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>5 AI Agents</li>
-                        <li>50,000 Tasks/month</li>
-                        <li>Advanced Analytics</li>
-                        <li>Priority Email Support</li>
-                        <li>Team Collaboration</li>
-                    </ul>
-                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-primary" target="_blank">Get Started</a>
-                </div>
-                <div class="price-card">
-                    <h3 class="plan-name">Pro</h3>
-                    <div class="plan-price" data-usd="$599" data-inr="₹49,900">$599<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>10 AI Agents</li>
-                        <li>100,000 Tasks/month</li>
-                        <li>Advanced Analytics + Reports</li>
-                        <li>Priority Support 24/7</li>
-                        <li>Custom Integrations</li>
-                    </ul>
-                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Get Started</a>
-                </div>
-                <div class="price-card">
-                    <h3 class="plan-name">Enterprise</h3>
-                    <div class="plan-price" data-usd="Custom" data-inr="Custom">Custom</div>
-                    <ul class="plan-features">
-                        <li>Unlimited AI Agents</li>
-                        <li>Custom Task Limits (>100,000)</li>
-                        <li>Dedicated Account Manager</li>
-                        <li>24/7 Priority Support</li>
-                        <li>Full Custom Integrations & Onboarding</li>
-                    </ul>
-                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="btn btn-secondary" target="_blank">Contact Sales</a>
+            </div>
+
+            <div class="spotlight-card rounded-2xl group cursor-default">
+                <div class="card-content p-6 md:p-8 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center border border-white/5 text-brand-accent">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-white/5 border border-white/10 text-slate-400 text-[10px] font-mono uppercase tracking-wide">AVAILABLE</span>
+                    </div>
+                    <h3 class="text-xl font-medium text-white mb-2">SaaS & Tech</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                        Customer onboarding automation, usage analytics pipelines, and internal AI tools for documentation.
+                    </p>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="#audit" class="text-xs font-mono text-slate-400 hover:text-white transition-colors">View SaaS Solutions →</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Thryvix AI</h3>
-                <p>Revolutionizing business automation with intelligent AI orchestration.</p>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/thryvixai/" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/message/MM55GQQQOMRUL1" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://twitter.com/thryvixai" class="social-link" target="_blank"><i class="fa-solid fa-x"></i></a>
-                    <a href="https://www.linkedin.com/company/thryvixai" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <section id="products" class="py-16 md:py-20 max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        <div class="mb-16 text-center md:text-left">
+            <h2 class="text-2xl md:text-3xl font-semibold text-white tracking-tight mb-4">Core Automation Modules</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto md:mx-0 text-sm md:text-base">We don't "freelance." We architect and deploy production-grade infrastructure.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="spotlight-card rounded-2xl group cursor-default">
+                <div class="card-content p-6 md:p-8 flex flex-col h-full">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center mb-6 border border-white/5 text-brand-accent">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <div class="text-[10px] font-mono text-brand-accent mb-2">MODULE_01</div>
+                    <h3 class="text-xl font-medium text-white mb-2">Automated Reporting</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                        Data aggregation (Ads, CRM) → Transformation in Python → Delivery to dashboards or PDF.
+                    </p>
+                    <ul class="text-[10px] font-mono text-slate-500 space-y-1 mt-auto">
+                        <li class="flex items-center gap-2"><span>></span> Real-time syncs</li>
+                        <li class="flex items-center gap-2"><span>></span> Error handling + alerts</li>
+                    </ul>
                 </div>
             </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <p><a href="#features">Features</a></p>
-                <p><a href="#pricing">Pricing</a></p>
-                <p><a href="#contact">Contact</a></p>
+
+            <div class="spotlight-card rounded-2xl group cursor-default">
+                <div class="card-content p-6 md:p-8 flex flex-col h-full">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center mb-6 border border-white/5 text-brand-accent">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <div class="text-[10px] font-mono text-brand-accent mb-2">MODULE_02</div>
+                    <h3 class="text-xl font-medium text-white mb-2">Lead & Data Routing</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                        Webhook capture → Enrichment via Clearbit → CRM/Slack routing.
+                    </p>
+                    <ul class="text-[10px] font-mono text-slate-500 space-y-1 mt-auto">
+                        <li class="flex items-center gap-2"><span>></span> < 60sec latency</li>
+                        <li class="flex items-center gap-2"><span>></span> Deduplication logic</li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <p>contact.thryvixai@gmail.com</p>
-                <p>+91 7592063527</p>
-                <p>Kerala, India</p>
-            </div>
-            <div class="footer-section">
-                <h3>Stay Updated</h3>
-                <p>Get the latest AI insights and product updates.</p>
-                <form action="https://formspree.io/f/youremail" method="POST" style="margin-top: 1rem;" class="footer-form">
-                    <input type="email" name="email" placeholder="Enter your email">
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                </form>
+
+            <div class="spotlight-card rounded-2xl group cursor-default">
+                <div class="card-content p-6 md:p-8 flex flex-col h-full">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center mb-6 border border-white/5 text-brand-accent">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    </div>
+                    <div class="text-[10px] font-mono text-brand-accent mb-2">MODULE_03</div>
+                    <h3 class="text-xl font-medium text-white mb-2">Internal AI (RAG)</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                        We index your Notion & PDFs into a vector DB. Your team asks questions; the AI answers.
+                    </p>
+                    <ul class="text-[10px] font-mono text-slate-500 space-y-1 mt-auto">
+                        <li class="flex items-center gap-2"><span>></span> Private vector DB</li>
+                        <li class="flex items-center gap-2"><span>></span> Slack/Discord integration</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); color: rgba(255,255,255,0.5);">
-            <p>&copy; 2024 Thryvix AI. All rights reserved.</p>
+    </section>
+
+    <section class="py-16 md:py-20 max-w-7xl mx-auto px-4 md:px-6 relative z-10 border-t border-white/5 bg-white/[0.01]">
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-2xl font-semibold text-white tracking-tight mb-4">Why Agencies Choose Us First</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto text-sm">While we serve multiple industries, 70% of our clients are marketing agencies.</p>
         </div>
-    </footer>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div class="p-4">
+                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brand-accent/10 text-brand-accent mb-4">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-white font-medium mb-2">We Speak Your Stack</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Facebook Ads Manager. Google Ads. HubSpot. Salesforce. We know how agency data flows.</p>
+            </div>
+             <div class="p-4">
+                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brand-accent/10 text-brand-accent mb-4">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-white font-medium mb-2">Client-Ready Deliverables</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Branded PDF reports and white-labeled dashboards you can send directly to clients.</p>
+            </div>
+             <div class="p-4">
+                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brand-accent/10 text-brand-accent mb-4">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-white font-medium mb-2">Proven Agency ROI</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Save 15-25 hours/week per account manager. Immediate impact on margins.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-20 px-4 md:px-6 z-10 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-gradient-to-b from-white/5 to-black border border-white/10 rounded-3xl p-1">
+                <div class="bg-black/80 rounded-[20px] p-8 md:p-12 text-center backdrop-blur-md relative overflow-hidden">
+                    
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-50"></div>
+
+                    <div class="inline-block px-4 py-1 rounded-full bg-brand-accent/10 text-brand-accent font-mono text-[10px] mb-6 border border-brand-accent/20">
+                        LOW_RISK_ENTRY
+                    </div>
+
+                    <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tighter mb-6">The "$500 Pilot Automation"</h2>
+                    <p class="text-slate-400 mb-10 max-w-lg mx-auto text-sm md:text-base">
+                        We build ONE high-impact workflow for your business. Fixed price: $500. Delivered in 2 weeks. If it doesn't save 10+ hours/week, full refund.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mb-10 border border-white/10 px-8 py-4 rounded-xl sm:rounded-full bg-white/5">
+                        <div class="text-center">
+                             <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase">Cost</div>
+                             <div class="text-2xl font-mono text-white">$500</div>
+                        </div>
+                        <div class="hidden sm:block w-px h-8 bg-white/10"></div>
+                        <div class="block sm:hidden w-16 h-px bg-white/10"></div>
+                        <div class="text-center">
+                            <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase">ETA</div>
+                            <div class="text-2xl font-mono text-white">14d</div>
+                       </div>
+                    </div>
+
+                    <p class="text-xs md:text-sm text-brand-accent/80 mb-8 font-mono">
+                        🎯 Agency founders: Ask about our "Client Reporting Audit."
+                    </p>
+
+                    <div>
+                        <a href="#audit" class="inline-block bg-white text-black hover:bg-brand-accent font-bold font-mono text-sm py-4 px-12 rounded-full transition-colors w-full sm:w-auto">
+                            BOOK_PILOT_PROJECT()
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-20 max-w-3xl mx-auto px-4 md:px-6 relative z-10">
+        <h2 class="text-2xl font-bold text-white mb-10 text-center font-mono">FAQ_LOGS</h2>
+        
+        <div class="space-y-4">
+            <div class="glass-panel p-6 rounded-lg border-l-2 border-brand-accent">
+                <h4 class="text-base md:text-lg font-medium text-white mb-2 font-mono text-brand-accent">>> What industries do you work with?</h4>
+                <p class="text-slate-400 text-sm">Primarily marketing agencies (70% of clients), but also e-commerce brands, SaaS companies, and real estate brokerages.</p>
+            </div>
+            <div class="glass-panel p-6 rounded-lg border-l-2 border-white/20">
+                <h4 class="text-base md:text-lg font-medium text-white mb-2 font-mono text-brand-accent">>> Why focus on agencies?</h4>
+                <p class="text-slate-400 text-sm">Agencies have the clearest ROI. They waste the most time on repetitive data work, and they immediately see the value when it's automated.</p>
+            </div>
+             <div class="glass-panel p-6 rounded-lg border-l-2 border-white/20">
+                <h4 class="text-base md:text-lg font-medium text-white mb-2 font-mono text-brand-accent">>> Is data secure?</h4>
+                <p class="text-slate-400 text-sm">Yes. We build on self-hosted n8n instances. Data flows through your API keys. We do not store your client data.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="audit" class="py-24 text-center border-t border-white/5 bg-black z-10 relative">
+        <div class="max-w-2xl mx-auto px-6">
+            <h2 class="text-2xl font-bold text-white mb-4">Free Technical Audit</h2>
+            <p class="text-slate-400 mb-8 text-sm">Book a 15-minute call. We'll diagram the automation architecture and give you a fixed-price quote. <br/><span class="text-brand-accent">No sales pitch—just technical analysis.</span></p>
+
+            <div class="bg-white/5 border border-white/10 rounded-2xl h-[400px] flex items-center justify-center mb-16">
+                <p class="text-brand-accent font-mono text-xs animate-pulse">[ CALENDLY EMBED GOES HERE ]</p>
+            </div>
+            
+            <div class="mb-16">
+                <p class="text-[10px] font-mono text-slate-500 tracking-widest uppercase mb-6">Communication_Uplinks</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="https://www.linkedin.com/company/thryvixai/?viewAsMember=true" target="_blank" class="group glass-panel p-4 rounded-full hover:bg-white/10 transition-colors border border-white/10">
+                        <svg class="w-5 h-5 text-slate-400 group-hover:text-[#0077b5] transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    
+                    <a href="https://wa.me/917592063527" target="_blank" class="group glass-panel p-4 rounded-full hover:bg-white/10 transition-colors border border-white/10">
+                        <svg class="w-5 h-5 text-slate-400 group-hover:text-[#25D366] transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.93 16.94C16.8 17.29 16.29 17.5 15.86 17.56C15.54 17.61 14.88 17.74 12.72 16.84C10.04 15.72 8.28 12.98 8.15 12.8C8.02 12.63 7.07 11.36 7.07 10.05C7.07 8.74 7.74 8.1 8.01 7.82C8.23 7.6 8.5 7.56 8.73 7.56C8.92 7.56 9.12 7.57 9.29 7.57C9.48 7.57 9.7 7.5 9.94 8.08C10.22 8.75 10.49 9.42 10.55 9.55C10.63 9.71 10.66 9.9 10.56 10.09C10.46 10.28 10.37 10.37 10.24 10.53C10.11 10.68 9.98 10.79 9.85 10.95C9.7 11.11 9.55 11.29 9.72 11.59C9.89 11.89 10.48 12.86 11.36 13.64C12.49 14.65 13.41 14.97 13.73 15.11C14.05 15.25 14.23 15.23 14.44 14.99C14.65 14.75 15.06 14.17 15.25 13.9C15.43 13.63 15.63 13.67 15.84 13.75C16.06 13.83 17.21 14.4 17.44 14.52C17.68 14.64 17.85 14.69 17.91 14.8C17.97 14.91 17.97 15.46 17.71 16.21C17.57 16.59 17.22 16.82 16.93 16.94Z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+
+                    <a href="https://instagram.com/thryvixai" target="_blank" class="group glass-panel p-4 rounded-full hover:bg-white/10 transition-colors border border-white/10">
+                         <svg class="w-5 h-5 text-slate-400 group-hover:text-[#E1306C] transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.451 2.535c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+
+                    <a href="https://www.facebook.com/share/17h47UvpgP/" target="_blank" class="group glass-panel p-4 rounded-full hover:bg-white/10 transition-colors border border-white/10">
+                        <svg class="w-5 h-5 text-slate-400 group-hover:text-[#1877F2] transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-[10px] text-slate-700 font-mono tracking-widest uppercase">
+                <p class="mb-2">THRYVIX_AI © 2025 | SPECIALIZED IN: AGENCIES, E-COMMERCE, SAAS</p>
+                <p>STATUS: OPERATIONAL | CURRENT_FOCUS: MARKETING_AGENCY_OPS</p>
+            </div>
+        </div>
+    </section>
 
     <script>
-        // Hero content fade-in animation
-        window.addEventListener('load', () => {
-            const heroContent = document.querySelector('.hero-content');
-            setTimeout(() => {
-                heroContent.classList.add('fade-in');
-            }, 100);
-        });
+        // Spotlight Effect Logic
+        const cards = document.querySelectorAll(".spotlight-card");
+        document.onmousemove = e => {
+            for(const card of cards) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
 
-        // Create floating particles
-        function createParticles() {
-            const numParticles = 20;
-            const body = document.body;
-            for(let i = 0; i < numParticles; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = 15 + Math.random() * 10 + 's';
-                body.appendChild(particle);
-            }
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            };
         }
+
+        // 3D Tilt Logic for Hero
+        const hero = document.getElementById('hero-visual');
+        const content = hero.querySelector('.preserve-3d');
         
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        // Close menu when link clicked
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
+        if(hero && content) {
+            hero.addEventListener('mousemove', (e) => {
+                const { offsetWidth: width, offsetHeight: height } = hero;
+                const { offsetX: x, offsetY: y } = e;
+                const xRotation = ((y / height) - 0.5) * -10; 
+                const yRotation = ((x / width) - 0.5) * 10;   
+                
+                content.style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
             });
-        });
 
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if(window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+            hero.addEventListener('mouseleave', () => {
+                content.style.transform = 'rotateX(5deg) rotateY(-5deg)'; 
             });
-        });
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    
-                    // Animate progress bars
-                    if (entry.target.classList.contains('feature-card')) {
-                        const progressBar = entry.target.querySelector('.progress-bar');
-                        if (progressBar) {
-                            const progressValue = progressBar.getAttribute('data-progress');
-                            progressBar.style.width = `${progressValue}%`;
-                        }
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.querySelectorAll('.feature-card, .price-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'all 0.6s ease';
-            observer.observe(card);
-        });
-
-        // Parallax effect on hero section
-        const hero = document.querySelector('.hero');
-        const heroContent = document.querySelector('.hero-content');
-        
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = scrolled * 0.5;
-            if(heroContent) {
-                heroContent.style.transform = `translateY(${parallax}px)`;
-                heroContent.style.opacity = 1 - scrolled / 800;
-            }
-        });
-
-        // New Interactive Features
-        const cursorGlow = document.querySelector('.cursor-glow');
-        const aiOrbs = document.querySelectorAll('.ai-orb');
-
-        document.addEventListener('mousemove', (e) => {
-            // Update cursor glow position
-            if (cursorGlow) {
-                cursorGlow.style.left = `${e.clientX}px`;
-                cursorGlow.style.top = `${e.clientY}px`;
-            }
-
-            // Update parallax orb positions
-            aiOrbs.forEach(orb => {
-                const speed = orb.id === 'orb1' ? 0.05 : 0.03; // Different speeds for a better effect
-                const x = (window.innerWidth / 2 - e.clientX) * speed;
-                const y = (window.innerHeight / 2 - e.clientY) * speed;
-                orb.style.transform = `translate(${x}px, ${y}px)`;
-            });
-        });
-
-        // Currency switcher logic
-        const currencySelect = document.getElementById('currencySelect');
-        const priceElements = document.querySelectorAll('.plan-price');
-
-        currencySelect.addEventListener('change', (event) => {
-            const selectedCurrency = event.target.value;
-            priceElements.forEach(priceElement => {
-                if (priceElement.dataset.usd && priceElement.dataset.inr) {
-                    if (selectedCurrency === 'usd') {
-                        priceElement.innerHTML = priceElement.dataset.usd + (priceElement.dataset.usd === 'Custom' ? '' : '<span>/month</span>');
-                    } else if (selectedCurrency === 'inr') {
-                        priceElement.innerHTML = priceElement.dataset.inr + (priceElement.dataset.inr === 'Custom' ? '' : '<span>/month</span>');
-                    }
-                }
-            });
-        });
-        
-        // Remove old mouse glow effect and old orb animation
-        document.removeEventListener('click', createGlow);
-
-        // Remove loader
-        window.addEventListener('load', () => {
-            createParticles(); // Call this function on page load
-            setTimeout(() => {
-                document.querySelector('.loader').style.display = 'none';
-            }, 2000);
-        });
+        }
     </script>
 </body>
 </html>
