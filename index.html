@@ -1,480 +1,980 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thryvix AI | Enterprise Revenue Operations</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        'brand-accent': '#10b981', 
-                        'brand-dark': '#050505',
-                        'surface': '#0A0A0A',
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #030303;
-            color: #e2e8f0;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THRYVIX_AI — Workflow Automation Infrastructure</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   THRYVIX_AI — ANTI-GRAVITY 3D WEBSITE
+   Fonts: JetBrains Mono (display/mono) + Inter (body)
+   Theme: Pure black/white — deep space
+═══════════════════════════════════════════════ */
 
-        /* Subtle Noise Texture for depth */
-        .noise-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-        }
+:root {
+  --b: #000000;
+  --s1: #070707;
+  --s2: #0d0d0d;
+  --s3: #141414;
+  --w: #ffffff;
+  --off: #eeeeee;
+  --mid: #999999;
+  --dim: #444444;
+  --line: rgba(255,255,255,0.06);
+  --line2: rgba(255,255,255,0.12);
+  --glow: rgba(255,255,255,0.03);
+}
 
-        /* Premium Spotlight Effect */
-        .spotlight-card {
-            position: relative;
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .spotlight-card:hover {
-            border-color: rgba(16, 185, 129, 0.2);
-            background: rgba(255, 255, 255, 0.02);
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--b);
+  color: var(--w);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+.jb { font-family: 'JetBrains Mono', monospace; }
 
-        /* Architectural Grid Background */
-        .grid-bg {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        }
+/* ─── CURSOR ─── */
+#CUR { position:fixed; width:8px; height:8px; background:#fff; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; transition:transform .15s; }
+#CUR_R { position:fixed; width:32px; height:32px; border:1px solid rgba(255,255,255,.25); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); }
+a:hover ~ #CUR { transform:translate(-50%,-50%) scale(3); }
 
-        /* Glass Panel with Blur */
-        .glass-panel {
-            background: rgba(10, 10, 10, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width:2px; }
+::-webkit-scrollbar-track { background:#000; }
+::-webkit-scrollbar-thumb { background:#1a1a1a; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
-    </style>
+/* ─── PARTICLE CANVAS ─── */
+#SPACE { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+/* ─── AMBIENT GLOWS ─── */
+.amb { position:fixed; border-radius:50%; pointer-events:none; filter:blur(100px); opacity:.018; z-index:1; animation:amb-drift ease-in-out infinite; }
+.amb-a { width:600px; height:600px; background:#fff; top:-100px; left:-150px; animation-duration:12s; }
+.amb-b { width:400px; height:400px; background:#fff; bottom:-50px; right:-100px; animation-duration:9s; animation-delay:4s; }
+.amb-c { width:250px; height:250px; background:#fff; top:40%; left:60%; animation-duration:7s; animation-delay:2s; }
+@keyframes amb-drift { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.15)} }
+
+/* ─── ANTI-GRAVITY PARTICLES ─── */
+.agp { position:fixed; border-radius:50%; pointer-events:none; z-index:2; background:#fff; animation:agp-rise linear infinite; opacity:0; }
+@keyframes agp-rise {
+  0%   { opacity:0; transform:translateY(0) translateX(0) scale(1); }
+  10%  { opacity:.5; }
+  50%  { opacity:.2; }
+  90%  { opacity:.1; }
+  100% { opacity:0; transform:translateY(var(--ry,-120vh)) translateX(var(--rx,20px)) scale(var(--rs,.5)); }
+}
+
+/* ─── NAV ─── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:600;
+  height:68px; display:flex; align-items:center;
+  padding:0 52px; justify-content:space-between;
+  border-bottom:1px solid var(--line);
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(28px) saturate(180%);
+}
+.n-logo {
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px; font-weight:700; letter-spacing:.08em;
+  color:#fff; text-decoration:none;
+  display:flex; align-items:center; gap:10px;
+}
+.n-pip {
+  width:6px; height:6px; border-radius:50%; background:#fff;
+  box-shadow:0 0 0 0 rgba(255,255,255,.4);
+  animation:pip 2.5s ease-in-out infinite;
+}
+@keyframes pip { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.4);opacity:1} 50%{box-shadow:0 0 0 8px rgba(255,255,255,0);opacity:.4} }
+.n-links { display:flex; gap:36px; align-items:center; }
+.n-link { font-size:12px; font-weight:500; color:var(--mid); text-decoration:none; letter-spacing:.02em; transition:color .2s; }
+.n-link:hover { color:#fff; }
+.n-cta {
+  font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase;
+  background:#fff; color:#000; padding:10px 22px; border-radius:2px;
+  text-decoration:none; transition:opacity .2s;
+}
+.n-cta:hover { opacity:.85; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:130px 52px 80px; position:relative; z-index:10; text-align:center;
+  overflow:hidden;
+}
+
+/* 3D ORBITAL RINGS */
+.orb-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(255,255,255,.04);
+  pointer-events:none;
+  top:50%; left:50%;
+  transform-style:preserve-3d;
+  animation:orb-spin linear infinite;
+}
+.orb-ring:nth-child(1) { width:800px; height:800px; margin:-400px 0 0 -400px; animation-duration:40s; border-color:rgba(255,255,255,.05); }
+.orb-ring:nth-child(2) { width:600px; height:600px; margin:-300px 0 0 -300px; animation-duration:28s; animation-direction:reverse; }
+.orb-ring:nth-child(3) { width:420px; height:420px; margin:-210px 0 0 -210px; animation-duration:18s; border-color:rgba(255,255,255,.035); }
+.orb-ring:nth-child(4) { width:260px; height:260px; margin:-130px 0 0 -130px; animation-duration:10s; animation-direction:reverse; }
+@keyframes orb-spin {
+  from { transform:rotateX(70deg) rotateZ(0deg); }
+  to   { transform:rotateX(70deg) rotateZ(360deg); }
+}
+
+/* DOT ON RING */
+.orb-ring::before {
+  content:''; position:absolute; width:4px; height:4px;
+  background:#fff; border-radius:50%; top:-2px; left:50%;
+  box-shadow:0 0 6px rgba(255,255,255,.6);
+  opacity:.6;
+}
+
+.hero-inner { max-width:980px; position:relative; z-index:5; }
+
+.s-pill {
+  display:inline-flex; align-items:center; gap:10px;
+  border:1px solid var(--line2); border-radius:1px;
+  padding:7px 18px; margin-bottom:44px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:.2em; color:var(--mid); text-transform:uppercase;
+}
+.dot-live { position:relative; width:6px; height:6px; display:inline-flex; }
+.dot-live span:first-child {
+  position:absolute; inset:0; border-radius:50%; background:#fff; opacity:.7;
+  animation:live-ping 1.8s cubic-bezier(0,0,.2,1) infinite;
+}
+.dot-live span:last-child { position:relative; width:6px; height:6px; border-radius:50%; background:#fff; display:inline-flex; }
+@keyframes live-ping { 75%,100%{transform:scale(2.5);opacity:0} }
+
+.hero h1 {
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(40px,7.5vw,96px);
+  font-weight:700; line-height:1.0; letter-spacing:-.025em;
+  margin-bottom:28px;
+}
+.hero h1 .hollow {
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(255,255,255,.18);
+  letter-spacing:-.025em;
+}
+.hero h1 .solid { color:#fff; }
+
+.hero-desc {
+  font-size:18px; color:var(--mid); line-height:1.78;
+  max-width:600px; margin:0 auto 56px; font-weight:400;
+}
+
+.hero-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:88px; }
+.btn-w {
+  display:inline-flex; align-items:center; gap:8px;
+  background:#fff; color:#000;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  padding:15px 30px; border-radius:2px; text-decoration:none;
+  box-shadow:0 0 50px rgba(255,255,255,.08);
+  transition:opacity .2s, box-shadow .2s;
+}
+.btn-w:hover { opacity:.88; box-shadow:0 0 60px rgba(255,255,255,.14); }
+.btn-g {
+  display:inline-flex; align-items:center; gap:8px;
+  background:transparent; color:var(--mid);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+  padding:15px 30px; border-radius:2px; text-decoration:none;
+  border:1px solid var(--line2); transition:all .2s;
+}
+.btn-g:hover { color:#fff; border-color:rgba(255,255,255,.35); }
+
+/* 3D STATS BAR */
+.stats-3d {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line);
+  border:1px solid var(--line); border-radius:3px; overflow:hidden;
+  max-width:780px; margin:0 auto;
+  transform:perspective(1000px) rotateX(12deg) rotateY(-1deg);
+  transition:transform .6s ease;
+  box-shadow:0 30px 60px rgba(0,0,0,.8), 0 0 80px rgba(255,255,255,.02);
+}
+.stats-3d:hover { transform:perspective(1000px) rotateX(0deg) rotateY(0deg); }
+.stat-c { background:var(--s1); padding:32px 20px; transition:background .25s; }
+.stat-c:hover { background:var(--s2); }
+.stat-v {
+  font-family:'JetBrains Mono',monospace;
+  font-size:30px; font-weight:600; color:#fff; margin-bottom:6px; line-height:1;
+}
+.stat-v sub { font-size:13px; color:var(--dim); font-weight:400; vertical-align:baseline; }
+.stat-l { font-size:9px; color:var(--dim); text-transform:uppercase; letter-spacing:.14em; }
+
+/* ─── MARQUEE ─── */
+.mq { border-top:1px solid var(--line); border-bottom:1px solid var(--line); overflow:hidden; padding:14px 0; background:rgba(5,5,5,.95); position:relative; z-index:10; }
+.mq-t { display:flex; white-space:nowrap; animation:mq-scroll 44s linear infinite; }
+.mq-i { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.2em; color:var(--dim); text-transform:uppercase; padding:0 52px; }
+.mq-i .sep { color:rgba(255,255,255,.15); margin-right:8px; }
+@keyframes mq-scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ─── SECTIONS ─── */
+section { position:relative; z-index:10; padding:120px 0; border-top:1px solid var(--line); }
+section.nb { border-top:none; }
+.ct { max-width:1200px; margin:0 auto; padding:0 52px; }
+.ct-s { max-width:860px; margin:0 auto; padding:0 52px; }
+
+.tag {
+  display:block; font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:.22em; color:var(--dim);
+  text-transform:uppercase; margin-bottom:20px;
+}
+.ttl {
+  font-size:clamp(28px,4.2vw,54px); font-weight:700;
+  color:#fff; letter-spacing:-.028em; line-height:1.06; margin-bottom:20px;
+}
+.sub { font-size:16px; color:var(--mid); line-height:1.78; max-width:540px; }
+.sp-h { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; margin-bottom:68px; }
+.sp-h .sub { text-align:right; }
+
+/* ─── 3D CARD SYSTEM ─── */
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-top:68px; }
+.g2 { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-top:68px; }
+
+.c3 {
+  background:var(--s1); padding:40px 32px;
+  position:relative; overflow:hidden;
+  transition:background .3s;
+  cursor:none;
+}
+.c3::after {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at var(--cx,50%) var(--cy,50%), rgba(255,255,255,.04), transparent 55%);
+  opacity:0; transition:opacity .3s; pointer-events:none;
+}
+.c3:hover { background:var(--s2); }
+.c3:hover::after { opacity:1; }
+
+.c3-n { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.16em; color:var(--dim); text-transform:uppercase; margin-bottom:20px; }
+.c3 h3 { font-size:16px; font-weight:600; color:#fff; margin-bottom:12px; letter-spacing:-.01em; }
+.c3 p { font-size:13px; color:var(--mid); line-height:1.78; }
+.c3-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:20px; }
+.ct-tag { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; color:var(--dim); text-transform:uppercase; }
+.ct-tag:not(:last-child)::after { content:' /'; margin-right:2px; }
+
+/* ─── ARCHITECTURE STEPS ─── */
+.steps {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:0; margin-top:68px;
+  border:1px solid var(--line); border-radius:4px; overflow:hidden; background:var(--line);
+}
+.step { background:var(--s1); padding:36px 28px; transition:background .3s; position:relative; }
+.step:hover { background:var(--s2); }
+.step-n { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.2em; color:var(--dim); text-transform:uppercase; margin-bottom:16px; }
+.step h4 { font-size:16px; font-weight:600; color:#fff; margin-bottom:10px; }
+.step p { font-size:13px; color:var(--mid); line-height:1.75; }
+
+/* ─── SECTOR CARDS ─── */
+.sc-c {
+  background:var(--s1); padding:42px 38px;
+  position:relative; overflow:hidden; transition:background .3s;
+}
+.sc-c:hover { background:var(--s2); }
+.sc-c::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+  transform:translateX(-100%); transition:transform .6s;
+}
+.sc-c:hover::before { transform:translateX(100%); }
+.sc-hd { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+.sc-n { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); letter-spacing:.12em; }
+.sc-c h3 { font-size:18px; font-weight:700; color:#fff; letter-spacing:-.01em; }
+.sc-c > p { font-size:13px; color:var(--mid); line-height:1.78; margin-bottom:24px; }
+.flows { display:flex; flex-direction:column; gap:9px; }
+.fl { display:flex; gap:10px; font-size:12px; color:var(--dim); line-height:1.55; align-items:flex-start; }
+.fl-arr { font-family:'JetBrains Mono',monospace; color:rgba(255,255,255,.12); flex-shrink:0; font-size:11px; margin-top:1px; }
+
+/* ─── WORKFLOW TABLE ─── */
+.wf-wrap { margin-top:68px; border:1px solid var(--line); border-radius:4px; overflow:hidden; }
+table { width:100%; border-collapse:collapse; }
+thead { background:var(--s3); }
+th { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.2em; color:var(--dim); text-transform:uppercase; padding:14px 20px; text-align:left; border-bottom:1px solid var(--line); }
+td { padding:17px 20px; border-bottom:1px solid rgba(255,255,255,.025); font-size:12px; color:var(--mid); vertical-align:top; line-height:1.65; }
+td:first-child { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); white-space:nowrap; }
+td:nth-child(2) { font-weight:600; color:#fff; font-size:13px; white-space:nowrap; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(255,255,255,.012); }
+
+/* ─── PRICING — 3D FLOATING ─── */
+.pricing-scene { perspective:1400px; margin-top:68px; }
+.pricing-g { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; transform-style:preserve-3d; }
+
+.pc {
+  background:var(--s1); border:1px solid var(--line);
+  border-radius:6px; padding:42px 34px; position:relative;
+  transition:transform .5s cubic-bezier(.23,1,.32,1), box-shadow .5s, border-color .4s, background .3s;
+  transform-style:preserve-3d; cursor:none;
+  transform:translateY(0) rotateX(0) rotateY(0);
+}
+.pc:hover {
+  transform:translateY(-16px) rotateX(5deg) rotateY(-2deg);
+  box-shadow:0 50px 100px rgba(0,0,0,.9), 0 0 80px rgba(255,255,255,.03);
+  border-color:var(--line2); background:var(--s2);
+}
+.pc.feat {
+  border-color:rgba(255,255,255,.22); background:var(--s2);
+  border-top:2px solid #fff;
+  transform:translateY(-10px);
+  box-shadow:0 40px 80px rgba(0,0,0,.7), 0 0 60px rgba(255,255,255,.04);
+}
+.pc.feat:hover { transform:translateY(-24px) rotateX(5deg) rotateY(-2deg); }
+
+.pc-badge {
+  position:absolute; top:-1px; left:34px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px; letter-spacing:.16em; text-transform:uppercase;
+  background:#fff; color:#000; padding:3px 10px;
+}
+.pc-lbl { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.2em; color:var(--dim); text-transform:uppercase; margin-bottom:12px; }
+.pc h3 { font-size:21px; font-weight:700; color:#fff; margin-bottom:22px; letter-spacing:-.01em; }
+.pc-price { margin-bottom:8px; }
+.pc-usd { font-family:'JetBrains Mono',monospace; font-size:46px; font-weight:700; color:#fff; letter-spacing:-.03em; line-height:1; display:block; }
+.pc-inr { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--dim); letter-spacing:.04em; display:block; margin-bottom:2px; }
+.pc-period { font-size:13px; color:var(--mid); margin-bottom:36px; }
+.pc-feats { list-style:none; margin-bottom:36px; display:flex; flex-direction:column; gap:13px; }
+.pc-feats li { display:flex; gap:10px; font-size:13px; color:var(--off); line-height:1.55; align-items:flex-start; }
+.pc-feats li::before { content:'+'; font-family:'JetBrains Mono',monospace; color:#fff; flex-shrink:0; margin-top:1px; }
+.pc-feats li.no { color:var(--dim); }
+.pc-feats li.no::before { content:'—'; color:var(--dim); }
+.pc-btn {
+  display:block; text-align:center; padding:14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  text-decoration:none; border-radius:2px; transition:all .2s;
+}
+.pc-btn.prim { background:#fff; color:#000; }
+.pc-btn.prim:hover { opacity:.85; }
+.pc-btn.gh { background:transparent; color:var(--mid); border:1px solid var(--line2); }
+.pc-btn.gh:hover { color:#fff; border-color:rgba(255,255,255,.35); }
+.pc-note { font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--dim); letter-spacing:.1em; text-align:center; margin-top:14px; }
+
+/* ─── ROI CALC ─── */
+.roi-wrap {
+  background:var(--s1); border:1px solid var(--line); border-radius:4px; padding:64px;
+  margin-top:68px;
+  transform:perspective(900px) rotateX(6deg);
+  transition:transform .5s ease;
+  box-shadow:0 30px 80px rgba(0,0,0,.8);
+}
+.roi-wrap:hover { transform:perspective(900px) rotateX(0deg); }
+.roi-ins { display:grid; grid-template-columns:repeat(3,1fr); gap:44px; margin-bottom:52px; }
+label { display:block; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.2em; color:var(--dim); text-transform:uppercase; margin-bottom:12px; }
+input[type="number"] {
+  width:100%; background:#000; border:1px solid var(--line2);
+  border-radius:2px; padding:16px;
+  color:#fff; font-family:'JetBrains Mono',monospace; font-size:20px;
+  outline:none; transition:border-color .2s;
+}
+input[type="number"]:focus { border-color:rgba(255,255,255,.4); }
+.roi-res { border-top:1px solid var(--line); padding-top:52px; }
+.roi-rg { display:grid; grid-template-columns:repeat(3,1fr); gap:44px; }
+.r-lbl { font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.2em; color:var(--dim); text-transform:uppercase; margin-bottom:12px; }
+.r-val { font-family:'JetBrains Mono',monospace; font-size:48px; font-weight:600; color:#fff; letter-spacing:-.025em; }
+.r-inr { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--dim); margin-top:6px; }
+
+/* ─── FAQ ─── */
+.faq-l { margin-top:68px; }
+.fq { border-bottom:1px solid var(--line); }
+.fq:first-child { border-top:1px solid var(--line); }
+.fq-q {
+  padding:28px 0; display:flex; justify-content:space-between; align-items:center;
+  cursor:none; user-select:none; font-size:15px; font-weight:500; color:#fff;
+}
+.fq-ic { font-family:'JetBrains Mono',monospace; font-size:20px; color:var(--mid); transition:transform .3s; flex-shrink:0; margin-left:20px; }
+.fq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+.fq-a p { font-size:14px; color:var(--mid); line-height:1.82; padding-bottom:28px; max-width:720px; }
+.fq.open .fq-a { max-height:400px; }
+.fq.open .fq-ic { transform:rotate(45deg); }
+
+/* ─── FOOTER ─── */
+.footer {
+  padding:150px 52px 84px; text-align:center;
+  border-top:1px solid var(--line);
+  position:relative; z-index:10; overflow:hidden;
+}
+.footer-glow {
+  position:absolute; width:500px; height:200px;
+  background:rgba(255,255,255,.025);
+  filter:blur(80px); top:0; left:50%;
+  transform:translateX(-50%); pointer-events:none;
+  border-radius:50%;
+}
+.footer h2 {
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(28px,5.5vw,68px);
+  font-weight:700; color:#fff;
+  letter-spacing:-.02em; line-height:1.08; margin-bottom:22px;
+  position:relative; z-index:2;
+}
+.footer > p { font-size:17px; color:var(--mid); max-width:540px; margin:0 auto 56px; line-height:1.75; position:relative; z-index:2; }
+.cal-w {
+  max-width:980px; margin:0 auto 80px;
+  background:var(--s1); border:1px solid var(--line); border-radius:4px; overflow:hidden;
+  transform:perspective(900px) rotateX(5deg);
+  transition:transform .5s;
+  position:relative; z-index:2;
+}
+.cal-w:hover { transform:perspective(900px) rotateX(0deg); }
+.soc-r { display:flex; justify-content:center; gap:10px; margin-bottom:64px; position:relative; z-index:2; }
+.soc-b {
+  width:48px; height:48px; background:var(--s1); border:1px solid var(--line);
+  border-radius:3px; display:flex; align-items:center; justify-content:center;
+  text-decoration:none; transition:all .3s;
+}
+.soc-b:hover {
+  background:var(--s2); border-color:var(--line2);
+  transform:translateY(-6px) scale(1.08);
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+}
+.soc-b svg { width:17px; height:17px; fill:var(--mid); transition:fill .2s; }
+.soc-b:hover svg { fill:#fff; }
+.f-bot {
+  display:flex; justify-content:space-between; align-items:center;
+  max-width:1200px; margin:0 auto;
+  padding-top:44px; border-top:1px solid var(--line);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:.14em; color:var(--dim);
+  flex-wrap:wrap; gap:16px; position:relative; z-index:2;
+}
+.f-links { display:flex; gap:24px; }
+.f-links a { color:var(--dim); text-decoration:none; transition:color .2s; }
+.f-links a:hover { color:#fff; }
+
+/* ─── REVEAL ─── */
+.rv { opacity:0; transform:translateY(28px) rotateX(10deg); transition:opacity .8s ease, transform .8s ease; }
+.rv.vi { opacity:1; transform:none; }
+
+/* ─── MOBILE ─── */
+@media(max-width:920px) {
+  nav { padding:0 20px; }
+  .n-links { display:none; }
+  .hero { padding:110px 20px 60px; }
+  .orb-ring { display:none; }
+  .stats-3d { grid-template-columns:repeat(2,1fr); transform:none; }
+  .ct,.ct-s { padding:0 20px; }
+  section { padding:80px 0; }
+  .g3,.g2 { grid-template-columns:1fr; background:none; border:none; gap:12px; }
+  .g3 .c3,.g2 .sc-c { border:1px solid var(--line); border-radius:4px; }
+  .steps { grid-template-columns:1fr; background:none; border:none; gap:12px; }
+  .steps .step { border:1px solid var(--line); border-radius:4px; }
+  .pricing-g { grid-template-columns:1fr; }
+  .pc { transform:none !important; }
+  .roi-wrap { padding:28px; transform:none; }
+  .roi-ins { grid-template-columns:1fr; gap:24px; }
+  .roi-rg { grid-template-columns:1fr; gap:28px; }
+  .wf-wrap { overflow-x:auto; }
+  .footer { padding:100px 20px 60px; }
+  .f-bot { flex-direction:column; text-align:center; }
+  .sp-h .sub { text-align:left; }
+  .cal-w { transform:none; }
+}
+
+/* ─── GLOW DIVIDER ─── */
+.gdiv { height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent); position:relative; z-index:10; }
+</style>
 </head>
-<body class="selection:bg-brand-accent selection:text-black relative">
+<body>
 
-    <div class="noise-bg"></div>
-    <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+<!-- CURSOR -->
+<div id="CUR"></div>
+<div id="CUR_R"></div>
 
-    <nav class="fixed w-full z-50 top-0 left-0 border-b border-white/5 bg-black/50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 bg-brand-accent rounded-full animate-pulse-slow"></div>
-                <span class="font-mono font-bold text-white tracking-tighter">THRYVIX_AI</span>
-            </div>
-            <a href="#audit" class="text-xs font-mono text-slate-400 hover:text-white transition-colors border border-transparent hover:border-white/10 px-3 py-1 rounded">
-                // BOOK_AUDIT
-            </a>
+<!-- AMBIENT GLOWS -->
+<div class="amb amb-a"></div>
+<div class="amb amb-b"></div>
+<div class="amb amb-c"></div>
+
+<!-- STAR FIELD CANVAS -->
+<canvas id="SPACE"></canvas>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <a href="#" class="n-logo">
+    <div class="n-pip"></div>
+    THRYVIX_AI
+  </a>
+  <div class="n-links">
+    <a href="#arch"     class="n-link">Architecture</a>
+    <a href="#solutions" class="n-link">Solutions</a>
+    <a href="#sectors"  class="n-link">Sectors</a>
+    <a href="#pricing"  class="n-link">Pricing</a>
+    <a href="#faq"      class="n-link">FAQ</a>
+  </div>
+  <a href="#audit" class="n-cta">BOOK_AUDIT</a>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero nb">
+  <!-- orbital rings -->
+  <div class="orb-ring"></div>
+  <div class="orb-ring"></div>
+  <div class="orb-ring"></div>
+  <div class="orb-ring"></div>
+
+  <div class="hero-inner">
+    <div class="s-pill rv">
+      <div class="dot-live"><span></span><span></span></div>
+      &nbsp;Workflow Automation &nbsp;·&nbsp; Systems Architecture &nbsp;·&nbsp; AI-Ready
+    </div>
+
+    <h1 class="rv">
+      <span class="hollow">Automate</span><br>
+      <span class="solid">everything.</span><br>
+      <span class="hollow">Miss nothing.</span>
+    </h1>
+
+    <p class="hero-desc rv">
+      We engineer trigger-based operational infrastructure for service businesses — eliminating manual work, closing revenue leaks, and running your operations at 100% consistency. Forever.
+    </p>
+
+    <div class="hero-btns rv">
+      <a href="#audit" class="btn-w">
+        BOOK_FREE_AUDIT
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#solutions" class="btn-g">EXPLORE_SOLUTIONS</a>
+    </div>
+
+    <div class="stats-3d rv">
+      <div class="stat-c"><div class="stat-v jb">20<sub>hr/wk</sub></div><div class="stat-l">Time Recovered</div></div>
+      <div class="stat-c"><div class="stat-v jb">100<sub>%</sub></div><div class="stat-l">Follow-Up Rate</div></div>
+      <div class="stat-c"><div class="stat-v jb">14<sub>d</sub></div><div class="stat-l">Avg Deployment</div></div>
+      <div class="stat-c"><div class="stat-v jb">6<sub>+</sub></div><div class="stat-l">Sectors Served</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="mq">
+  <div class="mq-t">
+    <span class="mq-i"><span class="sep">✦ </span>WHATSAPP_AUTOMATION</span>
+    <span class="mq-i"><span class="sep">✦ </span>GOOGLE_SHEETS_LOGIC</span>
+    <span class="mq-i"><span class="sep">✦ </span>TRIGGER_WORKFLOWS</span>
+    <span class="mq-i"><span class="sep">✦ </span>NO_CODE / LOW_CODE</span>
+    <span class="mq-i"><span class="sep">✦ </span>LEAD_CAPTURE</span>
+    <span class="mq-i"><span class="sep">✦ </span>PAYMENT_RECOVERY</span>
+    <span class="mq-i"><span class="sep">✦ </span>AI_READY_INFRA</span>
+    <span class="mq-i"><span class="sep">✦ </span>RETENTION_SYSTEMS</span>
+    <span class="mq-i"><span class="sep">✦ </span>REAL_TIME_REPORTS</span>
+    <span class="mq-i"><span class="sep">✦ </span>MEMBERSHIP_RENEWAL</span>
+    <span class="mq-i"><span class="sep">✦ </span>STAFF_ALERTS</span>
+    <span class="mq-i"><span class="sep">✦ </span>REVIEW_AUTOMATION</span>
+    <!-- duplicate for seamless loop -->
+    <span class="mq-i"><span class="sep">✦ </span>WHATSAPP_AUTOMATION</span>
+    <span class="mq-i"><span class="sep">✦ </span>GOOGLE_SHEETS_LOGIC</span>
+    <span class="mq-i"><span class="sep">✦ </span>TRIGGER_WORKFLOWS</span>
+    <span class="mq-i"><span class="sep">✦ </span>NO_CODE / LOW_CODE</span>
+    <span class="mq-i"><span class="sep">✦ </span>LEAD_CAPTURE</span>
+    <span class="mq-i"><span class="sep">✦ </span>PAYMENT_RECOVERY</span>
+    <span class="mq-i"><span class="sep">✦ </span>AI_READY_INFRA</span>
+    <span class="mq-i"><span class="sep">✦ </span>RETENTION_SYSTEMS</span>
+    <span class="mq-i"><span class="sep">✦ </span>REAL_TIME_REPORTS</span>
+    <span class="mq-i"><span class="sep">✦ </span>MEMBERSHIP_RENEWAL</span>
+    <span class="mq-i"><span class="sep">✦ </span>STAFF_ALERTS</span>
+    <span class="mq-i"><span class="sep">✦ </span>REVIEW_AUTOMATION</span>
+  </div>
+</div>
+
+<!-- ══════════ PROBLEM ══════════ -->
+<section>
+  <div class="ct">
+    <div class="sp-h">
+      <div>
+        <span class="tag rv">// Operational_Bottlenecks</span>
+        <h2 class="ttl rv" style="margin-bottom:0">The manual business<br>loop is breaking you.</h2>
+      </div>
+      <p class="sub rv">Your team is paid to deliver value — not to copy-paste data, chase payments, and send routine reminders all day.</p>
+    </div>
+    <div class="g3 rv">
+      <div class="c3"><div class="c3-n">01 — Fragmentation</div><h3>Scattered Operations</h3><p>Leads from WhatsApp, Instagram, forms, and calls with no unified system to capture, respond, or track any of it consistently.</p></div>
+      <div class="c3"><div class="c3-n">02 — Inconsistency</div><h3>Human Error Rate</h3><p>Follow-ups happening 70% of the time. Reminders forgotten. The 30% gap is pure revenue leaking from your business every single week.</p></div>
+      <div class="c3"><div class="c3-n">03 — Churn</div><h3>Invisible Revenue Loss</h3><p>Clients go quiet. Memberships lapse. Leads go cold. You find out weeks later — when recovery is already impossible.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ARCHITECTURE ══════════ -->
+<section id="arch">
+  <div class="ct">
+    <span class="tag rv">// Architecture</span>
+    <h2 class="ttl rv">How the system works.</h2>
+    <div class="steps rv">
+      <div class="step"><div class="step-n">Phase_I — Diagnostic</div><h4>Strategic Audit</h4><p>We map your entire operation in 90 minutes — isolating every manual vulnerability, revenue leak, and automation opportunity before touching any tool.</p></div>
+      <div class="step"><div class="step-n">Phase_II — Logic</div><h4>Infrastructure Design</h4><p>We design the workflow in plain language first. If we can't narrate it clearly, we won't build it. Logic before software — always.</p></div>
+      <div class="step"><div class="step-n">Phase_III — Engineering</div><h4>System Build</h4><p>WhatsApp sequences, Google Sheets data layers, trigger-based flows, and notification systems — deployed and tested end-to-end.</p></div>
+      <div class="step"><div class="step-n">Phase_IV — Deployment</div><h4>Auto-Delivery</h4><p>Your system runs 24/7. Every lead captured. Every follow-up sent. Every report generated. Zero manual intervention required.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="gdiv"></div>
+
+<!-- ══════════ SERVICES ══════════ -->
+<section id="solutions">
+  <div class="ct">
+    <span class="tag rv">// Capabilities</span>
+    <h2 class="ttl rv">Infrastructure solutions.</h2>
+    <p class="sub rv">Nine proven automation systems. Each engineered to eliminate a specific category of manual work and revenue loss.</p>
+    <div class="g3 rv">
+      <div class="c3"><div class="c3-n">SVC_01</div><h3>Lead Capture & Qualification</h3><p>Multi-channel intake → auto-acknowledgment in 90 seconds → qualification logic → CRM log → owner alert. No lead ever waits unanswered.</p><div class="c3-tags"><span class="ct-tag">WhatsApp</span><span class="ct-tag">Forms</span><span class="ct-tag">CRM</span><span class="ct-tag">Trigger</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_02</div><h3>Scheduling Pipelines</h3><p>Booking confirmation → calendar sync → 48hr, 24hr, 2hr reminders → post-appointment follow-up. No-show recovery triggered within 30 minutes automatically.</p><div class="c3-tags"><span class="ct-tag">Reminders</span><span class="ct-tag">Calendar</span><span class="ct-tag">No-Show Recovery</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_03</div><h3>Revenue Recovery Systems</h3><p>Invoice generation → D-3, D-1, D+1 reminders → overdue escalation → receipt → renewal trigger. Recover 40–70% of outstanding amounts with zero human effort.</p><div class="c3-tags"><span class="ct-tag">Invoicing</span><span class="ct-tag">Collection</span><span class="ct-tag">Escalation</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_04</div><h3>Lifecycle Retention</h3><p>Inactivity detection → personalized re-engagement → offer or check-in → staff escalation if no response → win-back sequence or exit survey.</p><div class="c3-tags"><span class="ct-tag">Retention</span><span class="ct-tag">Predictive</span><span class="ct-tag">WhatsApp</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_05</div><h3>Onboarding Sequences</h3><p>New client trigger → welcome → document collection → setup instructions → day 3, 7, 14 check-ins → satisfaction pulse. Every client gets a perfect start.</p><div class="c3-tags"><span class="ct-tag">Onboarding</span><span class="ct-tag">Sequences</span><span class="ct-tag">Docs</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_06</div><h3>Analytics Pipelines</h3><p>Daily or weekly data aggregation → auto-formatted operational summary → delivered to your WhatsApp or inbox at a fixed time. Real visibility, zero effort.</p><div class="c3-tags"><span class="ct-tag">Sheets</span><span class="ct-tag">KPIs</span><span class="ct-tag">Dashboards</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_07</div><h3>Staff & Internal Alerts</h3><p>New booking, complaint, or payment → instant WhatsApp alert to correct staff → task assignment → deadline reminder → completion confirmation logged.</p><div class="c3-tags"><span class="ct-tag">Internal</span><span class="ct-tag">Alerts</span><span class="ct-tag">Task Routing</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_08</div><h3>Membership & Renewal Management</h3><p>Expiry detection D-7, D-3, D-1 → renewal reminders → payment link → confirmation → lapse handling → full reactivation sequence. Zero renewals lost to silence.</p><div class="c3-tags"><span class="ct-tag">Membership</span><span class="ct-tag">Renewal</span><span class="ct-tag">Payments</span></div></div>
+      <div class="c3"><div class="c3-n">SVC_09</div><h3>Review & Referral Systems</h3><p>Service complete D+1 → review request → positive: platform link → negative: direct owner escalation. Referral program triggers on happy-client detection.</p><div class="c3-tags"><span class="ct-tag">Reviews</span><span class="ct-tag">Referrals</span><span class="ct-tag">Reputation</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SECTORS ══════════ -->
+<section id="sectors">
+  <div class="ct">
+    <span class="tag rv">// Sectors</span>
+    <h2 class="ttl rv">Built for every<br>service business.</h2>
+    <p class="sub rv">Same methodology. Six different workflow maps. Deep domain knowledge in each sector.</p>
+    <div class="g2 rv">
+      <div class="sc-c"><div class="sc-hd"><span class="sc-n">SEC_01</span><h3>Medical & Dental Clinics</h3></div><p>Recover no-show revenue, automate patient reminders, trigger recall sequences — without your receptionist lifting a finger.</p><div class="flows"><div class="fl"><span class="fl-arr">→</span>New patient form → auto-reply → staff alert → appointment booked</div><div class="fl"><span class="fl-arr">→</span>48hr + 24hr + 2hr appointment reminders via WhatsApp</div><div class="fl"><span class="fl-arr">→</span>No-show trigger → rebooking sequence within 30 minutes</div><div class="fl"><span class="fl-arr">→</span>6-month recall detection → nudge → booking confirmation</div><div class="fl"><span class="fl-arr">→</span>Positive review → Google link · Issue → owner escalation</div></div></div>
+      <div class="sc-c"><div class="sc-hd"><span class="sc-n">SEC_02</span><h3>Gyms & Fitness Centers</h3></div><p>Convert trials, prevent churn before it happens, and automate every membership lifecycle touchpoint with attendance-based triggers.</p><div class="flows"><div class="fl"><span class="fl-arr">→</span>Trial signup → D1, D3, D7 welcome sequence → D8 conversion offer</div><div class="fl"><span class="fl-arr">→</span>No check-in in 7 days → re-engagement → staff escalation at D14</div><div class="fl"><span class="fl-arr">→</span>Membership expiry D-14, D-7, D-3, D-1 → last chance → lapse flow</div><div class="fl"><span class="fl-arr">→</span>Class waitlist → spot opens → 30-min confirmation window</div><div class="fl"><span class="fl-arr">→</span>End-of-day owner report delivered via WhatsApp at 9pm daily</div></div></div>
+      <div class="sc-c"><div class="sc-hd"><span class="sc-n">SEC_03</span><h3>Real Estate Agencies</h3></div><p>Respond to leads in 90 seconds, nurture long-cycle prospects for months without manual effort, never lose a post-sale referral.</p><div class="flows"><div class="fl"><span class="fl-arr">→</span>Portal inquiry → auto-response in 90s → qualification → agent assigned</div><div class="fl"><span class="fl-arr">→</span>Client preference → new listing match → instant alert → viewing booked</div><div class="fl"><span class="fl-arr">→</span>Cold lead → 30d, 60d, 90d value content → market updates → re-qualification</div><div class="fl"><span class="fl-arr">→</span>Deal close + 30 days → satisfaction → referral ask → testimonial</div><div class="fl"><span class="fl-arr">→</span>Weekly per-agent performance report compiled and sent automatically</div></div></div>
+      <div class="sc-c"><div class="sc-hd"><span class="sc-n">SEC_04</span><h3>Coaching & Training Centers</h3></div><p>Automate the full student lifecycle from inquiry to graduation — and turn alumni into your most consistent referral source.</p><div class="flows"><div class="fl"><span class="fl-arr">→</span>Inquiry → details sent → counselor assigned → payment → enrollment confirmed</div><div class="fl"><span class="fl-arr">→</span>Enrollment → welcome → platform access → schedule → D1 + W1 check-ins</div><div class="fl"><span class="fl-arr">→</span>Assignment due D-3, D-1, D-day → missed: instructor alert + student outreach</div><div class="fl"><span class="fl-arr">→</span>Attendance drop (2+ sessions) → counselor alert → catch-up scheduling</div><div class="fl"><span class="fl-arr">→</span>Course complete → certificate → next program offer → alumni → referral</div></div></div>
+      <div class="sc-c"><div class="sc-hd"><span class="sc-n">SEC_05</span><h3>Service & Workshop Businesses</h3></div><p>From job intake to payment collection to repeat-customer re-engagement — automate the full loop with zero manual follow-up.</p><div class="flows"><div class="fl"><span class="fl-arr">→</span>Service inquiry → quote trigger → approval → job scheduled → prep message</div><div class="fl"><span class="fl-arr">→</span>Job complete → invoice auto-sent → D-3, D-1, D+1 payment reminders</div><div class="fl"><span class="fl-arr">→</span>Post-service feedback → positive: review request → negative: owner escalation</div><div class="fl"><span class="fl-arr">→</span>Last service date tracking → seasonal re-engagement → booking nudge</div><div class="fl"><span class="fl-arr">→</span>Staff daily job sheet → completion confirmations → client notifications</div></div></div>
+      <div class="sc-c"><div class="sc-hd"><span class="sc-n">SEC_06</span><h3>Marketing & Digital Agencies</h3></div><p>Auto-pull ad data from all platforms, normalize it, and deliver branded client reports weekly — zero human involvement per cycle.</p><div class="flows"><div class="fl"><span class="fl-arr">→</span>OAuth: Facebook, Google, LinkedIn, TikTok, Snapchat, GA4 connected</div><div class="fl"><span class="fl-arr">→</span>Python normalization → metric standardization → anomaly detection</div><div class="fl"><span class="fl-arr">→</span>Branded PDF generation → automatic delivery to client inbox</div><div class="fl"><span class="fl-arr">→</span>Client portal access → real-time dashboard visibility</div><div class="fl"><span class="fl-arr">→</span>Self-host: Docker on DigitalOcean or AWS · Zero data retention</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WORKFLOW TABLE ══════════ -->
+<section>
+  <div class="ct">
+    <span class="tag rv">// Workflow_Library</span>
+    <h2 class="ttl rv">10 automation categories.<br>Every sector covered.</h2>
+    <p class="sub rv">These 10 workflows represent 80% of all automation revenue opportunities across every sector we serve.</p>
+    <div class="wf-wrap rv">
+      <table>
+        <thead><tr><th>#</th><th>Category</th><th>Trigger → Action Pattern</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><td>Lead Capture & Qualification</td><td>New form / WhatsApp → auto-ack → qualification → CRM log → owner notification</td></tr>
+          <tr><td>02</td><td>Appointment Booking & Confirmation</td><td>Booking trigger → confirmation → calendar block → 48hr, 24hr, 2hr reminders → follow-up</td></tr>
+          <tr><td>03</td><td>Payment Collection & Follow-Up</td><td>Invoice trigger → delivery → D-3, D-1, D+1 reminders → overdue escalation → receipt</td></tr>
+          <tr><td>04</td><td>Client Onboarding Sequence</td><td>New client trigger → welcome → doc collection → setup → day 3 / 7 / 14 check-ins</td></tr>
+          <tr><td>05</td><td>Re-Engagement & Retention</td><td>Inactivity detection → personalized message → offer → escalation → win-back or exit</td></tr>
+          <tr><td>06</td><td>Internal Task & Staff Alerts</td><td>Event trigger → staff WhatsApp alert → task assignment → deadline → confirmation</td></tr>
+          <tr><td>07</td><td>Review & Testimonial Collection</td><td>Service complete D+1 → review request → positive: link → negative: owner escalation</td></tr>
+          <tr><td>08</td><td>Reporting & Analytics Pipelines</td><td>Daily / weekly aggregation → formatted summary → WhatsApp or email at fixed time</td></tr>
+          <tr><td>09</td><td>Membership & Renewal Management</td><td>Expiry D-7, D-3, D-1 → reminders → payment link → lapse handling → reactivation</td></tr>
+          <tr><td>10</td><td>Inquiry-to-Sale Conversion</td><td>Lead → D1, D3, D7 cadence → value content → offer → close or nurture path</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="gdiv"></div>
+
+<!-- ══════════ PRICING ══════════ -->
+<section id="pricing">
+  <div class="ct">
+    <div style="text-align:center">
+      <span class="tag rv" style="display:flex;justify-content:center">// Investment</span>
+      <h2 class="ttl rv">Transparent deployment costs.</h2>
+      <p class="sub rv" style="margin:0 auto;text-align:center">Pricing in USD and INR. Every system engineered to pay for itself within 30–60 days.</p>
+    </div>
+    <div class="pricing-scene">
+      <div class="pricing-g rv">
+
+        <!-- STARTER -->
+        <div class="pc">
+          <div class="pc-lbl">One-Time Deployment</div>
+          <h3>Starter System</h3>
+          <div class="pc-price">
+            <span class="pc-usd">$500</span>
+            <span class="pc-inr">≈ ₹41,500 INR</span>
+          </div>
+          <div class="pc-period">one-time setup fee</div>
+          <ul class="pc-feats">
+            <li>1 primary workflow automated end-to-end</li>
+            <li>Core Google Sheets data architecture</li>
+            <li>WhatsApp Business templates configured</li>
+            <li>1–2 trigger-based reminder flows</li>
+            <li>Operator walkthrough & training session</li>
+            <li>30-day post-deployment support</li>
+            <li class="no">Monthly optimization retainer</li>
+            <li class="no">Advanced analytics dashboard</li>
+          </ul>
+          <a href="#audit" class="pc-btn gh">REQUEST_CONSULTATION</a>
         </div>
-    </nav>
 
-    <section class="relative min-h-screen flex items-center justify-center px-4 md:px-6 pt-20 z-10">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
-
-        <div class="max-w-5xl mx-auto text-center relative">
-            
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
-                <span class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
-                </span>
-                <span class="text-[10px] font-mono text-brand-accent uppercase tracking-widest">Revenue Ops Engineering</span>
-            </div>
-
-            <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-8 leading-[1.1]">
-                Stop Wasting <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-emerald-600">20 Hours/Week</span><br/>
-                on Client Reports.
-            </h1>
-
-            <p class="text-lg text-slate-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-                We architect autonomous reporting infrastructure for marketing agencies. 
-                Python + n8n pipelines that pull, process, and deliver data.
-                <span class="text-white font-medium">Zero manual intervention.</span>
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mb-20">
-                <a href="#pricing" class="group relative inline-flex items-center justify-center px-8 py-4 text-sm font-bold text-black transition-all duration-200 bg-brand-accent font-mono rounded hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-accent focus:ring-offset-black">
-                    SEE_PRICING()
-                    <div class="absolute inset-0 rounded ring-1 ring-white/20 group-hover:ring-white/40"></div>
-                </a>
-                <a href="#demo" class="group relative inline-flex items-center justify-center px-8 py-4 text-sm font-bold text-white transition-all duration-200 bg-white/5 font-mono rounded hover:bg-white/10 border border-white/10">
-                    <svg class="w-4 h-4 mr-2 text-slate-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    WATCH_DEMO()
-                </a>
-            </div>
-
-            <div class="grid grid-cols-3 gap-px bg-white/10 max-w-3xl mx-auto rounded-lg overflow-hidden border border-white/10">
-                <div class="bg-black/80 p-6 backdrop-blur-sm">
-                    <div class="text-3xl font-bold text-white mb-1 font-mono">20<span class="text-base text-slate-500">hr</span></div>
-                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">Time Saved / Wk</div>
-                </div>
-                <div class="bg-black/80 p-6 backdrop-blur-sm">
-                    <div class="text-3xl font-bold text-white mb-1 font-mono">14<span class="text-base text-slate-500">d</span></div>
-                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">Deployment</div>
-                </div>
-                <div class="bg-black/80 p-6 backdrop-blur-sm">
-                    <div class="text-3xl font-bold text-white mb-1 font-mono">100<span class="text-base text-slate-500">%</span></div>
-                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">Automated</div>
-                </div>
-            </div>
+        <!-- GROWTH OPS -->
+        <div class="pc feat">
+          <div class="pc-badge">MOST_POPULAR</div>
+          <div class="pc-lbl">Strategic Engagement</div>
+          <h3>Growth Ops</h3>
+          <div class="pc-price">
+            <span class="pc-usd">$600<span style="font-size:18px;font-weight:400;color:var(--dim)">/mo</span></span>
+            <span class="pc-inr">≈ ₹49,800/mo + ₹2,07,500 setup</span>
+          </div>
+          <div class="pc-period">+ $2,500 one-time setup fee</div>
+          <ul class="pc-feats">
+            <li>Full diagnostic audit & architecture plan</li>
+            <li>3–5 interconnected workflow automations</li>
+            <li>Multi-channel sequences: WhatsApp + email</li>
+            <li>Internal staff notification routing</li>
+            <li>Weekly owner summary auto-delivered</li>
+            <li>2 refinement rounds included</li>
+            <li>48hr support SLA</li>
+            <li>Monthly optimization call</li>
+          </ul>
+          <a href="#audit" class="pc-btn prim">BOOK_STRATEGIC_AUDIT</a>
+          <p class="pc-note">REPLACES ~$2,700 / ₹2,24,100 IN MONTHLY LABOR</p>
         </div>
-    </section>
 
-    <section class="py-32 px-4 md:px-6 relative z-10 border-t border-white/5">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-                <div>
-                    <span class="text-brand-accent font-mono text-xs uppercase tracking-widest mb-2 block">// CURRENT_STATE</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">The Manual Reporting Loop</h2>
-                </div>
-                <p class="text-slate-400 text-sm max-w-md text-right md:text-right text-left">
-                    Your account managers are paid to strategize, not to copy-paste CSV data into spreadsheets every Monday morning.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="spotlight-card rounded-lg p-8">
-                    <div class="w-12 h-12 bg-white/5 rounded border border-white/10 flex items-center justify-center mb-6 text-brand-accent">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-3">Fragmentation</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Logging into Facebook, Google, LinkedIn, and TikTok individually. Fragmented data silos killing efficiency.</p>
-                </div>
-
-                <div class="spotlight-card rounded-lg p-8">
-                    <div class="w-12 h-12 bg-white/5 rounded border border-white/10 flex items-center justify-center mb-6 text-brand-accent">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-3">Data Entry Errors</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Exporting CSVs and fixing formulas manually. One human error ruins client trust instantly.</p>
-                </div>
-
-                <div class="spotlight-card rounded-lg p-8">
-                    <div class="w-12 h-12 bg-white/5 rounded border border-white/10 flex items-center justify-center mb-6 text-brand-accent">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-3">Resource Drain</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">3 hours per client × 8 clients = 24 hours lost. That is 60% of a work week gone to low-value tasks.</p>
-                </div>
-            </div>
+        <!-- SCALE OPS -->
+        <div class="pc">
+          <div class="pc-lbl">Custom Retainer</div>
+          <h3>Scale Ops</h3>
+          <div class="pc-price">
+            <span class="pc-usd">$1,000+<span style="font-size:18px;font-weight:400;color:var(--dim)">/mo</span></span>
+            <span class="pc-inr">≈ ₹83,000+/mo · setup custom</span>
+          </div>
+          <div class="pc-period">custom setup fee</div>
+          <ul class="pc-feats">
+            <li>All 10 workflow categories deployed</li>
+            <li>AI-assisted response & scaling layer</li>
+            <li>Live operational KPI dashboards</li>
+            <li>Staff SOPs & automation documentation</li>
+            <li>Priority 4hr support SLA</li>
+            <li>Dedicated Slack channel</li>
+            <li>Quarterly architecture reviews</li>
+            <li>Multi-location / multi-team support</li>
+          </ul>
+          <a href="#audit" class="pc-btn gh">CONTACT_SALES</a>
         </div>
-    </section>
 
-    <section id="demo" class="py-32 px-4 md:px-6 relative z-10 bg-gradient-to-b from-brand-dark to-black border-y border-white/5">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-brand-accent font-mono text-xs uppercase tracking-widest">// ARCHITECTURE</span>
-                <h2 class="text-3xl md:text-5xl font-bold text-white mt-4 mb-6">The Automated Workflow</h2>
-            </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="glass-panel rounded-xl p-1 mb-16 relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-brand-accent to-emerald-600 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-                <div class="bg-black rounded-lg aspect-video flex items-center justify-center relative overflow-hidden">
-                    <div class="absolute inset-0 grid-bg opacity-30"></div>
-                    
-                    <div class="text-center relative z-10 group cursor-pointer">
-                        <div class="w-20 h-20 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                            <div class="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-brand-accent border-b-[10px] border-b-transparent ml-1"></div>
-                        </div>
-                        <p class="text-white font-mono text-sm tracking-wider">EXECUTE_DEMO_SEQUENCE.mp4</p>
-                        <p class="text-slate-600 text-[10px] font-mono mt-2 uppercase">90 Seconds • 1080p</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="border border-white/5 bg-white/[0.02] p-6 rounded-lg">
-                    <div class="text-xs font-mono text-slate-500 mb-2">STEP_01</div>
-                    <div class="text-white font-semibold mb-1">API Handshake</div>
-                    <p class="text-slate-400 text-xs">Secure OAuth connection to Ad Platforms.</p>
-                </div>
-                <div class="border border-white/5 bg-white/[0.02] p-6 rounded-lg">
-                    <div class="text-xs font-mono text-slate-500 mb-2">STEP_02</div>
-                    <div class="text-white font-semibold mb-1">Data Normalization</div>
-                    <p class="text-slate-400 text-xs">Python logic standardizes metrics.</p>
-                </div>
-                <div class="border border-white/5 bg-white/[0.02] p-6 rounded-lg">
-                    <div class="text-xs font-mono text-slate-500 mb-2">STEP_03</div>
-                    <div class="text-white font-semibold mb-1">PDF Generation</div>
-                    <p class="text-slate-400 text-xs">Dynamic rendering of branded reports.</p>
-                </div>
-                <div class="border border-white/5 bg-white/[0.02] p-6 rounded-lg border-brand-accent/30 bg-brand-accent/[0.05]">
-                    <div class="text-xs font-mono text-brand-accent mb-2">STEP_04</div>
-                    <div class="text-white font-semibold mb-1">Auto-Delivery</div>
-                    <p class="text-slate-400 text-xs">SMTP Dispatch to client inbox.</p>
-                </div>
-            </div>
+<!-- ══════════ ROI CALCULATOR ══════════ -->
+<section>
+  <div class="ct">
+    <div style="text-align:center">
+      <span class="tag rv" style="display:flex;justify-content:center">// Projections</span>
+      <h2 class="ttl rv">Calculate your baseline inefficiency.</h2>
+    </div>
+    <div class="roi-wrap rv">
+      <div class="roi-ins">
+        <div><label>Active Client Volume</label><input type="number" value="8" id="cC" min="1"></div>
+        <div><label>Manual Hours / Client / Week</label><input type="number" value="3" id="hC" min="1"></div>
+        <div><label>Hourly Staff Rate (USD)</label><input type="number" value="35" id="rC" min="1"></div>
+      </div>
+      <div class="roi-res">
+        <div class="roi-rg">
+          <div><div class="r-lbl">Hours Wasted / Month</div><div class="r-val jb" id="RH">96</div></div>
+          <div><div class="r-lbl">USD Cost Inefficiency</div><div class="r-val jb" id="RU">$3,360</div></div>
+          <div><div class="r-lbl">Projected Net Savings</div><div class="r-val jb" id="RS">$2,760</div><div class="r-inr jb" id="RI">≈ ₹2,29,080/mo</div></div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section id="pricing" class="py-32 px-4 md:px-6 relative z-10">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-brand-accent font-mono text-xs uppercase tracking-widest">// INVESTMENT</span>
-                <h2 class="text-3xl md:text-5xl font-bold text-white mt-4 mb-6">Transparent Deployment Costs</h2>
-            </div>
+<!-- ══════════ FAQ ══════════ -->
+<section id="faq">
+  <div class="ct-s">
+    <span class="tag rv">// Knowledge_Base</span>
+    <h2 class="ttl rv">Frequently asked questions.</h2>
+    <div class="faq-l rv">
+      <div class="fq"><div class="fq-q"><span>What technology powers the infrastructure?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>We use Make, n8n, and Zapier for automation, Google Sheets for data architecture, WhatsApp Business API for communication, and Python for custom logic. The tools are secondary — we design platform-agnostic logic so your workflows survive any tool change.</p></div></div>
+      <div class="fq"><div class="fq-q"><span>Does my team need technical expertise?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>No. We design for operators, not engineers. You approve the logic in plain language, we handle all the mechanics. Every delivery includes a non-technical walkthrough, operator guide, and video documentation.</p></div></div>
+      <div class="fq"><div class="fq-q"><span>What if something breaks?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>Every system includes a failure monitoring layer. You know within minutes if anything stops working. All retainer plans cover ongoing fixes, updates, and continuous monitoring. That is the core purpose of the partnership.</p></div></div>
+      <div class="fq"><div class="fq-q"><span>Can you work with our existing tools?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>Yes. Our diagnostic audit maps your current tech stack first. We don't rip and replace what works — we build connective tissue to close operational gaps and unify your existing tools into one coherent system.</p></div></div>
+      <div class="fq"><div class="fq-q"><span>How long does deployment take?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>Starter systems: 5–10 business days. Growth Ops: 2–4 weeks. Scale Ops: phased over 6–12 weeks. We never begin building before completing the full diagnostic — rushing that step creates expensive rework.</p></div></div>
+      <div class="fq"><div class="fq-q"><span>Do you offer INR pricing?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>Yes. Starter System: ₹41,500 one-time. Growth Ops: ₹49,800/month + ₹2,07,500 setup. Scale Ops: ₹83,000+/month with custom setup. Message us on WhatsApp for a tailored INR quote based on your exact requirements and exchange rate at time of engagement.</p></div></div>
+      <div class="fq"><div class="fq-q"><span>What integrations do you support?</span><span class="fq-ic">+</span></div><div class="fq-a"><p>WhatsApp Business API, Google Sheets, Make, n8n, Zapier, Facebook Ads, Google Ads, LinkedIn, TikTok, GA4, HubSpot, Calendly, and most CRMs. Custom integrations via Python for anything beyond this list. Self-hosting available on DigitalOcean or AWS with Docker containers.</p></div></div>
+    </div>
+  </div>
+</section>
 
-            <div class="grid md:grid-cols-3 gap-8 items-start">
-                
-                <div class="spotlight-card rounded-xl p-8 border-t-2 border-t-transparent hover:border-t-slate-500">
-                    <div class="flex justify-between items-center mb-8">
-                        <h3 class="text-lg font-bold text-white">Pilot Protocol</h3>
-                        <span class="text-[10px] font-mono border border-white/20 px-2 py-1 rounded text-slate-400">ONE-TIME</span>
-                    </div>
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer" id="audit">
+  <div class="footer-glow"></div>
+  <h2 class="rv">Initialize<br>strategic execution.</h2>
+  <p class="rv">Book a 15-minute architecture review. We map your operation, isolate your top automation opportunities, and deliver a fixed-price roadmap — no obligation.</p>
+  <div class="hero-btns rv" style="margin-bottom:64px">
+    <a href="https://calendly.com/hello-thryvixai" target="_blank" class="btn-w">
+      BOOK_AUDIT
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="https://wa.me/917592063527" target="_blank" class="btn-g">WHATSAPP_US</a>
+  </div>
+  <div class="cal-w rv">
+    <div class="calendly-inline-widget" data-url="https://calendly.com/hello-thryvixai" style="min-width:320px;height:700px"></div>
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  </div>
+  <p class="rv" style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:.22em;text-transform:uppercase;margin-bottom:22px">SECURE_COMMS_CHANNELS</p>
+  <div class="soc-r rv">
+    <a href="https://www.linkedin.com/company/thryvixai/" target="_blank" class="soc-b"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+    <a href="https://wa.me/917592063527" target="_blank" class="soc-b"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.93 16.94C16.8 17.29 16.29 17.5 15.86 17.56C15.54 17.61 14.88 17.74 12.72 16.84C10.04 15.72 8.28 12.98 8.15 12.8C8.02 12.63 7.07 11.36 7.07 10.05C7.07 8.74 7.74 8.1 8.01 7.82C8.23 7.6 8.5 7.56 8.73 7.56C8.92 7.56 9.12 7.57 9.29 7.57C9.48 7.57 9.7 7.5 9.94 8.08C10.22 8.75 10.49 9.42 10.55 9.55C10.63 9.71 10.66 9.9 10.56 10.09C10.46 10.28 10.37 10.37 10.24 10.53C10.11 10.68 9.98 10.79 9.85 10.95C9.7 11.11 9.55 11.29 9.72 11.59C9.89 11.89 10.48 12.86 11.36 13.64C12.49 14.65 13.41 14.97 13.73 15.11C14.05 15.25 14.23 15.23 14.44 14.99C14.65 14.75 15.06 14.17 15.25 13.9C15.43 13.63 15.63 13.67 15.84 13.75C16.06 13.83 17.21 14.4 17.44 14.52C17.68 14.64 17.85 14.69 17.91 14.8C17.97 14.91 17.97 15.46 17.71 16.21C17.57 16.59 17.22 16.82 16.93 16.94Z"/></svg></a>
+    <a href="https://instagram.com/thryvixai" target="_blank" class="soc-b"><svg viewBox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.451 2.535c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg></a>
+    <a href="https://www.facebook.com/share/17h47UvpgP/" target="_blank" class="soc-b"><svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg></a>
+  </div>
+  <div class="f-bot">
+    <span class="jb">THRYVIX_AI © 2026</span>
+    <div class="f-links"><a href="https://wa.me/917592063527">+91 75920 63527</a><a href="https://www.linkedin.com/company/thryvixai/">LinkedIn</a><a href="https://instagram.com/thryvixai">Instagram</a></div>
+    <span class="jb">SYSTEM_STATUS: <span style="color:#fff">OPERATIONAL</span></span>
+  </div>
+</footer>
 
-                    <div class="flex items-baseline mb-8">
-                        <span class="text-4xl font-mono font-bold text-white">$500</span>
-                    </div>
+<!-- ══════════ JAVASCRIPT ══════════ -->
+<script>
+'use strict';
 
-                    <ul class="space-y-4 mb-8 text-sm text-slate-300">
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Automate 1 Client</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> 14-Day Delivery</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Risk-Free Guarantee</li>
-                    </ul>
+/* ── CURSOR ────────────────────────────────── */
+const C = document.getElementById('CUR');
+const CR = document.getElementById('CUR_R');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  C.style.left=mx+'px'; C.style.top=my+'px';
+});
+(function loop(){ rx+=(mx-rx)*.1; ry+=(my-ry)*.1; CR.style.left=rx+'px'; CR.style.top=ry+'px'; requestAnimationFrame(loop); })();
 
-                    <a href="#audit" class="block w-full text-center bg-white/5 hover:bg-white/10 text-white font-mono text-xs py-4 rounded border border-white/10 transition-colors uppercase tracking-wider">
-                        Initialize_Pilot
-                    </a>
-                </div>
+/* ── STAR FIELD + CONSTELLATION ─────────────── */
+const cvs = document.getElementById('SPACE');
+const ctx = cvs.getContext('2d');
+let W,H,stars=[];
+function resize(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight; }
+resize(); addEventListener('resize',resize);
 
-                <div class="spotlight-card rounded-xl p-8 relative bg-white/[0.02] border-t-2 border-t-brand-accent">
-                    <div class="absolute top-0 right-0 transform translate-y-[-50%]">
-                        <span class="bg-brand-accent text-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">Standard</span>
-                    </div>
+function mkStars(){
+  stars=[];
+  for(let i=0;i<240;i++) stars.push({
+    x:Math.random()*W, y:Math.random()*H,
+    r:Math.random()*.9+.1,
+    vx:(Math.random()-.5)*.06, vy:(Math.random()-.5)*.06,
+    op:Math.random()*.4+.04, ph:Math.random()*Math.PI*2
+  });
+}
+mkStars();
 
-                    <div class="flex justify-between items-center mb-8">
-                        <h3 class="text-lg font-bold text-white">Growth Ops</h3>
-                        <span class="text-[10px] font-mono border border-brand-accent/50 px-2 py-1 rounded text-brand-accent">MONTHLY</span>
-                    </div>
+function drawSpace(){
+  ctx.clearRect(0,0,W,H);
+  stars.forEach(s=>{
+    s.x+=s.vx; s.y+=s.vy; s.ph+=.008;
+    if(s.x<0)s.x=W; if(s.x>W)s.x=0;
+    if(s.y<0)s.y=H; if(s.y>H)s.y=0;
+    const a = s.op*(.7+.3*Math.sin(s.ph));
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${a})`;
+    ctx.fill();
+  });
+  // constellation lines
+  for(let i=0;i<stars.length;i++){
+    for(let j=i+1;j<stars.length;j++){
+      const dx=stars[i].x-stars[j].x, dy=stars[i].y-stars[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<130){
+        ctx.beginPath();
+        ctx.strokeStyle=`rgba(255,255,255,${.028*(1-d/130)})`;
+        ctx.lineWidth=.4;
+        ctx.moveTo(stars[i].x,stars[i].y);
+        ctx.lineTo(stars[j].x,stars[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawSpace);
+}
+drawSpace();
 
-                    <div class="flex items-baseline mb-8">
-                        <span class="text-4xl font-mono font-bold text-white">$600</span>
-                        <span class="text-sm text-slate-500 ml-2">/mo</span>
-                    </div>
+/* ── ANTI-GRAVITY PARTICLE SYSTEM ────────────── */
+function spawnAGP(){
+  const p=document.createElement('div');
+  p.className='agp';
+  const sz=Math.random()<.3?2:1;
+  const dur=7+Math.random()*14;
+  const rx=(Math.random()-.5)*150;
+  const ry=-(100+Math.random()*140);
+  p.style.cssText=`
+    width:${sz}px;height:${sz}px;
+    left:${Math.random()*100}vw;
+    bottom:0;
+    --rx:${rx}px;
+    --ry:${ry}vh;
+    --rs:${Math.random()*.6+.2};
+    animation-duration:${dur}s;
+    animation-delay:${Math.random()*dur*-.5}s;
+  `;
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),(dur+2)*1000);
+}
+for(let i=0;i<50;i++) spawnAGP();
+setInterval(spawnAGP, 400);
 
-                    <ul class="space-y-4 mb-8 text-sm text-slate-300">
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> <strong class="text-white">Up to 8 Clients</strong></li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Weekly Auto-Reports</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Branded PDFs</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> 48hr Support SLA</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Infrastructure Maintenance</li>
-                    </ul>
+/* ── 3D MOUSE TILT ON CARDS ──────────────────── */
+document.querySelectorAll('.c3,.pc,.stat-c').forEach(el=>{
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+    const dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+    el.style.transform=`perspective(500px) rotateY(${dx*12}deg) rotateX(${-dy*12}deg) translateZ(6px)`;
+    el.style.setProperty('--cx',((e.clientX-r.left)/r.width*100)+'%');
+    el.style.setProperty('--cy',((e.clientY-r.top)/r.height*100)+'%');
+  });
+  el.addEventListener('mouseleave',()=>{ el.style.transform=''; });
+});
 
-                    <a href="#audit" class="block w-full text-center bg-brand-accent hover:bg-emerald-400 text-black font-bold font-mono text-xs py-4 rounded transition-colors uppercase tracking-wider">
-                        Deploy_System
-                    </a>
-                    <p class="text-center text-[10px] text-slate-500 mt-4 font-mono">Replaces $2,700/mo in labor</p>
-                </div>
+/* ── SCROLL REVEAL ───────────────────────────── */
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('vi'),i*65); obs.unobserve(e.target); } });
+},{threshold:.07});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-                <div class="spotlight-card rounded-xl p-8 border-t-2 border-t-transparent hover:border-t-slate-500">
-                    <div class="flex justify-between items-center mb-8">
-                        <h3 class="text-lg font-bold text-white">Scale Ops</h3>
-                        <span class="text-[10px] font-mono border border-white/20 px-2 py-1 rounded text-slate-400">MONTHLY</span>
-                    </div>
+/* ── ROI CALCULATOR ──────────────────────────── */
+const INR=83;
+function roi(){
+  const c=+document.getElementById('cC').value||0;
+  const h=+document.getElementById('hC').value||0;
+  const r=+document.getElementById('rC').value||0;
+  const hrs=c*h*4, waste=hrs*r, sav=Math.max(0,waste-600);
+  document.getElementById('RH').textContent=hrs.toLocaleString();
+  document.getElementById('RU').textContent='$'+waste.toLocaleString();
+  document.getElementById('RS').textContent='$'+sav.toLocaleString();
+  document.getElementById('RI').textContent='≈ ₹'+Math.round(sav*INR).toLocaleString('en-IN')+'/mo';
+}
+document.querySelectorAll('input').forEach(i=>i.addEventListener('input',roi));
+roi();
 
-                    <div class="flex items-baseline mb-8">
-                        <span class="text-4xl font-mono font-bold text-white">$1,000</span>
-                        <span class="text-sm text-slate-500 ml-2">/mo</span>
-                    </div>
+/* ── FAQ ACCORDION ───────────────────────────── */
+document.querySelectorAll('.fq').forEach(f=>{
+  f.querySelector('.fq-q').addEventListener('click',()=>{
+    const open=f.classList.contains('open');
+    document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));
+    if(!open) f.classList.add('open');
+  });
+});
 
-                    <ul class="space-y-4 mb-8 text-sm text-slate-300">
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> <strong class="text-white">Up to 20 Clients</strong></li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Client Portal Access</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Priority 4hr SLA</li>
-                        <li class="flex gap-3"><span class="text-brand-accent">✓</span> Dedicated Slack Channel</li>
-                    </ul>
-
-                    <a href="#audit" class="block w-full text-center bg-white/5 hover:bg-white/10 text-white font-mono text-xs py-4 rounded border border-white/10 transition-colors uppercase tracking-wider">
-                        Contact_Sales
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="py-32 px-4 md:px-6 relative z-10 border-t border-white/5">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-12">
-                <span class="text-brand-accent font-mono text-xs uppercase tracking-widest">// PROJECTION</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mt-4">Labor Cost Analysis</h2>
-            </div>
-
-            <div class="glass-panel rounded-xl p-8 md:p-12 border border-white/10">
-                <div class="grid md:grid-cols-3 gap-8 mb-12">
-                    <div class="space-y-2">
-                        <label class="text-slate-400 text-[10px] uppercase tracking-wider font-mono">Active Clients</label>
-                        <input type="number" value="8" class="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-white font-mono focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" id="clientCount">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-slate-400 text-[10px] uppercase tracking-wider font-mono">Hrs/Client/Week</label>
-                        <input type="number" value="3" class="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-white font-mono focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" id="hoursPerClient">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-slate-400 text-[10px] uppercase tracking-wider font-mono">Hourly Burden ($)</label>
-                        <input type="number" value="35" class="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-white font-mono focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all" id="hourlyRate">
-                    </div>
-                </div>
-
-                <div class="bg-white/[0.02] rounded-lg p-8 border border-white/5">
-                    <div class="grid md:grid-cols-3 gap-8 text-center divide-x divide-white/5">
-                        <div>
-                            <div class="text-slate-500 text-[10px] font-mono uppercase mb-2">Hours Wasted / Mo</div>
-                            <div class="text-4xl font-bold text-white" id="hoursWasted">96</div>
-                        </div>
-                        <div>
-                            <div class="text-slate-500 text-[10px] font-mono uppercase mb-2">Cost Inefficiency</div>
-                            <div class="text-4xl font-bold text-rose-500" id="moneyWasted">$3,360</div>
-                        </div>
-                        <div>
-                            <div class="text-slate-500 text-[10px] font-mono uppercase mb-2">Net Monthly Savings</div>
-                            <div class="text-4xl font-bold text-brand-accent" id="monthlySavings">$2,760</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 max-w-3xl mx-auto px-4 md:px-6 relative z-10">
-        <h2 class="text-xl font-bold text-white mb-10 text-center font-mono text-brand-accent">SYSTEM_LOGS // FAQ</h2>
-        
-        <div class="space-y-2">
-            <div class="group border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors rounded overflow-hidden">
-                <div class="p-4 cursor-pointer flex justify-between items-center">
-                    <span class="text-sm text-slate-300 font-mono">>> What if we want to self-host?</span>
-                    <span class="text-brand-accent opacity-0 group-hover:opacity-100 transition-opacity text-xs">[EXPAND]</span>
-                </div>
-                <div class="px-4 pb-4 text-sm text-slate-500 pl-8 border-l border-brand-accent/20 ml-4 mb-2">
-                    You retain full code ownership. The system runs on your DigitalOcean or AWS instance. We provide the containerized Docker images.
-                </div>
-            </div>
-
-            <div class="group border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors rounded overflow-hidden">
-                <div class="p-4 cursor-pointer flex justify-between items-center">
-                    <span class="text-sm text-slate-300 font-mono">>> Supported Integrations?</span>
-                </div>
-                <div class="px-4 pb-4 text-sm text-slate-500 pl-8 border-l border-brand-accent/20 ml-4 mb-2">
-                    Native APIs: Facebook Ads, Google Ads, LinkedIn, TikTok, Snapchat, GA4, HubSpot. Custom integrations available via Python requests.
-                </div>
-            </div>
-
-            <div class="group border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors rounded overflow-hidden">
-                <div class="p-4 cursor-pointer flex justify-between items-center">
-                    <span class="text-sm text-slate-300 font-mono">>> Security Protocol?</span>
-                </div>
-                <div class="px-4 pb-4 text-sm text-slate-500 pl-8 border-l border-brand-accent/20 ml-4 mb-2">
-                    OAuth 2.0 authentication. Zero data retention policy on our end. Data flows directly from Ad Platform -> Transformation Layer -> Your Report.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="audit" class="py-20 border-t border-white/5 bg-black z-10 relative">
-        <div class="max-w-2xl mx-auto px-6 text-center">
-            <h2 class="text-2xl font-bold text-white mb-6">Initialize Technical Audit</h2>
-            <p class="text-slate-400 mb-10 text-sm leading-relaxed">
-                Book a 15-minute architecture review. We will map your current data flow and provide a fixed-price automation roadmap.
-            </p>
-
-            <div class="bg-white/[0.02] border border-white/10 rounded-xl flex items-center justify-center mb-12 relative overflow-hidden group">
-                <div class="calendly-inline-widget w-full" data-url="https://calendly.com/hello-thryvixai" style="min-width:320px;height:700px;"></div>
-                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-                </div>
-            
-            <div class="mb-12">
-                 <p class="text-[10px] font-mono text-slate-600 tracking-widest uppercase mb-6">Secure_Comms_Channels</p>
-                 <div class="flex flex-wrap justify-center gap-4">
-                    <a href="https://www.linkedin.com/company/thryvixai/?viewAsMember=true" target="_blank" class="group glass-panel w-12 h-12 flex items-center justify-center rounded-lg hover:border-[#0077b5]/50 hover:bg-[#0077b5]/10 transition-all">
-                        <svg class="w-5 h-5 text-slate-400 group-hover:text-[#0077b5] transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                    </a>
-                    
-                    <a href="https://wa.me/917592063527" target="_blank" class="group glass-panel w-12 h-12 flex items-center justify-center rounded-lg hover:border-[#25D366]/50 hover:bg-[#25D366]/10 transition-all">
-                        <svg class="w-5 h-5 text-slate-400 group-hover:text-[#25D366] transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.93 16.94C16.8 17.29 16.29 17.5 15.86 17.56C15.54 17.61 14.88 17.74 12.72 16.84C10.04 15.72 8.28 12.98 8.15 12.8C8.02 12.63 7.07 11.36 7.07 10.05C7.07 8.74 7.74 8.1 8.01 7.82C8.23 7.6 8.5 7.56 8.73 7.56C8.92 7.56 9.12 7.57 9.29 7.57C9.48 7.57 9.7 7.5 9.94 8.08C10.22 8.75 10.49 9.42 10.55 9.55C10.63 9.71 10.66 9.9 10.56 10.09C10.46 10.28 10.37 10.37 10.24 10.53C10.11 10.68 9.98 10.79 9.85 10.95C9.7 11.11 9.55 11.29 9.72 11.59C9.89 11.89 10.48 12.86 11.36 13.64C12.49 14.65 13.41 14.97 13.73 15.11C14.05 15.25 14.23 15.23 14.44 14.99C14.65 14.75 15.06 14.17 15.25 13.9C15.43 13.63 15.63 13.67 15.84 13.75C16.06 13.83 17.21 14.4 17.44 14.52C17.68 14.64 17.85 14.69 17.91 14.8C17.97 14.91 17.97 15.46 17.71 16.21C17.57 16.59 17.22 16.82 16.93 16.94Z"/></svg>
-                    </a>
-
-                    <a href="https://instagram.com/thryvixai" target="_blank" class="group glass-panel w-12 h-12 flex items-center justify-center rounded-lg hover:border-[#E1306C]/50 hover:bg-[#E1306C]/10 transition-all">
-                         <svg class="w-5 h-5 text-slate-400 group-hover:text-[#E1306C] transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.451 2.535c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg>
-                    </a>
-
-                    <a href="https://www.facebook.com/share/17h47UvpgP/" target="_blank" class="group glass-panel w-12 h-12 flex items-center justify-center rounded-lg hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 transition-all">
-                        <svg class="w-5 h-5 text-slate-400 group-hover:text-[#1877F2] transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <div class="text-[10px] text-slate-700 font-mono uppercase tracking-widest">
-                <p>THRYVIX_AI © 2026 | SYSTEM_STATUS: OPERATIONAL</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Smooth reveal for FAQ
-        const faqs = document.querySelectorAll('.group');
-        faqs.forEach(faq => {
-            faq.addEventListener('click', () => {
-                // Logic to toggle height would go here for full functionality
-            });
-        });
-
-        // ROI Logic
-        function calculateROI() {
-            const clients = parseInt(document.getElementById('clientCount').value) || 0;
-            const hours = parseInt(document.getElementById('hoursPerClient').value) || 0;
-            const rate = parseInt(document.getElementById('hourlyRate').value) || 0;
-
-            const monthlyHours = clients * hours * 4;
-            const monthlyWaste = monthlyHours * rate;
-            const thryvixCost = 600;
-            const savings = monthlyWaste - thryvixCost;
-
-            document.getElementById('hoursWasted').innerText = monthlyHours;
-            document.getElementById('moneyWasted').innerText = '$' + monthlyWaste.toLocaleString();
-            document.getElementById('monthlySavings').innerText = '$' + savings.toLocaleString();
-        }
-
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', calculateROI);
-        });
-        calculateROI();
-    </script>
+/* ── SMOOTH SCROLL ───────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
 </body>
-                </html>
+</html>
+
