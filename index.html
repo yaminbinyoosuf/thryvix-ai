@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THRYVIX AI — Automation Infrastructure for Indian Business</title>
+<title>THRYVIX AI — The OS for Indian Business</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,19 +23,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--black);
-  color: var(--white);
+  background: var(--black); color: var(--white);
   font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  font-size: 16px;
 }
-.mono { font-family: 'Geist Mono', monospace; }
 body::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
 }
 ::-webkit-scrollbar { width: 3px; }
@@ -45,115 +41,44 @@ body::before {
 /* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  height: 60px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px;
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(16px);
+  height: 60px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; background: rgba(0,0,0,0.92); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
-.nav-logo {
-  font-family: 'Geist Mono', monospace;
-  font-weight: 700; font-size: 13px; letter-spacing: 0.08em;
-  color: var(--white); text-decoration: none;
-}
+.nav-logo { font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
 .nav-logo em { color: var(--acid); font-style: normal; }
 .nav-links { display: flex; gap: 28px; list-style: none; }
-.nav-links a {
-  font-family: 'Geist Mono', monospace;
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none; transition: color 0.2s;
-}
+.nav-links a { font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--white); }
-.nav-cta {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--black); background: var(--acid);
-  border: none; padding: 8px 18px; cursor: pointer; transition: all 0.2s;
-  text-decoration: none; white-space: nowrap;
-}
+.nav-cta { display: inline-flex; align-items: center; gap: 7px; font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); background: var(--acid); border: none; padding: 8px 18px; cursor: pointer; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
 .nav-cta:hover { background: #d4ff1a; transform: translateY(-1px); }
-.nav-cta svg { flex-shrink: 0; }
 
 /* HERO */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 110px 40px 80px;
-  position: relative; overflow: hidden;
-}
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(200,255,0,0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,255,0,0.028) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 90% 70% at 40% 40%, black 20%, transparent 100%);
-}
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 110px 40px 80px; position: relative; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,255,0,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,0,0.028) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 90% 70% at 40% 40%, black 20%, transparent 100%); }
 .hero-glow { position: absolute; width: 700px; height: 700px; top: -150px; right: -150px; background: radial-gradient(circle, rgba(200,255,0,0.055) 0%, transparent 65%); pointer-events: none; }
 .hero-glow2 { position: absolute; width: 450px; height: 450px; bottom: -80px; left: -80px; background: radial-gradient(circle, rgba(0,200,255,0.03) 0%, transparent 65%); pointer-events: none; }
-.hero-inner { position: relative; max-width: 960px; }
-
-.hero-pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--acid); border: 1px solid rgba(200,255,0,0.2);
-  padding: 6px 13px; margin-bottom: 36px;
-  opacity: 0; animation: up 0.55s 0.1s ease forwards;
-}
+.hero-inner { position: relative; max-width: 1000px; }
+.hero-pill { display: inline-flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acid); border: 1px solid rgba(200,255,0,0.2); padding: 6px 13px; margin-bottom: 36px; opacity: 0; animation: up 0.55s 0.1s ease forwards; }
 .pulse { width: 6px; height: 6px; background: var(--acid); border-radius: 50%; animation: blink 2s infinite; flex-shrink: 0; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
-
-.hero-h1 {
-  font-family: 'Geist', sans-serif;
-  font-size: clamp(50px, 8.5vw, 100px);
-  font-weight: 900; line-height: 0.93;
-  letter-spacing: -0.03em;
-  opacity: 0; animation: up 0.55s 0.15s ease forwards;
-}
-.hero-h1 .sub {
-  display: block;
-  font-family: 'Geist Mono', monospace;
-  font-size: clamp(14px, 2.2vw, 30px);
-  font-weight: 400; color: var(--acid);
-  letter-spacing: 0.05em; margin-top: 14px; line-height: 1.4;
-}
-.hero-p {
-  max-width: 500px; margin-top: 28px;
-  font-size: clamp(13px, 1.4vw, 16px);
-  font-weight: 400; color: var(--secondary); line-height: 1.75;
-  opacity: 0; animation: up 0.55s 0.22s ease forwards;
-}
-.hero-btns {
-  display: flex; gap: 10px; margin-top: 40px; flex-wrap: wrap;
-  opacity: 0; animation: up 0.55s 0.3s ease forwards;
-}
+.hero-h1 { font-size: clamp(48px, 8vw, 96px); font-weight: 900; line-height: 0.93; letter-spacing: -0.03em; opacity: 0; animation: up 0.55s 0.15s ease forwards; }
+.hero-h1 .sub { display: block; font-family: 'Geist Mono', monospace; font-size: clamp(13px, 2vw, 28px); font-weight: 400; color: var(--acid); letter-spacing: 0.05em; margin-top: 14px; line-height: 1.4; }
+.hero-p { max-width: 520px; margin-top: 28px; font-size: clamp(13px, 1.4vw, 16px); color: var(--secondary); line-height: 1.75; opacity: 0; animation: up 0.55s 0.22s ease forwards; }
+.hero-btns { display: flex; gap: 10px; margin-top: 40px; flex-wrap: wrap; opacity: 0; animation: up 0.55s 0.3s ease forwards; }
 @keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--black); background: var(--acid);
-  border: none; padding: 13px 26px; cursor: pointer;
-  transition: all 0.2s; text-decoration: none; white-space: nowrap;
-}
+.btn-primary { display: inline-flex; align-items: center; gap: 7px; font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); background: var(--acid); border: none; padding: 13px 26px; cursor: pointer; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
 .btn-primary:hover { background: #d4ff1a; transform: translateY(-2px); box-shadow: 0 10px 36px rgba(200,255,0,0.18); }
-.btn-ghost {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--white); background: transparent;
-  border: 1px solid var(--border2); padding: 13px 26px; cursor: pointer;
-  transition: all 0.2s; text-decoration: none; white-space: nowrap;
-}
+.btn-ghost { display: inline-flex; align-items: center; gap: 7px; font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); background: transparent; border: 1px solid var(--border2); padding: 13px 26px; cursor: pointer; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
 .btn-ghost:hover { border-color: rgba(255,255,255,0.3); }
+
+/* WA icon */
+.wa { fill: currentColor; }
 
 /* TICKER */
 .ticker { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--dim); overflow: hidden; padding: 12px 0; }
-.ticker-inner { display: flex; white-space: nowrap; animation: scroll 26s linear infinite; }
+.ticker-inner { display: flex; white-space: nowrap; animation: scroll 28s linear infinite; }
 .ticker-inner:hover { animation-play-state: paused; }
 .t-item { font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 0 32px; flex-shrink: 0; }
 .t-item b { color: var(--acid); font-weight: 400; margin-right: 5px; }
@@ -166,43 +91,41 @@ nav {
 .h2 { font-size: clamp(30px, 3.8vw, 48px); font-weight: 800; line-height: 1.06; letter-spacing: -0.025em; }
 .h2 em { font-style: normal; color: var(--acid); }
 
-/* VISION */
-.vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
-.vision-copy p { font-size: 14px; color: var(--secondary); line-height: 1.8; margin-bottom: 14px; }
-.vision-copy strong { color: var(--white); font-weight: 600; }
+/* VISION INTRO — 2 col */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.copy p { font-size: 14px; color: var(--secondary); line-height: 1.8; margin-bottom: 14px; }
+.copy strong { color: var(--white); font-weight: 600; }
+
+/* STATS */
 .stats-quad { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
 .sq { background: var(--dim); padding: 30px 26px; transition: background 0.2s; }
 .sq:hover { background: var(--mid); }
 .sq-n { font-family: 'Geist Mono', monospace; font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; color: var(--acid); line-height: 1; display: block; margin-bottom: 5px; }
 .sq-l { font-size: 11px; color: var(--muted); line-height: 1.4; }
 
-/* PRODUCT GRID */
-.prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
-.prod-grid + .prod-grid { margin-top: 1px; }
-.pc2 { background: var(--dim); padding: 32px 26px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: 320px; transition: background 0.2s; }
-.pc2.live { background: var(--black); cursor: pointer; }
-.pc2.live:hover { background: #040404; }
-.pc2.soon { opacity: 0.48; }
-.pc2-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; }
-.live .pc2-bar { background: var(--acid); }
-.soon .pc2-bar { background: var(--border2); }
-.badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 9px; margin-bottom: 20px; width: fit-content; }
-.live .badge { background: var(--acid); color: var(--black); }
-.soon .badge { border: 1px solid var(--border2); color: var(--muted); }
-.badge .dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; animation: blink 1.8s infinite; }
-.p-icon { font-size: 22px; margin-bottom: 12px; line-height: 1; }
-.p-sector { font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-.p-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; line-height: 1.2; }
-.live .p-name { color: var(--white); }
-.soon .p-name { color: var(--secondary); }
-.p-desc { font-size: 11px; color: var(--muted); line-height: 1.65; flex: 1; }
-.live .p-desc { color: var(--secondary); }
-.p-foot { margin-top: 20px; }
-.p-price { font-family: 'Geist Mono', monospace; font-size: 15px; font-weight: 600; color: var(--acid); }
-.p-price small { font-size: 10px; color: var(--muted); font-weight: 400; }
-.p-notify { font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+/* OS CARDS — vision section */
+.os-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-top: 44px; }
+.os-card { background: var(--dim); padding: 28px 24px; position: relative; display: flex; flex-direction: column; min-height: 190px; transition: background 0.2s; overflow: hidden; }
+.os-card.live { background: var(--black); border-top: 2px solid var(--acid); }
+.os-card.live:hover { background: #040404; }
+.os-card.soon { opacity: 0.45; }
+.os-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; padding: 3px 8px; margin-bottom: 14px; width: fit-content; }
+.live .os-badge { background: var(--acid); color: var(--black); }
+.soon .os-badge { border: 1px solid var(--border2); color: var(--muted); }
+.os-badge .dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; animation: blink 1.8s infinite; }
+.os-icon { font-size: 20px; margin-bottom: 8px; line-height: 1; }
+.os-sector { font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.os-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.live .os-name { color: var(--white); }
+.soon .os-name { color: var(--secondary); }
+.os-desc { font-size: 11px; line-height: 1.6; flex: 1; }
+.live .os-desc { color: var(--secondary); }
+.soon .os-desc { color: var(--muted); }
+.os-price { margin-top: 14px; font-family: 'Geist Mono', monospace; font-size: 14px; font-weight: 600; color: var(--acid); }
+.os-price small { font-size: 10px; color: var(--muted); font-weight: 400; }
 
-/* FEATURES */
+/* CLINIC FEATURES */
+.live-header { margin-bottom: 48px; }
 .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border2); margin-top: 48px; }
 .feat { background: var(--black); padding: 28px 24px; position: relative; overflow: hidden; transition: background 0.2s; }
 .feat:hover { background: #030303; }
@@ -219,7 +142,7 @@ nav {
 .prob-n { font-family: 'Geist Mono', monospace; font-size: 36px; font-weight: 700; color: rgba(200,255,0,0.055); position: absolute; top: 14px; right: 14px; line-height: 1; }
 .prob-title { font-size: 14px; font-weight: 700; margin-bottom: 7px; }
 .prob-body { font-size: 12px; color: var(--muted); line-height: 1.7; }
-.prob-cost { margin-top: 12px; font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--orange); letter-spacing: 0.05em; }
+.prob-cost { margin-top: 12px; font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--orange); }
 
 /* QUOTE */
 .quote-band { background: var(--acid); padding: 64px 40px; text-align: center; }
@@ -227,16 +150,16 @@ nav {
 .q-attr { font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(0,0,0,0.4); }
 
 /* COMPARE */
-.cmp-table { width: 100%; max-width: 880px; margin: 44px auto 0; border-collapse: collapse; }
+.cmp-table { width: 100%; max-width: 860px; margin: 44px auto 0; border-collapse: collapse; }
 .cmp-table th { font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; padding: 11px 18px; text-align: left; color: var(--muted); border-bottom: 1px solid var(--border2); }
 .cmp-table th.hl { color: var(--acid); }
 .cmp-table td { padding: 13px 18px; font-size: 12px; border-bottom: 1px solid var(--border); color: var(--muted); }
-.cmp-table td:first-child { color: var(--white); font-weight: 600; font-size: 12px; }
+.cmp-table td:first-child { color: var(--white); font-weight: 600; }
 .cmp-table td.hl { color: var(--acid); font-weight: 500; }
 .cmp-table tr:hover td { background: rgba(255,255,255,0.012); }
 
 /* PRICING */
-.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); max-width: 940px; margin: 44px auto 0; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); max-width: 1100px; margin: 44px auto 0; }
 .prc { background: var(--black); padding: 40px 30px; position: relative; }
 .prc.feat { background: var(--dim); }
 .prc.feat::before { content: 'MOST POPULAR'; position: absolute; top: 0; left: 50%; transform: translate(-50%,-50%); background: var(--acid); color: var(--black); font-family: 'Geist Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 0.18em; padding: 4px 11px; white-space: nowrap; }
@@ -244,7 +167,8 @@ nav {
 .prc-price { font-size: 44px; font-weight: 900; line-height: 1; letter-spacing: -0.03em; margin-bottom: 3px; }
 .prc-price sup { font-size: 16px; vertical-align: super; font-weight: 500; }
 .prc-price sub { font-size: 12px; font-weight: 400; color: var(--muted); }
-.prc-setup { font-family: 'Geist Mono', monospace; font-size: 9px; color: var(--muted); margin-bottom: 24px; }
+.prc-setup { font-family: 'Geist Mono', monospace; font-size: 9px; color: var(--muted); margin-bottom: 6px; }
+.prc-target { font-size: 11px; color: var(--acid); font-style: italic; margin-bottom: 20px; line-height: 1.4; }
 .prc-list { list-style: none; margin-bottom: 24px; }
 .prc-list li { font-size: 12px; color: var(--secondary); padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 9px; line-height: 1.4; }
 .prc-list li::before { content: '→'; color: var(--acid); font-family: 'Geist Mono', monospace; flex-shrink: 0; font-size: 11px; }
@@ -253,17 +177,35 @@ nav {
 .prc.feat .prc-btn { background: var(--acid); color: var(--black); border-color: var(--acid); }
 .prc.feat .prc-btn:hover { background: #d4ff1a; }
 
-/* ROADMAP */
-.roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 44px; }
-.hz { background: var(--black); padding: 36px 28px; position: relative; overflow: hidden; }
-.hz::after { content: attr(data-n); position: absolute; bottom: -14px; right: 6px; font-size: 80px; font-weight: 800; color: rgba(255,255,255,0.015); font-family: 'Geist Mono', monospace; line-height: 1; pointer-events: none; }
-.hz-lbl { font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acid); margin-bottom: 4px; }
-.hz-time { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 18px; }
-.hz-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-.hz-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
-.hz-tags { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; }
-.hz-tag { font-family: 'Geist Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 8px; background: var(--dim); color: var(--secondary); }
-.hz-tag.live { background: rgba(200,255,0,0.08); color: var(--acid); }
+/* LAUNCH OFFER */
+.launch-offer { max-width: 1100px; margin: 28px auto 0; border: 1px solid rgba(200,255,0,0.25); background: rgba(200,255,0,0.03); padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
+.lo-tag { font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acid); display: block; margin-bottom: 6px; }
+.lo-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 5px; }
+.lo-desc { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 500px; }
+
+/* ROI */
+.roi-table { width: 100%; border-collapse: collapse; }
+.roi-table th { font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; padding: 11px 18px; text-align: left; color: var(--muted); border-bottom: 1px solid var(--border2); }
+.roi-table th.hl { color: var(--acid); }
+.roi-table th.hl2 { color: rgba(200,255,0,0.55); }
+.roi-table td { padding: 12px 18px; font-size: 12px; border-bottom: 1px solid var(--border); color: var(--muted); }
+.roi-table td:first-child { color: var(--white); font-weight: 600; }
+.roi-table td.hl { color: var(--acid); }
+.roi-table td.hl2 { color: rgba(200,255,0,0.7); }
+.roi-table td.bad { color: var(--orange); }
+.roi-table tr.roi-row td { border-top: 1px solid var(--border2); }
+.roi-table td.big { font-size: 15px; font-weight: 800; font-family: 'Geist Mono', monospace; }
+.roi-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+/* VISION BAND — simple, no strategy */
+.vision-band {
+  background: var(--mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 80px 40px;
+}
+.vision-band-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.vision-band-title { font-size: clamp(28px, 4vw, 48px); font-weight: 900; line-height: 1.08; letter-spacing: -0.025em; margin-bottom: 20px; }
+.vision-band-title em { font-style: normal; color: var(--acid); }
+.vision-band-body { font-size: 15px; color: var(--secondary); line-height: 1.8; max-width: 620px; margin: 0 auto; }
 
 /* FINAL CTA */
 .final-cta { padding: 110px 40px; text-align: center; position: relative; overflow: hidden; border-top: 1px solid var(--border); }
@@ -295,29 +237,84 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
 .fb-status { display: flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted); }
 .fb-status .dot { width: 5px; height: 5px; background: var(--acid); border-radius: 50%; animation: blink 2s infinite; }
 
+/* DIFF CARDS — "what makes it different" */
+.diff-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin-top:44px; }
+.diff-card { background:var(--dim); padding:32px 28px; transition:background 0.2s; position:relative; }
+.diff-card:hover { background:var(--mid); }
+.diff-title { font-size:15px; font-weight:700; margin-bottom:10px; color:var(--white); }
+.diff-body { font-size:13px; color:var(--muted); line-height:1.75; }
+
+/* COMING SOON STRIP */
+.coming-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); }
+.cs-item { background:var(--black); padding:20px 22px; font-size:13px; color:var(--secondary); display:flex; align-items:center; gap:10px; transition:background 0.2s; }
+.cs-item:hover { background:var(--dim); }
+.cs-dot { width:5px; height:5px; border-radius:50%; background:var(--acid); flex-shrink:0; opacity:0.5; }
+
+/* HOOK CTA CARD */
+.hook-cta-card { background:var(--black) !important; border-top:2px solid var(--acid); display:flex; align-items:center; justify-content:center; min-height:200px; }
+.hook-cta-inner { text-align:center; padding:24px; }
+
+/* PHASE ROADMAP */
+.phase-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); margin-top:44px; }
+.phase-card { background:var(--black); padding:32px 26px; }
+.phase-badge { font-family:'Geist Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); border:1px solid var(--border2); padding:4px 10px; display:inline-block; margin-bottom:16px; }
+.phase-badge.live-phase { background:var(--acid); color:var(--black); border-color:var(--acid); }
+.phase-title { font-size:16px; font-weight:700; line-height:1.3; margin-bottom:16px; }
+.phase-list { list-style:none; }
+.phase-list li { font-size:12px; color:var(--muted); padding:5px 0; border-bottom:1px solid var(--border); display:flex; gap:8px; align-items:flex-start; line-height:1.4; }
+.phase-list li::before { content:'→'; color:var(--acid); font-family:'Geist Mono',monospace; flex-shrink:0; font-size:10px; margin-top:1px; }
+
+/* WHY CARDS */
+.why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin-top:44px; }
+.why-card { background:var(--dim); padding:32px 28px; position:relative; transition:background 0.2s; }
+.why-card:hover { background:var(--mid); }
+.why-n { font-family:'Geist Mono',monospace; font-size:32px; font-weight:700; color:rgba(200,255,0,0.07); position:absolute; top:16px; right:16px; line-height:1; }
+.why-title { font-size:15px; font-weight:700; margin-bottom:8px; }
+.why-body { font-size:12px; color:var(--muted); line-height:1.7; }
+
+/* CONTACT */
+.contact-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin-bottom:0; }
+.contact-card { background:var(--dim); padding:36px 28px; text-align:center; transition:background 0.2s; }
+.contact-card:hover { background:var(--mid); }
+.contact-icon { margin-bottom:16px; display:flex; justify-content:center; }
+.contact-label { font-family:'Geist Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.contact-value { font-size:15px; font-weight:700; color:var(--acid); text-decoration:none; display:block; margin-bottom:4px; transition:color 0.2s; }
+.contact-value:hover { color:#d4ff1a; }
+.contact-sub { font-size:11px; color:var(--muted); }
+
+/* COGEXT SPLIT */
+.cogext-split { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
+
 /* MOBILE */
 @media(max-width: 960px) {
   nav { padding: 0 20px; }
   .nav-links { display: none; }
-  .hero, .sec, .quote-band, .final-cta { padding-left: 20px; padding-right: 20px; }
-  .vision-grid { grid-template-columns: 1fr; gap: 44px; }
-  .prod-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero, .sec, .quote-band, .final-cta, .vision-band { padding-left: 20px; padding-right: 20px; }
+  .two-col { grid-template-columns: 1fr; gap: 44px; }
+  .os-grid { grid-template-columns: repeat(2, 1fr); }
   .feat-grid { grid-template-columns: 1fr 1fr; }
   .prob-grid { grid-template-columns: 1fr 1fr; }
-  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
-  .roadmap-grid { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: 1fr 1fr; }
+  .coming-strip { grid-template-columns: 1fr 1fr; }
+  .phase-grid { grid-template-columns: 1fr 1fr; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .cogext-split { grid-template-columns: 1fr; gap: 44px; }
   .ft-top { grid-template-columns: 1fr 1fr; gap: 32px; padding: 36px 20px 28px; }
   .ft-bottom { padding: 14px 20px; }
 }
 @media(max-width: 540px) {
-  .prod-grid { grid-template-columns: 1fr; }
+  .os-grid { grid-template-columns: 1fr; }
   .feat-grid { grid-template-columns: 1fr; }
   .prob-grid { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: 1fr; }
+  .coming-strip { grid-template-columns: 1fr; }
+  .phase-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
   .stats-quad { grid-template-columns: 1fr 1fr; }
   .ft-top { grid-template-columns: 1fr; }
   .ft-bottom { flex-direction: column; align-items: flex-start; }
-  .cmp-table { font-size: 11px; }
-  .cmp-table th, .cmp-table td { padding: 10px 12px; }
+  .cmp-table th, .cmp-table td { padding: 10px 12px; font-size: 11px; }
 }
 </style>
 </head>
@@ -329,17 +326,17 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
   <ul class="nav-links">
     <li><a href="#products">Products</a></li>
     <li><a href="#clinic">Clinic OS</a></li>
+    <li><a href="#experience">Features</a></li>
     <li><a href="#compare">Why THRYVIX</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="https://wa.me/917592063527" target="_blank" class="nav-cta">
+  <a href="https://wa.me/919061606343" target="_blank" class="nav-cta">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     Book Free Demo
   </a>
 </nav>
 
-<!-- HERO -->
+<!-- HERO — vision + clinic in one -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
@@ -347,12 +344,12 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
   <div class="hero-inner">
     <div class="hero-pill"><span class="pulse"></span>Clinic OS — Live Now in Kerala</div>
     <h1 class="hero-h1">
-      Automation<br>Infrastructure
-      <span class="sub">for Indian Business</span>
+      The OS for every<br>Indian business
+      <span class="sub">Starting with your clinic</span>
     </h1>
-    <p class="hero-p">63 million Indian businesses run on WhatsApp messages, paper registers, and missed calls. THRYVIX is the automation layer that changes that — WhatsApp-native, multilingual, and live in 24 hours.</p>
+    <p class="hero-p">63 million Indian businesses run on WhatsApp, paper registers, and missed calls. THRYVIX is building the operating system that changes that — one industry at a time. <strong style="color:var(--white)">Clinic OS is live now.</strong> No app. No setup from your side. Live in 24 hours.</p>
     <div class="hero-btns">
-      <a href="https://wa.me/917592063527" target="_blank" class="btn-primary">
+      <a href="https://wa.me/919061606343" target="_blank" class="btn-primary">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Book Free Demo
       </a>
@@ -364,156 +361,282 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner">
-    <span class="t-item"><b>✦</b>WhatsApp-Native Automation</span>
     <span class="t-item"><b>✦</b>Clinic OS — Live Now</span>
-    <span class="t-item"><b>✦</b>Zero App Downloads</span>
+    <span class="t-item"><b>✦</b>WhatsApp-Native</span>
     <span class="t-item"><b>✦</b>Malayalam · Arabic · English</span>
     <span class="t-item"><b>✦</b>Live in 24 Hours</span>
-    <span class="t-item"><b>✦</b>Factory OS — Coming Soon</span>
-    <span class="t-item"><b>✦</b>Logistics OS — Coming Soon</span>
-    <span class="t-item"><b>✦</b>Starting ₹1,499/month</span>
-    <span class="t-item"><b>✦</b>WhatsApp-Native Automation</span>
+    <span class="t-item"><b>✦</b>Starting ₹2,999/month</span>
+    <span class="t-item"><b>✦</b>No-Shows Drop 85%</span>
+    <span class="t-item"><b>✦</b>30-Day Refund Guarantee</span>
+    <span class="t-item"><b>✦</b>More Industries Coming</span>
     <span class="t-item"><b>✦</b>Clinic OS — Live Now</span>
-    <span class="t-item"><b>✦</b>Zero App Downloads</span>
+    <span class="t-item"><b>✦</b>WhatsApp-Native</span>
     <span class="t-item"><b>✦</b>Malayalam · Arabic · English</span>
     <span class="t-item"><b>✦</b>Live in 24 Hours</span>
-    <span class="t-item"><b>✦</b>Factory OS — Coming Soon</span>
-    <span class="t-item"><b>✦</b>Logistics OS — Coming Soon</span>
-    <span class="t-item"><b>✦</b>Starting ₹1,499/month</span>
+    <span class="t-item"><b>✦</b>Starting ₹2,999/month</span>
+    <span class="t-item"><b>✦</b>No-Shows Drop 85%</span>
+    <span class="t-item"><b>✦</b>30-Day Refund Guarantee</span>
+    <span class="t-item"><b>✦</b>More Industries Coming</span>
   </div>
 </div>
 
-<!-- VISION -->
+<!-- THE PROBLEM + STATS -->
 <section class="sec">
-  <div class="vision-grid">
-    <div class="vision-copy">
+  <div class="two-col">
+    <div class="copy">
       <span class="tag">// The Problem</span>
-      <h2 class="h2" style="margin-bottom:24px">India runs on chaos.<br>THRYVIX ends that.</h2>
-      <p>India has <strong>63 million small businesses</strong>. Every one of them manages operations through WhatsApp groups, paper registers, phone calls, and human memory.</p>
-      <p>Enterprise automation — the kind that solves this — costs <strong>₹5 to ₹50 lakhs per year</strong>. It requires IT teams, months of setup, English-speaking staff. It was never built for Indian SMEs.</p>
-      <p>THRYVIX is. <strong>WhatsApp-first. Regional language-aware. Live in 24 hours. Starting at ₹1,499/month.</strong></p>
+      <h2 class="h2" style="margin-bottom:24px">Indian businesses run on chaos.<br><em>THRYVIX ends that.</em></h2>
+      <p>India has <strong>63 million small businesses</strong>. Every one of them manages operations through WhatsApp groups, paper registers, and human memory. The automation tools that fix this cost ₹5–50 lakhs a year and were never built for them.</p>
+      <p>THRYVIX is built for them. <strong>WhatsApp-first. Regional language-aware. Affordable. Live in 24 hours.</strong> We started with clinics because that's where the daily pain is most expensive. More industries follow.</p>
     </div>
     <div class="stats-quad">
       <div class="sq"><span class="sq-n">63M</span><span class="sq-l">Indian businesses with zero automation</span></div>
       <div class="sq"><span class="sq-n">99%</span><span class="sq-l">Kerala patients already on WhatsApp</span></div>
       <div class="sq"><span class="sq-n">24hrs</span><span class="sq-l">Time to go live, zero IT needed</span></div>
-      <div class="sq"><span class="sq-n">₹1,499</span><span class="sq-l">Starting price per month</span></div>
+      <div class="sq"><span class="sq-n">12×</span><span class="sq-l">Average ROI on THRYVIX Pro in month one</span></div>
     </div>
   </div>
 </section>
 
-<!-- PRODUCTS -->
-<section class="sec" style="padding-top:0" id="products">
+<!-- OS CARDS — clinic live, others coming -->
+<section class="sec sec-dim" id="products">
   <span class="tag">// Product Suite</span>
-  <h2 class="h2" style="margin-bottom:36px">One engine. Eight industries.</h2>
-  <div class="prod-grid">
-    <div class="pc2 live"><div class="pc2-bar"></div><div><div class="badge"><span class="dot"></span>Live Now</div><div class="p-icon">🏥</div><div class="p-sector">Private Clinics &amp; Labs</div><div class="p-name">Clinic OS</div><div class="p-desc">Complete WhatsApp automation — booking, reminders, EMR, billing, reviews, and AI-powered daily summaries.</div></div><div class="p-foot"><div class="p-price">₹1,499<small>/mo</small></div></div></div>
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">🏭</div><div class="p-sector">Small Manufacturers</div><div class="p-name">Factory OS</div><div class="p-desc">Shift attendance, production tracking, quality logging, and maintenance alerts — all via WhatsApp.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">🚛</div><div class="p-sector">Logistics &amp; Transport</div><div class="p-name">Logistics OS</div><div class="p-desc">Order management, delivery tracking, driver updates, and client notifications — structured automation.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">📊</div><div class="p-sector">CA &amp; Legal Firms</div><div class="p-name">Compliance OS</div><div class="p-desc">GST deadline tracking, client document collection, filing reminders for CA firms managing 80+ clients.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
-  </div>
-  <div class="prod-grid">
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">🏗️</div><div class="p-sector">Construction &amp; Builders</div><div class="p-name">Builder OS</div><div class="p-desc">Multi-site progress tracking, material logs, client updates, and daily site summaries via WhatsApp.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">📦</div><div class="p-sector">FMCG Distributors</div><div class="p-name">Distributor OS</div><div class="p-desc">300 WhatsApp orders/day — captured, confirmed, routed, and tracked automatically. Zero missed orders.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">🎓</div><div class="p-sector">Coaching Institutes</div><div class="p-name">Institute OS</div><div class="p-desc">Fee reminders, attendance tracking, exam schedules, and parent updates — all via WhatsApp.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
-    <div class="pc2 soon"><div class="pc2-bar"></div><div><div class="badge">Coming Soon</div><div class="p-icon">🛒</div><div class="p-sector">Kirana &amp; Retail</div><div class="p-name">Retail OS</div><div class="p-desc">Order tracking, credit management, restock alerts, and supplier follow-ups for retail outlets.</div></div><div class="p-foot"><div class="p-notify">Notify me →</div></div></div>
+  <h2 class="h2">One OS. Every Indian industry.<br><em>Clinic is first.</em></h2>
+  <p style="font-size:13px;color:var(--muted);max-width:520px;margin-top:12px;line-height:1.7">We build a complete operating system for each industry — WhatsApp-native, AI-assisted, affordable, and live in 24 hours. Clinic OS is live now. The rest are on the way.</p>
+  <div class="os-grid">
+    <div class="os-card live">
+      <div class="os-badge"><span class="dot"></span>Live Now</div>
+      <div class="os-icon">🏥</div>
+      <div class="os-sector">Private Clinics &amp; Labs</div>
+      <div class="os-name">Clinic OS</div>
+      <div class="os-desc">Booking, reminders, AI doctor brief, billing, reviews — all on WhatsApp.</div>
+      <div class="os-price">₹2,999<small>/mo</small></div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">🛒</div>
+      <div class="os-sector">D2C &amp; Online Stores</div>
+      <div class="os-name">Ecommerce OS</div>
+      <div class="os-desc">COD confirmation, order tracking, abandoned cart recovery and retention.</div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">🏪</div>
+      <div class="os-sector">Neighbourhood Retail</div>
+      <div class="os-name">Kirana OS</div>
+      <div class="os-desc">Udhaar tracking, supplier orders, inventory alerts and credit management.</div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">💇</div>
+      <div class="os-sector">Salons &amp; Spas</div>
+      <div class="os-name">Salon OS</div>
+      <div class="os-desc">Bookings, no-show prevention, stylist scheduling and loyalty automation.</div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">🍽️</div>
+      <div class="os-sector">Restaurants &amp; Cloud Kitchens</div>
+      <div class="os-name">Restaurant OS</div>
+      <div class="os-desc">Direct ordering, delivery tracking and customer loyalty — no platform dependency.</div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">⚖️</div>
+      <div class="os-sector">CA &amp; Legal Firms</div>
+      <div class="os-name">Compliance OS</div>
+      <div class="os-desc">GST deadline tracking, client follow-ups and compliance reminders.</div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">🚛</div>
+      <div class="os-sector">Logistics &amp; Transport</div>
+      <div class="os-name">Logistics OS</div>
+      <div class="os-desc">Order management, driver updates and real-time client delivery notifications.</div>
+    </div>
+    <div class="os-card soon">
+      <div class="os-badge">Coming Soon</div>
+      <div class="os-icon">🏭</div>
+      <div class="os-sector">Small Manufacturers</div>
+      <div class="os-name">Manufacturing OS</div>
+      <div class="os-desc">Attendance, production tracking, quality logging and maintenance alerts.</div>
+    </div>
   </div>
 </section>
 
-<!-- CLINIC OS -->
-<section class="sec sec-dim" id="clinic">
+<!-- CLINIC OS DEEP DIVE -->
+<section class="sec" id="clinic">
   <div style="max-width:1200px;margin:0 auto">
-    <div style="margin-bottom:48px">
-      <div class="badge" style="background:var(--acid);color:var(--black);margin-bottom:14px"><span class="dot"></span>Live Now · Kerala</div>
-      <h2 class="h2" style="margin-bottom:12px">Clinic OS — Everything a clinic needs.</h2>
-      <p style="font-size:14px;color:var(--secondary);max-width:500px;line-height:1.75">The complete operating system for private clinics. WhatsApp-native, AI-assisted, and live in 24 hours — without touching a single piece of software.</p>
+    <div class="live-header">
+      <div class="os-badge" style="background:var(--acid);color:var(--black);margin-bottom:14px"><span class="dot"></span>Live Now · Kerala</div>
+      <h2 class="h2" style="margin-bottom:12px">Clinic OS —<br>Everything a clinic needs.</h2>
+      <p style="font-size:14px;color:var(--secondary);max-width:580px;line-height:1.75">Not a WhatsApp bot. The complete operating system for Indian clinics — patient automation, clinic intelligence, and AI memory that gets smarter every single week.</p>
     </div>
     <div class="feat-grid">
-      <div class="feat"><div class="feat-code">F-01 → F-06</div><div class="feat-name">WhatsApp Booking Bot</div><div class="feat-desc">Patients book, confirm, and reschedule via WhatsApp at any time. Zero staff involvement. Captures bookings at 2 AM on Sundays.</div></div>
-      <div class="feat"><div class="feat-code">F-07 → F-09</div><div class="feat-name">3-Layer Reminder System</div><div class="feat-desc">Automated reminders at 48hr, 24hr, and 2hr before every appointment. No-show rate drops from 15–20% to under 5% in the first month.</div></div>
-      <div class="feat"><div class="feat-code">F-10 → F-12</div><div class="feat-name">AI Pre-Consult Brief</div><div class="feat-desc">Doctor receives a structured patient summary on WhatsApp 30 minutes before each appointment. Walk in knowing exactly who is next.</div></div>
-      <div class="feat"><div class="feat-code">F-13 → F-16</div><div class="feat-name">Digital EMR &amp; Records</div><div class="feat-desc">Full patient records, treatment history, and prescriptions — accessible from WhatsApp or the web portal. Paperless from day one.</div></div>
-      <div class="feat"><div class="feat-code">F-17 → F-20</div><div class="feat-name">Billing &amp; UPI Payments</div><div class="feat-desc">Automated invoices, UPI payment links, and outstanding balance reminders — all delivered directly via WhatsApp.</div></div>
-      <div class="feat"><div class="feat-code">F-21 → F-24</div><div class="feat-name">Reputation Management</div><div class="feat-desc">4–5 star ratings go to Google automatically. 1–3 star ratings go to a private channel. Your reputation grows on autopilot.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">WhatsApp Booking Bot</div><div class="feat-desc">Fully automated in Malayalam, English and Arabic. Patients book in 2 minutes. No missed calls. No manual work.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Patient Health IDs</div><div class="feat-desc">Every patient gets a unique THX Health ID. Full history, records, and bookings under one permanent identity.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Live Queue Management</div><div class="feat-desc">Patients join from home. Staff sees real-time queue. Position updates sent automatically. Waiting room stays calm.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Online Payments</div><div class="feat-desc">Payment link sent after booking. Patient pays online. Invoice auto-generated and sent to WhatsApp.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Electronic Medical Records</div><div class="feat-desc">Prescriptions, lab results, visit notes — all linked to patient Health ID. Full history in seconds.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">QR Code Check-in</div><div class="feat-desc">Clinic QR at reception. Patient scans, opens WhatsApp, books or checks in. Zero staff effort.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Smart Reminders</div><div class="feat-desc">Appointment reminders 24 hours before. Follow-up after visit. Review requests. All automated.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Analytics Dashboard</div><div class="feat-desc">Revenue, queue, appointments. Daily, weekly, monthly reports sent to clinic owner on WhatsApp every morning.</div></div>
+      <div class="feat"><div class="feat-code">Live Now</div><div class="feat-name">Multi-Doctor Scheduling</div><div class="feat-desc">Separate schedules per doctor. Patients choose their doctor. Slot availability managed automatically.</div></div>
     </div>
   </div>
 </section>
 
 <!-- PROBLEMS -->
-<section class="sec">
+<section class="sec sec-dim">
   <span class="tag">// The Daily Reality</span>
   <h2 class="h2">What running a clinic in Kerala actually looks like</h2>
   <div class="prob-grid">
-    <div class="prob"><div class="prob-n">01</div><div class="prob-title">No-Shows Kill Revenue</div><div class="prob-body">Average no-show rate is 15–22%. For a clinic doing 25 appointments at ₹500 average, that's 4–5 missed slots every single day.</div><div class="prob-cost">₹72,000–₹1,50,000 lost monthly</div></div>
-    <div class="prob"><div class="prob-n">02</div><div class="prob-title">Staff Waste Hours on Calls</div><div class="prob-body">One reminder call = 4 minutes. 25 patients = 100 minutes daily = 40 hours monthly. THRYVIX handles this in zero seconds.</div><div class="prob-cost">40 staff hours wasted every month</div></div>
-    <div class="prob"><div class="prob-n">03</div><div class="prob-title">Patients Fall Through the Cracks</div><div class="prob-body">A patient who needed a follow-up in July is simply forgotten. No recall. No reminder. They quietly move to a competitor.</div><div class="prob-cost">Silent revenue leak, every month</div></div>
-    <div class="prob"><div class="prob-n">04</div><div class="prob-title">Doctors Walk In Blind</div><div class="prob-body">Doctor sees a name on a register — no history, no medications, no treatment plan. Every consultation starts cold.</div><div class="prob-cost">Slower consults. Lower trust.</div></div>
-    <div class="prob"><div class="prob-n">05</div><div class="prob-title">Google Reviews Don't Grow</div><div class="prob-body">Clinics that actively ask for reviews get 8–15 new reviews per month. Clinics that don't grow at near zero.</div><div class="prob-cost">New patients go to competitors</div></div>
-    <div class="prob"><div class="prob-n">06</div><div class="prob-title">No Visibility Into the Business</div><div class="prob-body">Most clinic owners can't answer: What was last month's revenue? What's my no-show rate? THRYVIX answers all of this automatically.</div><div class="prob-cost">Decisions made on guesswork</div></div>
+    <div class="prob"><div class="prob-n">01</div><div class="prob-title">Missed Calls = Missed Patients</div><div class="prob-body">Clinics receive dozens of calls daily that go unanswered. Each missed call is a patient who called the next clinic instead.</div><div class="prob-cost">30% of calls go unanswered</div></div>
+    <div class="prob"><div class="prob-n">02</div><div class="prob-title">Staff Burning Out on Admin</div><div class="prob-body">Front desk staff spend 4+ hours daily on manual appointment management, confirmation calls, and WhatsApp replies.</div><div class="prob-cost">4hrs daily admin per staff member</div></div>
+    <div class="prob"><div class="prob-n">03</div><div class="prob-title">No-Shows Kill Revenue</div><div class="prob-body">Average no-show rate is 15&#8211;22%. For a clinic doing 25 appointments at &#8377;500 average, that&#8217;s 4&#8211;5 missed slots every single day.</div><div class="prob-cost">&#8377;40,000+ lost monthly</div></div>
+    <div class="prob"><div class="prob-n">04</div><div class="prob-title">Running Blind</div><div class="prob-body">Most clinics have no idea which hours are busiest, which doctors have the most no-shows, or what their monthly revenue looks like.</div><div class="prob-cost">Zero data. Zero visibility.</div></div>
+    <div class="prob"><div class="prob-n">05</div><div class="prob-title">Doctors Walk In Blind</div><div class="prob-body">Doctor sees a name on a register &#8212; no history, no medications, no treatment plan. Every consultation starts cold.</div><div class="prob-cost">Slower consults. Lower trust.</div></div>
+    <div class="prob"><div class="prob-n">06</div><div class="prob-title">Software That Does Not Fit</div><div class="prob-body">Existing HMS tools are expensive, complex, and not built for how Indian patients communicate &#8212; on WhatsApp, in Malayalam, at midnight.</div><div class="prob-cost">Wrong product. Wrong market.</div></div>
   </div>
 </section>
 
 <!-- QUOTE -->
 <div class="quote-band">
-  <p class="q-text">"A clinic doing 25 appointments/day with 15% no-shows loses ₹1,50,000 monthly. THRYVIX eliminates this in the first week."</p>
+  <p class="q-text">&#8220;Every other system stops when the patient books. THRYVIX starts there.&#8221;</p>
   <div class="q-attr">THRYVIX Clinic OS · Kerala, India</div>
 </div>
 
-<!-- COMPARE -->
-<section class="sec sec-dim" id="compare">
-  <span class="tag">// Why THRYVIX</span>
-  <h2 class="h2">Everything else is a pipe.<br><em>THRYVIX</em> is the engine.</h2>
-  <table class="cmp-table">
-    <thead><tr><th>Dimension</th><th>Others — WATI, Interakt, Zoho</th><th class="hl">THRYVIX</th></tr></thead>
-    <tbody>
-      <tr><td>Platform</td><td>App downloads required</td><td class="hl">WhatsApp-native, zero friction</td></tr>
-      <tr><td>Automation Logic</td><td>Messages only — no workflow engine</td><td class="hl">Configurable multi-tenant engine</td></tr>
-      <tr><td>Language</td><td>English / Hindi only</td><td class="hl">Malayalam, Arabic, English — auto</td></tr>
-      <tr><td>Setup Time</td><td>2–4 weeks, IT team required</td><td class="hl">24 hours, zero technical work</td></tr>
-      <tr><td>AI Features</td><td>None</td><td class="hl">Pre-consult brief, no-show prediction</td></tr>
-      <tr><td>Monthly Price</td><td>₹2,499–₹25,000/month</td><td class="hl">₹1,499–₹3,999/month</td></tr>
-      <tr><td>Support</td><td>Email tickets, 48hr response</td><td class="hl">WhatsApp direct line</td></tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- PRICING -->
-<section class="sec" id="pricing">
-  <span class="tag">// Clinic OS Pricing</span>
-  <h2 class="h2" style="text-align:center">Simple pricing. Real results.</h2>
-  <div class="pricing-grid">
-    <div class="prc">
-      <div class="prc-name">Starter</div>
-      <div class="prc-price"><sup>₹</sup>1,499<sub>/mo</sub></div>
-      <div class="prc-setup">+ ₹1,500 one-time setup</div>
-      <ul class="prc-list"><li>WhatsApp Booking Bot</li><li>3-Layer Reminder System</li><li>Instant Confirmations</li><li>Doctor Daily Schedule at 7 AM</li><li>WhatsApp Support Line</li></ul>
-      <a href="https://wa.me/917592063527" target="_blank" class="prc-btn">Get Started →</a>
+<!-- WHAT MAKES IT DIFFERENT -->
+<section class="sec" id="experience">
+  <span class="tag">// What Makes It Different</span>
+  <h2 class="h2">Your clinic will do things<br>patients have <em>never experienced.</em></h2>
+  <p style="font-size:13px;color:var(--muted);max-width:520px;margin-top:12px;line-height:1.7">A few things THRYVIX does that no other system in India does. We&#8217;re not listing all of them &#8212; just enough for you to understand the difference.</p>
+  <div class="diff-grid">
+    <div class="diff-card">
+      <div class="diff-title">Your bot knows who is calling</div>
+      <div class="diff-body">Returning patients are recognised instantly. The system knows their name, their usual doctor, their preferred language, and their last visit. It feels like the clinic actually remembers them.</div>
     </div>
-    <div class="prc feat">
-      <div class="prc-name">Clinic OS Pro</div>
-      <div class="prc-price"><sup>₹</sup>2,499<sub>/mo</sub></div>
-      <div class="prc-setup">+ ₹1,500 one-time setup</div>
-      <ul class="prc-list"><li>Everything in Starter</li><li>AI Pre-Consult Brief</li><li>Google Review Automation</li><li>Basic Web Dashboard</li><li>Patient Follow-Up Campaigns</li><li>Billing &amp; UPI Payment Links</li></ul>
-      <a href="https://wa.me/917592063527" target="_blank" class="prc-btn">Get Started →</a>
+    <div class="diff-card">
+      <div class="diff-title">Doctor walks in prepared</div>
+      <div class="diff-body">Before the patient arrives, the doctor receives a full summary on WhatsApp &#8212; history, allergies, last complaint, current medications. Every consultation starts with full context.</div>
     </div>
-    <div class="prc">
-      <div class="prc-name">Clinic OS Growth</div>
-      <div class="prc-price"><sup>₹</sup>3,999<sub>/mo</sub></div>
-      <div class="prc-setup">+ ₹1,500 one-time setup</div>
-      <ul class="prc-list"><li>Everything in Pro</li><li>Digital EMR &amp; Records</li><li>Monthly Analytics Report</li><li>Multi-doctor Scheduling</li><li>Priority WhatsApp Support</li><li>Custom Campaign Builder</li></ul>
-      <a href="https://wa.me/917592063527" target="_blank" class="prc-btn">Get Started →</a>
+    <div class="diff-card">
+      <div class="diff-title">The system predicts no-shows</div>
+      <div class="diff-body">High-risk bookings are identified automatically and handled with extra follow-ups. Patients who were going to miss their appointment &#8212; mostly don&#8217;t.</div>
+    </div>
+    <div class="diff-card">
+      <div class="diff-title">Lost patients come back on their own</div>
+      <div class="diff-body">Patients who haven&#8217;t visited in months are automatically contacted at the right time with the right message. Revenue you thought was gone &#8212; comes back.</div>
+    </div>
+    <div class="diff-card">
+      <div class="diff-title">One number manages the whole family</div>
+      <div class="diff-body">A father can book for his wife, child, and elderly parents &#8212; all from one WhatsApp number. Each family member gets their own record and history.</div>
+    </div>
+    <div class="diff-card hook-cta-card">
+      <div class="hook-cta-inner">
+        <div style="font-family:&#39;Geist Mono&#39;,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--acid);margin-bottom:12px">And much more coming</div>
+        <div style="font-size:17px;font-weight:800;margin-bottom:16px;letter-spacing:-0.01em">See it live. Book a free demo.</div>
+        <a href="https://wa.me/919061606343" target="_blank" class="btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          +91 90616 06343
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section class="sec sec-dim" id="roadmap">
-  <span class="tag">// Long-Term Vision</span>
-  <h2 class="h2">The nervous system<br>of Indian business.</h2>
-  <div class="roadmap-grid">
-    <div class="hz" data-n="H1"><div class="hz-lbl">Horizon 1</div><div class="hz-time">0 – 12 months</div><div class="hz-title">Kerala's Automation Layer</div><div class="hz-desc">THRYVIX becomes the automation standard for Kerala clinics and SMEs. First 500 businesses running daily operations on THRYVIX infrastructure.</div><div class="hz-tags"><span class="hz-tag live">Clinic OS ✦ Live</span><span class="hz-tag">Factory OS</span><span class="hz-tag">Logistics OS</span></div></div>
-    <div class="hz" data-n="H2"><div class="hz-lbl">Horizon 2</div><div class="hz-time">12 – 36 months</div><div class="hz-title">South India's Infrastructure</div><div class="hz-desc">Developer platform opens. Agencies build on THRYVIX engine. 5,000+ businesses across 8 sectors in Kerala, Tamil Nadu, Karnataka.</div><div class="hz-tags"><span class="hz-tag">All 8 Verticals</span><span class="hz-tag">Developer API</span><span class="hz-tag">Tamil · Kannada</span></div></div>
-    <div class="hz" data-n="H3"><div class="hz-lbl">Horizon 3</div><div class="hz-time">36 months+</div><div class="hz-title">India's Business Nervous System</div><div class="hz-desc">Every appointment, order, delivery, and commitment flowing through Indian SMEs flows through THRYVIX infrastructure — the layer India cannot function without.</div><div class="hz-tags"><span class="hz-tag">Pan-India</span><span class="hz-tag">AI Intelligence</span><span class="hz-tag">63M Businesses</span></div></div>
+<!-- MORE COMING SOON -->
+<section class="sec sec-dim">
+  <div style="max-width:900px;margin:0 auto">
+    <span class="tag">// Coming Soon</span>
+    <h2 class="h2" style="margin-bottom:20px">This is just the beginning.<br><em>More is already being built.</em></h2>
+    <p style="font-size:14px;color:var(--secondary);line-height:1.8;max-width:600px;margin-bottom:48px">Everything live today is Phase 1. The intelligence layer launching soon will make THRYVIX the most powerful clinic OS in India &#8212; things that no system anywhere in India currently does. We&#8217;re not listing what&#8217;s coming. When it&#8217;s ready, you&#8217;ll see it.</p>
+    <div class="coming-strip">
+      <div class="cs-item"><span class="cs-dot"></span>AI clinic intelligence</div>
+      <div class="cs-item"><span class="cs-dot"></span>Automated patient recalls</div>
+      <div class="cs-item"><span class="cs-dot"></span>Revenue leak detection</div>
+      <div class="cs-item"><span class="cs-dot"></span>Prescription on WhatsApp</div>
+      <div class="cs-item"><span class="cs-dot"></span>Lab report delivery</div>
+      <div class="cs-item"><span class="cs-dot"></span>Medicine adherence reminders</div>
+      <div class="cs-item"><span class="cs-dot"></span>Family health management</div>
+      <div class="cs-item"><span class="cs-dot"></span>Weekly intelligence reports</div>
+      <div class="cs-item"><span class="cs-dot"></span>And more &#8212; watch this space</div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION BAND -->
+<div class="vision-band">
+  <div class="vision-band-inner">
+    <span class="tag" style="text-align:center;margin-bottom:16px">// Where We&#8217;re Going</span>
+    <div class="vision-band-title">We&#8217;re building the OS that <em>every</em> Indian business runs on.</div>
+    <p class="vision-band-body">Clinic OS is the beginning. The same WhatsApp-native, AI-powered approach is being built for every industry in India. Every business that runs on chaos today is a business THRYVIX will serve.</p>
+  </div>
+</div>
+
+<!-- WHY THRYVIX -->
+<section class="sec" id="compare">
+  <span class="tag">// Why THRYVIX</span>
+  <h2 class="h2">Built different.<br><em>For a reason.</em></h2>
+  <div class="why-grid">
+    <div class="why-card"><div class="why-n">01</div><div class="why-title">Built for Kerala</div><div class="why-body">Malayalam first. Not a global product retrofitted for India &#8212; designed here, for here, from day one. Arabic support included for Kerala&#8217;s Gulf-return community.</div></div>
+    <div class="why-card"><div class="why-n">02</div><div class="why-title">WhatsApp Native</div><div class="why-body">No app to download. No patient training. Runs on WhatsApp &#8212; which 95% of your patients use daily. Adoption is instant and effortless.</div></div>
+    <div class="why-card"><div class="why-n">03</div><div class="why-title">Gets Smarter Every Week</div><div class="why-body">The AI learns your clinic over time. The longer you use it, the better it understands your patients, your patterns, and your revenue.</div></div>
+    <div class="why-card"><div class="why-n">04</div><div class="why-title">Zero Disruption</div><div class="why-body">No hardware. No staff retraining. No migration. THRYVIX runs alongside whatever you already have. From day one.</div></div>
+    <div class="why-card"><div class="why-n">05</div><div class="why-title">Live in 7 Days</div><div class="why-body">From agreement to live system &#8212; 7 days. No IT teams. No months of implementation. Just working software in your clinic.</div></div>
+    <div class="why-card"><div class="why-n">06</div><div class="why-title">Nothing Like It in India</div><div class="why-body">No competitor offers this combination of WhatsApp-native delivery, regional language intelligence, and persistent AI memory for Indian clinics.</div></div>
+  </div>
+</section>
+
+<!-- COMPARE TABLE -->
+<section class="sec sec-dim">
+  <span class="tag">// Competitor Comparison</span>
+  <h2 class="h2">Everything else is expensive,<br>complex, or <em>wrong for India.</em></h2>
+  <table class="cmp-table">
+    <thead><tr><th>Dimension</th><th>Practo &#183; Bot Vendors &#183; Zoho</th><th class="hl">THRYVIX</th></tr></thead>
+    <tbody>
+      <tr><td>Platform</td><td>App downloads required</td><td class="hl">WhatsApp-native, zero friction</td></tr>
+      <tr><td>Language</td><td>English / Hindi only</td><td class="hl">Malayalam, Arabic &amp; English &#8212; every plan</td></tr>
+      <tr><td>Setup Time</td><td>1&#8211;4 weeks, IT team needed</td><td class="hl">Live in 7 days, zero technical work</td></tr>
+      <tr><td>AI Intelligence</td><td>None</td><td class="hl">Powerful AI layer &#8212; no competitor has this</td></tr>
+      <tr><td>Patient Memory</td><td>None</td><td class="hl">Gets smarter every week</td></tr>
+      <tr><td>Google Review Automation</td><td>None</td><td class="hl">Smart filter &#8212; 4&#8211;5&#9733; to Google only</td></tr>
+      <tr><td>Pricing</td><td>&#8377;10,000&#8211;&#8377;25,000/mo (Practo)</td><td class="hl">Contact us &#8212; built for Indian clinics</td></tr>
+      <tr><td>Support</td><td>Email tickets, 48hr response</td><td class="hl">WhatsApp direct &#8212; always on</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="sec" id="contact">
+  <div style="max-width:900px;margin:0 auto;text-align:center">
+    <span class="tag" style="text-align:center">// Get Started</span>
+    <h2 class="h2" style="margin-bottom:20px">Book a free demo.<br><em>See it live before you decide.</em></h2>
+    <p style="font-size:14px;color:var(--muted);max-width:460px;margin:0 auto 48px;line-height:1.7">We&#8217;ll show you Clinic OS running on a real clinic. No commitment. No payment. Just 20 minutes on WhatsApp.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="var(--acid)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+        <div class="contact-label">WhatsApp</div>
+        <a href="https://wa.me/919061606343" target="_blank" class="contact-value">+91 90616 06343</a>
+        <div class="contact-sub">Message us anytime</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--acid)" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="contact-label">Email</div>
+        <a href="mailto:hello@thryvixai.com" class="contact-value">hello@thryvixai.com</a>
+        <div class="contact-sub">We reply within 4 hours</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--acid)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="contact-label">Website</div>
+        <a href="https://thryvixai.com" target="_blank" class="contact-value">thryvixai.com</a>
+        <div class="contact-sub">Kerala, India</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:40px">
+      <a href="https://wa.me/919061606343" target="_blank" class="btn-primary"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Book Free Demo</a>
+      <a href="mailto:hello@thryvixai.com" class="btn-ghost">hello@thryvixai.com</a>
+    </div>
   </div>
 </section>
 
@@ -521,13 +644,13 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
 <section class="final-cta">
   <div class="final-wm">THRYVIX</div>
   <h2>Your clinic.<br><em>Automated.</em></h2>
-  <p>Clinic OS is live now in Kerala. Book a free demo on WhatsApp and see it running on a real clinic before you pay a single rupee.</p>
+  <p>Live in Kerala now. Book a free demo on WhatsApp and see it running before you pay a single rupee. 30-day full refund guarantee.</p>
   <div class="final-btns">
-    <a href="https://wa.me/917592063527" target="_blank" class="btn-primary">
+    <a href="https://wa.me/919061606343" target="_blank" class="btn-primary">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Book Free Demo on WhatsApp
     </a>
-    <a href="tel:+917592063527" class="btn-ghost">+91 75920 63527</a>
+    <a href="tel:+919061606343" class="btn-ghost">+91 90616 06343</a>
   </div>
 </section>
 
@@ -536,22 +659,18 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
   <div class="ft-top">
     <div>
       <span class="ft-logo">THRYVIX<em>_AI</em></span>
-      <p class="ft-tagline">Automation infrastructure for Indian business. WhatsApp-native. Multilingual. Live in 24 hours.</p>
+      <p class="ft-tagline">The OS for Indian business. WhatsApp-native. No app. Live in 24 hours.</p>
       <div class="social-row">
-        <!-- LinkedIn -->
         <a href="https://www.linkedin.com/company/thryvixai/" target="_blank" class="social-a" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
-        <!-- Facebook -->
         <a href="https://facebook.com/thryvixai" target="_blank" class="social-a" aria-label="Facebook">
           <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </a>
-        <!-- Instagram -->
         <a href="https://instagram.com/thryvixai" target="_blank" class="social-a" aria-label="Instagram">
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
         </a>
-        <!-- WhatsApp -->
-        <a href="https://wa.me/917592063527" target="_blank" class="social-a" aria-label="WhatsApp">
+        <a href="https://wa.me/919061606343" target="_blank" class="social-a" aria-label="WhatsApp">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         </a>
       </div>
@@ -559,11 +678,11 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
     <div class="ft-col">
       <h4>Products</h4>
       <ul>
-        <li><a href="#clinic">Clinic OS</a></li>
-        <li><span>Factory OS</span></li>
-        <li><span>Logistics OS</span></li>
-        <li><span>Compliance OS</span></li>
-        <li><span>Builder OS</span></li>
+        <li><a href="#clinic">Clinic OS — Live</a></li>
+        <li><span>Ecommerce OS</span></li>
+        <li><span>Kirana OS</span></li>
+        <li><span>Salon OS</span></li>
+        <li><span>+ More Coming</span></li>
       </ul>
     </div>
     <div class="ft-col">
@@ -571,25 +690,13 @@ footer { background: var(--dim); border-top: 1px solid var(--border); }
       <ul>
         <li><a href="#compare">Why THRYVIX</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#roadmap">Roadmap</a></li>
         <li><a href="https://www.linkedin.com/company/thryvixai/" target="_blank">LinkedIn</a></li>
       </ul>
     </div>
     <div class="ft-col">
       <h4>Contact</h4>
       <ul>
-        <li><a href="https://wa.me/917592063527" target="_blank">WhatsApp Us</a></li>
-        <li><a href="tel:+917592063527">+91 75920 63527</a></li>
-        <li><span>Kerala, India</span></li>
-        <li><span>thryvixai.com</span></li>
-      </ul>
-    </div>
-  </div>
-  <div class="ft-bottom">
-    <span class="fb-copy mono">THRYVIX AI © 2026 · Kerala, India</span>
-    <span class="fb-status mono"><span class="dot"></span>SYSTEM STATUS: OPERATIONAL</span>
-  </div>
-</footer>
-
-</body>
-</html>
+        <li><a href="https://wa.me/919061606343" target="_blank">WhatsApp Us</a></li>
+        <li><a href="tel:+919061606343">+91 90616 06343</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#91f9f4fdfdfed1e5f9e3e8e7f8e9f0f8bff2fefc"><span class="__cf_email__" data-cfemail="630b060f0f0c23170b111a150a1b020a4d000c0e">[email&#160;protected]</span></a></li>
+        <li><a href="/cdn-c
