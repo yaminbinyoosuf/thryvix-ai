@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THRYVIX — Set Up Your Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0c;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.08);
+    --border-focus: rgba(198,255,0,0.4);
+    --accent: #C6FF00;
+    --accent-dim: rgba(198,255,0,0.12);
+    --text: #f0f0f0;
+    --text-dim: #888;
+    --text-muted: #555;
+    --error: #ff4d6d;
+    --radius: 12px;
+    --radius-lg: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Manrope', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.08) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(198,255,0,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,12,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #000;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+
+  .trial-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(198,255,0,0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+  }
+
+  /* MAIN CONTAINER */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 100px 24px 120px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-bottom: 40px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .progress-wrap::-webkit-scrollbar { display: none; }
+
+  .progress-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: max-content;
+  }
+
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Manrope', sans-serif;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  .step-pill.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid rgba(198,255,0,0.25);
+  }
+
+  .step-pill.done {
+    color: var(--accent);
+  }
+
+  .step-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .step-pill.active .step-num {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .step-pill.done .step-num {
+    background: rgba(198,255,0,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .connector {
+    width: 24px;
+    height: 1px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .connector.done { background: rgba(198,255,0,0.3); }
+
+  /* STEP CARD */
+  .step-card {
+    display: none;
+    animation: fadeUp 0.3s ease;
+  }
+  .step-card.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-heading {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--text);
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+  }
+
+  .step-sub {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  /* GLASS PANEL */
+  .glass {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  /* FORM FIELDS */
+  .field-group {
+    margin-bottom: 20px;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+  }
+
+  .field-label .req {
+    color: var(--accent);
+    margin-left: 2px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="time"],
+  input[type="number"],
+  input[type="url"],
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 13px 16px;
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  select option { background: #1a1a1e; color: var(--text); }
+
+  input:focus, select:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(198,255,0,0.06);
+  }
+
+  input::placeholder { color: var(--text-muted); }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* WORKING DAYS GRID */
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .day-check {
+    position: relative;
+  }
+  .day-check input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .day-check label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .day-check input:checked + label {
+    background: var(--accent-dim);
+    border-color: rgba(198,255,0,0.3);
+    color: var(--accent);
+  }
+
+  /* DOCTOR CARD */
+  .doctor-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .doctor-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .doctor-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .remove-btn {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .remove-btn:hover { color: var(--error); background: rgba(255,77,109,0.08); }
+
+  .add-doctor-btn {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    border: 1px dashed rgba(198,255,0,0.2);
+    border-radius: var(--radius);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 20px;
+    font-family: 'Manrope', sans-serif;
+  }
+  .add-doctor-btn:hover {
+    background: var(--accent-dim);
+    border-color: rgba(198,255,0,0.4);
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: rgba(198,255,0,0.05);
+    border: 1px solid rgba(198,255,0,0.15);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+
+  .info-box-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .info-box ol {
+    padding-left: 18px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.9;
+  }
+
+  .note-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* LANGUAGE CARDS */
+  .lang-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .lang-card {
+    position: relative;
+  }
+  .lang-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .lang-card label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-card input:checked + label {
+    background: var(--accent-dim);
+    border-color: rgba(198,255,0,0.4);
+  }
+
+  .lang-flag {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .lang-info { flex: 1; }
+  .lang-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+  }
+  .lang-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .lang-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    transition: all 0.2s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lang-card input:checked + label .lang-check {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .lang-card input:checked + label .lang-check::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #000;
+  }
+
+  /* SUMMARY CARD */
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: var(--text-dim); }
+  .summary-value { color: var(--text); font-weight: 600; font-family: 'Manrope', sans-serif; }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: -0.2px;
+  }
+  .btn-primary:hover {
+    background: #d4ff26;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(198,255,0,0.2);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-go-live {
+    width: 100%;
+    padding: 20px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    border: none;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: -0.3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-go-live:hover {
+    background: #d4ff26;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(198,255,0,0.25);
+  }
+  .btn-go-live:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* TERMS */
+  .terms-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  /* LOADING STATE */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,12,0.95);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .loading-overlay.visible { display: flex; }
+
+  .spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+  }
+  .loading-sub {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: -8px;
+  }
+
+  /* SUCCESS PAGE */
+  .success-page {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 300;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+  }
+  .success-page.visible { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .success-icon {
+    width: 80px; height: 80px;
+    background: var(--accent-dim);
+    border: 2px solid rgba(198,255,0,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 36px;
+  }
+
+  .success-heading {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .success-info {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    max-width: 400px;
+  }
+
+  .success-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .btn-portal {
+    flex: 1;
+    min-width: 160px;
+    padding: 14px 20px;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .btn-portal:hover { background: #d4ff26; }
+
+  .btn-test {
+    flex: 1;
+    min-width: 160px;
+    padding: 14px 20px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .btn-test:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.15); }
+
+  /* BOTTOM STICKY */
+  .sticky-btn {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 24px;
+    background: rgba(10,10,12,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    z-index: 50;
+    display: none;
+  }
+  @media (max-width: 640px) { .sticky-btn { display: block; } }
+
+  .error-msg {
+    font-size: 12px;
+    color: var(--error);
+    margin-top: 6px;
+    display: none;
+  }
+
+  @media (max-width: 480px) {
+    .days-grid { grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .day-check label { font-size: 10px; height: 36px; }
+    .step-heading { font-size: 24px; }
+    .field-row { grid-template-columns: 1fr; }
+    .header { padding: 0 16px; }
+    .container { padding: 88px 16px 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="https://thryvixai.com" class="logo">
+    <div class="logo-mark">TX</div>
+    <span class="logo-text">THRYVIX</span>
+  </a>
+  <div class="trial-badge">30 Day Free Trial — No Card Required</div>
+</header>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap">
+    <div class="progress-track" id="progressTrack">
+      <div class="step-pill active" id="pill1">
+        <div class="step-num">1</div>Clinic
+      </div>
+      <div class="connector" id="conn1"></div>
+      <div class="step-pill" id="pill2">
+        <div class="step-num">2</div>Doctors
+      </div>
+      <div class="connector" id="conn2"></div>
+      <div class="step-pill" id="pill3">
+        <div class="step-num">3</div>WhatsApp
+      </div>
+      <div class="connector" id="conn3"></div>
+      <div class="step-pill" id="pill4">
+        <div class="step-num">4</div>Customize
+      </div>
+      <div class="connector" id="conn4"></div>
+      <div class="step-pill" id="pill5">
+        <div class="step-num">5</div>Go Live
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: Clinic Details -->
+  <div class="step-card active" id="step1">
+    <h1 class="step-heading">Tell us about your clinic</h1>
+    <p class="step-sub">We'll use this to set up your booking bot automatically.</p>
+
+    <div class="field-group">
+      <label class="field-label" for="clinicName">Clinic Name <span class="req">*</span></label>
+      <input type="text" id="clinicName" placeholder="e.g. Sunrise Dental Clinic" autocomplete="organization">
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="ownerName">Owner / Doctor Name <span class="req">*</span></label>
+        <input type="text" id="ownerName" placeholder="Dr. Full Name" autocomplete="name">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="ownerPhone">Phone Number <span class="req">*</span></label>
+        <input type="tel" id="ownerPhone" placeholder="9876543210" autocomplete="tel">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="ownerEmail">Email Address <span class="req">*</span></label>
+      <input type="email" id="ownerEmail" placeholder="doctor@yourclinic.com" autocomplete="email">
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="city">City <span class="req">*</span></label>
+        <input type="text" id="city" placeholder="e.g. Kozhikode">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="district">District</label>
+        <select id="district">
+          <option value="">Select district</option>
+          <option>Kozhikode</option>
+          <option>Malappuram</option>
+          <option>Thrissur</option>
+          <option>Ernakulam</option>
+          <option>Thiruvananthapuram</option>
+          <option>Palakkad</option>
+          <option>Kannur</option>
+          <option>Kasaragod</option>
+          <option>Wayanad</option>
+          <option>Idukki</option>
+          <option>Kottayam</option>
+          <option>Alappuzha</option>
+          <option>Pathanamthitta</option>
+          <option>Kollam</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="speciality">Speciality</label>
+      <select id="speciality">
+        <option value="">Select speciality</option>
+        <option value="dental">Dental</option>
+        <option value="skin">Skin</option>
+        <option value="eye">Eye</option>
+        <option value="general">General Medicine</option>
+        <option value="physio">Physiotherapy</option>
+        <option value="ent">ENT</option>
+        <option value="ortho">Ortho</option>
+        <option value="gynae">Gynaecology</option>
+        <option value="paeds">Paediatrics</option>
+        <option value="cardio">Cardiology</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="hoursStart">Opening Time</label>
+        <input type="time" id="hoursStart" value="09:00">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="hoursEnd">Closing Time</label>
+        <input type="time" id="hoursEnd" value="18:00">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Working Days</label>
+      <div class="days-grid">
+        <div class="day-check"><input type="checkbox" id="d_mon" value="mon" checked><label for="d_mon">Mon</label></div>
+        <div class="day-check"><input type="checkbox" id="d_tue" value="tue" checked><label for="d_tue">Tue</label></div>
+        <div class="day-check"><input type="checkbox" id="d_wed" value="wed" checked><label for="d_wed">Wed</label></div>
+        <div class="day-check"><input type="checkbox" id="d_thu" value="thu" checked><label for="d_thu">Thu</label></div>
+        <div class="day-check"><input type="checkbox" id="d_fri" value="fri" checked><label for="d_fri">Fri</label></div>
+        <div class="day-check"><input type="checkbox" id="d_sat" value="sat" checked><label for="d_sat">Sat</label></div>
+        <div class="day-check"><input type="checkbox" id="d_sun" value="sun"><label for="d_sun">Sun</label></div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="submitStep1()">Continue →</button>
+  </div>
+
+  <!-- STEP 2: Doctor Setup -->
+  <div class="step-card" id="step2">
+    <h1 class="step-heading">Add your doctors</h1>
+    <p class="step-sub">Add each doctor separately. At least one doctor is required.</p>
+
+    <div id="doctorList"></div>
+
+    <button class="add-doctor-btn" onclick="addDoctor()">+ Add Another Doctor</button>
+    <button class="btn-primary" onclick="submitStep2()">Continue →</button>
+  </div>
+
+  <!-- STEP 3: WhatsApp Setup -->
+  <div class="step-card" id="step3">
+    <h1 class="step-heading">Connect your clinic WhatsApp</h1>
+
+    <div class="info-box">
+      <div class="info-box-title">How to connect Meta WhatsApp Business</div>
+      <ol>
+        <li>Go to business.facebook.com</li>
+        <li>Create a WhatsApp Business account</li>
+        <li>Add your clinic phone number</li>
+        <li>Enter the number below</li>
+      </ol>
+    </div>
+
+    <div class="note-box">
+      <strong style="color:var(--text)">Already have WhatsApp Business?</strong><br>
+      Just enter your number below — no extra setup needed.
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="waNumber">Clinic WhatsApp Number <span class="req">*</span></label>
+      <input type="tel" id="waNumber" placeholder="9876543210 — patients will message this">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="staffWa">Staff WhatsApp Number</label>
+      <input type="tel" id="staffWa" placeholder="9876543210 — receives doctor briefs & alerts">
+    </div>
+
+    <button class="btn-primary" onclick="submitStep3()">Continue →</button>
+  </div>
+
+  <!-- STEP 4: Customize -->
+  <div class="step-card" id="step4">
+    <h1 class="step-heading">Customize your bot</h1>
+
+    <label class="field-label" style="margin-bottom:12px">Bot Language</label>
+    <div class="lang-grid">
+      <div class="lang-card">
+        <input type="radio" name="botLang" id="lang_ml" value="ml" checked>
+        <label for="lang_ml">
+          <span class="lang-flag">🇮🇳</span>
+          <div class="lang-info">
+            <div class="lang-name">Malayalam</div>
+            <div class="lang-hint">Recommended for Kerala clinics</div>
+          </div>
+          <div class="lang-check"></div>
+        </label>
+      </div>
+      <div class="lang-card">
+        <input type="radio" name="botLang" id="lang_en" value="en">
+        <label for="lang_en">
+          <span class="lang-flag">🇬🇧</span>
+          <div class="lang-info">
+            <div class="lang-name">English</div>
+            <div class="lang-hint">Universal — works everywhere</div>
+          </div>
+          <div class="lang-check"></div>
+        </label>
+      </div>
+      <div class="lang-card">
+        <input type="radio" name="botLang" id="lang_ar" value="ar">
+        <label for="lang_ar">
+          <span class="lang-flag">🇦🇪</span>
+          <div class="lang-info">
+            <div class="lang-name">Arabic</div>
+            <div class="lang-hint">For Arabic-speaking patients</div>
+          </div>
+          <div class="lang-check"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="reviewLink">Google Review Link <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
+      <input type="url" id="reviewLink" placeholder="https://g.page/r/your-clinic/review">
+      <div style="font-size:12px;color:var(--text-muted);margin-top:6px">We'll send this to patients who rate 4–5 stars ⭐</div>
+    </div>
+
+    <button class="btn-primary" onclick="submitStep4()">Continue →</button>
+  </div>
+
+  <!-- STEP 5: Go Live -->
+  <div class="step-card" id="step5">
+    <h1 class="step-heading">You're almost live!</h1>
+    <p class="step-sub">Review your setup before we go live.</p>
+
+    <div class="summary-card" id="summaryCard">
+      <div class="summary-row">
+        <span class="summary-label">Clinic</span>
+        <span class="summary-value" id="sum_clinic">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Doctors</span>
+        <span class="summary-value" id="sum_doctors">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">WhatsApp</span>
+        <span class="summary-value" id="sum_wa">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Language</span>
+        <span class="summary-value" id="sum_lang">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Trial</span>
+        <span class="summary-value" style="color:var(--accent)">30 days free</span>
+      </div>
+    </div>
+
+    <p class="terms-text">
+      By clicking Go Live you agree to THRYVIX terms of service.<br>
+      Your 30-day free trial starts now. No card required.
+    </p>
+
+    <button class="btn-go-live" id="goLiveBtn" onclick="goLive()">🚀 Go Live Now</button>
+  </div>
+
+</div><!-- /container -->
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Setting up your clinic...</div>
+  <div class="loading-sub" id="loadingSub">This takes about 10 seconds</div>
+</div>
+
+<!-- SUCCESS PAGE -->
+<div class="success-page" id="successPage">
+  <div class="success-icon">✓</div>
+  <div class="success-heading">Your clinic is live! 🎉</div>
+  <p style="color:var(--text-dim);font-size:15px;max-width:400px;line-height:1.6">
+    Check your WhatsApp and email for login details. Your bot is active now.
+  </p>
+  <div class="success-info">
+    Login details sent to your WhatsApp and email.<br>
+    Your 30-day free trial has started.<br>
+    No payment needed for 30 days.
+  </div>
+  <div class="success-btns">
+    <a href="https://app.thryvixai.com" class="btn-portal">Open Portal</a>
+    <a href="https://wa.me/917592063527" class="btn-test">Test Your Bot</a>
+  </div>
+</div>
+
+<!-- MOBILE STICKY BUTTON -->
+<div class="sticky-btn" id="stickyBtn">
+  <button class="btn-primary" id="stickyBtnInner" onclick="triggerCurrentStep()">Continue →</button>
+</div>
+
+<script>
+  const API = '/api/onboarding';
+  let sessionId = null;
+  let currentStep = 1;
+  let doctorCount = 0;
+  const formData = {
+    doctors: []
+  };
+
+  // ── INIT ──────────────────────────────────────────────────────────────────
+
+  async function init() {
+    try {
+      const res = await fetch(`${API}/start`, { method: 'POST' });
+      const data = await res.json();
+      sessionId = data.session_id;
+      console.log('[THRYVIX] Session:', sessionId);
+    } catch (e) {
+      console.error('Failed to start session:', e);
+    }
+    addDoctor(); // Add first doctor card
+  }
+
+  init();
+
+  // ── STEP NAVIGATION ───────────────────────────────────────────────────────
+
+  function showStep(n) {
+    document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+    document.getElementById(`step${n}`).classList.add('active');
+
+    // Update progress pills
+    for (let i = 1; i <= 5; i++) {
+      const pill = document.getElementById(`pill${i}`);
+      const conn = document.getElementById(`conn${i}`);
+      pill.classList.remove('active', 'done');
+      if (i < n) {
+        pill.classList.add('done');
+        pill.querySelector('.step-num').textContent = '✓';
+        if (conn) conn.classList.add('done');
+      } else if (i === n) {
+        pill.classList.add('active');
+        pill.querySelector('.step-num').textContent = i;
+      } else {
+        pill.querySelector('.step-num').textContent = i;
+        if (conn) conn.classList.remove('done');
+      }
+    }
+    currentStep = n;
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Mobile sticky button label
+    const stickyInner = document.getElementById('stickyBtnInner');
+    if (n === 5) stickyInner.textContent = '🚀 Go Live Now';
+    else stickyInner.textContent = 'Continue →';
+  }
+
+  function triggerCurrentStep() {
+    if (currentStep === 1) submitStep1();
+    else if (currentStep === 2) submitStep2();
+    else if (currentStep === 3) submitStep3();
+    else if (currentStep === 4) submitStep4();
+    else if (currentStep === 5) goLive();
+  }
+
+  // ── VALIDATION ────────────────────────────────────────────────────────────
+
+  function required(id, label) {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) {
+      el.style.borderColor = 'var(--error)';
+      el.focus();
+      showToast(`${label} is required`);
+      return false;
+    }
+    el.style.borderColor = '';
+    return true;
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = `position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a1e;border:1px solid var(--border);color:var(--error);padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;z-index:999;white-space:nowrap;`;
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+
+  // ── STEP 1 ────────────────────────────────────────────────────────────────
+
+  async function submitStep1() {
+    if (!required('clinicName', 'Clinic name')) return;
+    if (!required('ownerName', 'Owner name')) return;
+    if (!required('ownerPhone', 'Phone number')) return;
+    if (!required('ownerEmail', 'Email address')) return;
+    if (!required('city', 'City')) return;
+
+    const days = [...document.querySelectorAll('.day-check input:checked')].map(c => c.value).join(',');
+
+    const body = {
+      clinic_name: document.getElementById('clinicName').value.trim(),
+      owner_name: document.getElementById('ownerName').value.trim(),
+      owner_email: document.getElementById('ownerEmail').value.trim(),
+      owner_phone: document.getElementById('ownerPhone').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      district: document.getElementById('district').value || null,
+      speciality: document.getElementById('speciality').value || null,
+      working_hours_start: document.getElementById('hoursStart').value || '09:00',
+      working_hours_end: document.getElementById('hoursEnd').value || '18:00',
+      working_days: days,
+    };
+
+    Object.assign(formData, body);
+
+    try {
+      const res = await fetch(`${API}/${sessionId}/step1`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      showStep(2);
+    } catch (e) {
+      showToast('Failed to save. Please try again.');
+      console.error(e);
+    }
+  }
+
+  // ── STEP 2: DOCTORS ───────────────────────────────────────────────────────
+
+  function addDoctor() {
+    doctorCount++;
+    const n = doctorCount;
+    const container = document.getElementById('doctorList');
+    const card = document.createElement('div');
+    card.className = 'doctor-card';
+    card.id = `doctorCard${n}`;
+    card.innerHTML = `
+      <div class="doctor-card-header">
+        <span class="doctor-num">Doctor ${n}</span>
+        ${n > 1 ? `<button class="remove-btn" onclick="removeDoctor(${n})">Remove</button>` : ''}
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Doctor Name *</label>
+          <input type="text" id="doc_name_${n}" placeholder="Dr. Full Name">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Speciality</label>
+          <select id="doc_spec_${n}">
+            <option value="General Medicine">General Medicine</option>
+            <option value="Dental">Dental</option>
+            <option value="Skin">Skin / Dermatology</option>
+            <option value="Eye">Eye / Ophthalmology</option>
+            <option value="ENT">ENT</option>
+            <option value="Ortho">Orthopaedics</option>
+            <option value="Gynaecology">Gynaecology</option>
+            <option value="Paediatrics">Paediatrics</option>
+            <option value="Physiotherapy">Physiotherapy</option>
+            <option value="Cardiology">Cardiology</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Consultation Fee (₹)</label>
+        <input type="number" id="doc_fee_${n}" placeholder="200" value="200" min="0">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Available Days</label>
+        <div class="days-grid">
+          <div class="day-check"><input type="checkbox" id="dd_mon_${n}" value="mon" checked><label for="dd_mon_${n}">Mon</label></div>
+          <div class="day-check"><input type="checkbox" id="dd_tue_${n}" value="tue" checked><label for="dd_tue_${n}">Tue</label></div>
+          <div class="day-check"><input type="checkbox" id="dd_wed_${n}" value="wed" checked><label for="dd_wed_${n}">Wed</label></div>
+          <div class="day-check"><input type="checkbox" id="dd_thu_${n}" value="thu" checked><label for="dd_thu_${n}">Thu</label></div>
+          <div class="day-check"><input type="checkbox" id="dd_fri_${n}" value="fri" checked><label for="dd_fri_${n}">Fri</label></div>
+          <div class="day-check"><input type="checkbox" id="dd_sat_${n}" value="sat" checked><label for="dd_sat_${n}">Sat</label></div>
+          <div class="day-check"><input type="checkbox" id="dd_sun_${n}" value="sun"><label for="dd_sun_${n}">Sun</label></div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Consult Start</label>
+          <input type="time" id="doc_start_${n}" value="09:00">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Consult End</label>
+          <input type="time" id="doc_end_${n}" value="18:00">
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  }
+
+  function removeDoctor(n) {
+    const card = document.getElementById(`doctorCard${n}`);
+    if (card) card.remove();
+  }
+
+  async function submitStep2() {
+    const doctors = [];
+    const cards = document.querySelectorAll('.doctor-card');
+    if (cards.length === 0) {
+      showToast('Add at least one doctor');
+      return;
+    }
+
+    for (const card of cards) {
+      const id = card.id.replace('doctorCard', '');
+      const name = document.getElementById(`doc_name_${id}`)?.value?.trim();
+      if (!name) {
+        showToast('Doctor name is required');
+        document.getElementById(`doc_name_${id}`).focus();
+        return;
+      }
+      const days = [...card.querySelectorAll('.day-check input:checked')].map(c => c.value);
+      doctors.push({
+        name,
+        speciality: document.getElementById(`doc_spec_${id}`)?.value || 'General Medicine',
+        fee: parseFloat(document.getElementById(`doc_fee_${id}`)?.value || 200),
+        days,
+        hours_start: document.getElementById(`doc_start_${id}`)?.value || '09:00',
+        hours_end: document.getElementById(`doc_end_${id}`)?.value || '18:00',
+      });
+    }
+
+    formData.doctors = doctors;
+
+    try {
+      const res = await fetch(`${API}/${sessionId}/step2`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ doctors }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      showStep(3);
+    } catch (e) {
+      showToast('Failed to save doctors. Please try again.');
+      console.error(e);
+    }
+  }
+
+  // ── STEP 3 ────────────────────────────────────────────────────────────────
+
+  async function submitStep3() {
+    if (!required('waNumber', 'WhatsApp number')) return;
+
+    const body = {
+      whatsapp_number: document.getElementById('waNumber').value.trim(),
+      staff_whatsapp: document.getElementById('staffWa').value.trim() || null,
+    };
+
+    Object.assign(formData, body);
+
+    try {
+      const res = await fetch(`${API}/${sessionId}/step3`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      showStep(4);
+    } catch (e) {
+      showToast('Failed to save. Please try again.');
+      console.error(e);
+    }
+  }
+
+  // ── STEP 4 ────────────────────────────────────────────────────────────────
+
+  async function submitStep4() {
+    const lang = document.querySelector('input[name="botLang"]:checked')?.value || 'ml';
+    const body = {
+      language: lang,
+      google_review_link: document.getElementById('reviewLink').value.trim() || null,
+    };
+
+    Object.assign(formData, body);
+
+    try {
+      const res = await fetch(`${API}/${sessionId}/step4`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(await res.text());
+
+      // Populate summary
+      const langNames = { ml: 'Malayalam', en: 'English', ar: 'Arabic' };
+      document.getElementById('sum_clinic').textContent = formData.clinic_name || '—';
+      document.getElementById('sum_doctors').textContent = `${formData.doctors.length} doctor${formData.doctors.length !== 1 ? 's' : ''} added`;
+      document.getElementById('sum_wa').textContent = formData.whatsapp_number || '—';
+      document.getElementById('sum_lang').textContent = langNames[lang] || lang;
+
+      showStep(5);
+    } catch (e) {
+      showToast('Failed to save. Please try again.');
+      console.error(e);
+    }
+  }
+
+  // ── STEP 5: GO LIVE ───────────────────────────────────────────────────────
+
+  async function goLive() {
+    if (!sessionId) {
+      showToast('Session expired. Please refresh.');
+      return;
+    }
+
+    const btn = document.getElementById('goLiveBtn');
+    btn.disabled = true;
+
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.classList.add('visible');
+
+    const msgs = [
+      ['Setting up your clinic...', 'Creating your account'],
+      ['Configuring your bot...', 'Building your WhatsApp flow'],
+      ['Sending your login details...', 'Almost done!'],
+    ];
+
+    let idx = 0;
+    const interval = setInterval(() => {
+      if (idx < msgs.length) {
+        document.getElementById('loadingText').textContent = msgs[idx][0];
+        document.getElementById('loadingSub').textContent = msgs[idx][1];
+        idx++;
+      }
+    }, 2500);
+
+    try {
+      const res = await fetch(`${API}/${sessionId}/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      clearInterval(interval);
+      overlay.classList.remove('visible');
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        showToast(err.detail || 'Setup failed. Please try again.');
+        btn.disabled = false;
+        return;
+      }
+
+      // SUCCESS
+      document.getElementById('successPage').classList.add('visible');
+
+    } catch (e) {
+      clearInterval(interval);
+      overlay.classList.remove('visible');
+      showToast('Network error. Please try again.');
+      btn.disabled = false;
+      console.error(e);
+    }
+  }
+</script>
+
+</body>
+</html>
