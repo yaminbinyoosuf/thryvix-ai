@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /onboard/
+
+Sitemap: https://thryvixai.com/sitemap.xml
