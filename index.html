@@ -98,6 +98,21 @@ nav{
   transition:background .2s,transform .2s,box-shadow .2s;
 }
 .nav-btn:hover{background:#222;box-shadow:0 0 28px rgba(0,0,0,.15)}
+.nav__actions{display:flex;align-items:center;gap:10px}
+.nav__signin{
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--txt);background:transparent;border:1px solid var(--b2);
+  padding:8px 18px;display:inline-flex;align-items:center;
+  transition:color .2s,border-color .2s,background .2s;
+}
+.nav__signin:hover{color:var(--acid);border-color:var(--acid)}
+.nav__getstarted{
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--bg);background:var(--acid);border:1px solid var(--acid);
+  padding:9px 22px;display:inline-flex;align-items:center;gap:6px;
+  transition:background .2s,transform .2s,box-shadow .2s;
+}
+.nav__getstarted:hover{background:#222;border-color:#222;box-shadow:0 0 28px rgba(0,0,0,.15)}
 
 /* ══ HERO ══ */
 .hero{
@@ -577,6 +592,14 @@ footer{background:#0A0A0A;border-top:1px solid rgba(255,255,255,0.08);color:rgba
   color:#fff;background:var(--acid);
   padding:18px 24px;text-align:center;display:block;
 }
+.mob-nav-signin{
+  margin-top:12px;
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--txt);border:1px solid var(--b2);
+  padding:15px 24px;text-align:center;display:block;
+  transition:color .2s,border-color .2s;
+}
+.mob-nav-signin:hover{color:var(--acid);border-color:var(--acid)}
 .mob-nav-sub{
   margin-top:24px;font-family:var(--mono);font-size:10px;
   letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
@@ -591,7 +614,7 @@ footer{background:#0A0A0A;border-top:1px solid rgba(255,255,255,0.08);color:rgba
 
   /* nav */
   nav{padding:0 20px}
-  .nav-links,.nav-btn{display:none}
+  .nav-links,.nav-btn,.nav__actions{display:none}
   .mob-btn{display:flex}
 
   /* sections */
@@ -755,7 +778,10 @@ footer{background:#0A0A0A;border-top:1px solid rgba(255,255,255,0.08);color:rgba
     <li><a href="#compare">Why THRYVIX</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:hello@thryvixai.com" class="nav-btn mag">Book Demo</a>
+  <div class="nav__actions">
+    <a href="/login.html" class="nav__signin">Sign in</a>
+    <a href="/onboard/" class="nav__getstarted mag">Get started →</a>
+  </div>
   <button class="mob-btn" id="mob-btn" aria-label="Open menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
@@ -769,7 +795,8 @@ footer{background:#0A0A0A;border-top:1px solid rgba(255,255,255,0.08);color:rgba
     <li><a href="#compare" class="mob-close">Why THRYVIX</a></li>
     <li><a href="#contact" class="mob-close">Contact</a></li>
   </ul>
-  <a href="mailto:hello@thryvixai.com" class="mob-nav-cta mob-close">Book a Free Demo</a>
+  <a href="/onboard/" class="mob-nav-cta mob-close">Get started →</a>
+  <a href="/login.html" class="mob-nav-signin mob-close">Sign in</a>
   <div class="mob-nav-sub">
     <span>+91 90616 06343</span>
     <span>hello@thryvixai.com</span>
