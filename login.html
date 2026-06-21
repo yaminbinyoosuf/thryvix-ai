@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — THRYVIX AI</title>
+<meta name="description" content="Sign in to your THRYVIX clinic portal to manage bookings, queue, and patient records.">
+<link rel="canonical" href="https://thryvixai.com/login.html">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Sign In — THRYVIX AI">
+<meta property="og:type" content="website">
+<meta name="geo.region" content="IN-KL">
+<meta name="geo.placename" content="Kerala, India">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#FFFFFF;--s1:#F8F9FA;--s2:#F1F3F5;
+
+  --b1:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.12);--b3:rgba(255,255,255,0.2);
+  --txt:#0A0A0A;--dim:#6B7280;--muted:#9CA3AF;
+  --acid:#0A0A0A;--acid2:rgba(0,0,0,0.05);
+  --err:#ff4d6d;
+  --mono:'Geist Mono',monospace;--sans:'Geist',-apple-system,sans-serif;
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.6;display:flex;align-items:center;justify-content:center;padding:24px}
+
+/* Background grid */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,0,0,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 0%,transparent 100%);
+}
+body::after{
+  content:'';position:fixed;top:-20%;left:50%;transform:translateX(-50%);
+  width:500px;height:400px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+a{color:inherit;text-decoration:none}
+
+/* CARD */
+.auth-wrap{
+  position:relative;z-index:1;
+  width:100%;max-width:420px;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:28px;transition:color .2s;
+}
+.back-link:hover{color:var(--dim)}
+.back-link svg{width:14px;height:14px}
+
+.card{
+  background:var(--s1);border:1px solid var(--b1);
+  padding:40px;
+}
+
+.card-logo{
+  font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.1em;
+  display:flex;align-items:center;gap:2px;margin-bottom:32px;
+}
+.card-logo .l-main{color:var(--txt)}
+.card-logo .l-accent{color:var(--acid)}
+
+h1{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--txt);margin-bottom:8px}
+.sub{font-size:14px;color:var(--dim);margin-bottom:32px}
+
+/* FORM */
+.field{margin-bottom:20px}
+.field label{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;
+}
+.field input{
+  width:100%;background:rgba(255,255,255,.03);border:1px solid var(--b1);
+  padding:13px 16px;font-size:15px;color:var(--txt);font-family:var(--sans);
+  transition:border-color .2s,box-shadow .2s;outline:none;
+  appearance:none;-webkit-appearance:none;
+}
+.field input:focus{border-color:rgba(0,0,0,.4);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.field input.err{border-color:var(--err)}
+.field input::placeholder{color:var(--muted)}
+
+.pwd-wrap{position:relative}
+.pwd-toggle{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  padding:4px;display:flex;align-items:center;transition:color .2s;
+}
+.pwd-toggle:hover{color:var(--dim)}
+
+.field-err{font-size:12px;color:var(--err);margin-top:6px;display:none}
+
+/* ERROR ALERT */
+.alert{
+  display:none;align-items:center;gap:10px;
+  background:rgba(255,77,109,.06);border:1px solid rgba(255,77,109,.2);
+  padding:12px 16px;font-size:13px;color:var(--err);margin-bottom:20px;
+}
+.alert.show{display:flex}
+
+/* SUBMIT BUTTON */
+.btn-submit{
+  width:100%;padding:14px;
+  background:var(--acid);color:var(--bg);
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border:none;cursor:pointer;
+  transition:background .2s,transform .2s,box-shadow .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:8px;
+}
+.btn-submit:hover{background:#222;transform:translateY(-1px);box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.btn-submit:active{transform:none}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:14px;height:14px;border:2px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn-submit.loading .spinner{display:block}
+.btn-submit.loading .btn-label{display:none}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--b1);margin:24px 0}
+
+.link-row{text-align:center;font-size:14px;color:var(--muted)}
+.link-row a{color:var(--acid);font-weight:600;transition:color .2s}
+.link-row a:hover{color:#000}
+
+/* DEMO BOX */
+.demo-box{
+  background:var(--acid2);border:1px solid rgba(0,0,0,.15);
+  padding:16px 18px;margin-top:24px;
+  font-size:13px;color:var(--dim);line-height:1.7;
+}
+.demo-box strong{color:var(--acid);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.demo-box code{font-family:var(--mono);font-size:12px;color:var(--txt);background:rgba(255,255,255,.06);padding:2px 6px}
+
+/* FOOTER */
+.auth-footer{margin-top:20px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted)}
+.auth-footer a{color:var(--muted);transition:color .2s}
+.auth-footer a:hover{color:var(--dim)}
+
+@media(max-width:480px){
+  body{padding:16px}
+  .card{padding:28px 20px}
+  h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="auth-wrap">
+
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to home
+  </a>
+
+  <div class="card">
+
+    <div class="card-logo">
+      <span class="l-main">THRYVIX</span><span class="l-accent">_AI</span>
+    </div>
+
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to your clinic portal</p>
+
+    <div class="alert" id="errorAlert" role="alert">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="errorMsg">Invalid email or password.</span>
+    </div>
+
+    <form id="loginForm" novalidate>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@yourclinic.com" autocomplete="email" required>
+        <div class="field-err" id="emailErr">Please enter a valid email address.</div>
+      </div>
+
+      <div class="field">
+        <label for="password" style="display:flex;justify-content:space-between;align-items:center">
+          <span>Password</span>
+          <a href="mailto:hello@thryvixai.com" style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Forgot?</a>
+        </label>
+        <div class="pwd-wrap">
+          <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required style="padding-right:44px">
+          <button type="button" class="pwd-toggle" id="pwdToggle" aria-label="Show password">
+            <svg id="eyeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="field-err" id="pwdErr">Please enter your password.</div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-label">Sign In</span>
+        <div class="spinner" aria-hidden="true"></div>
+      </button>
+
+    </form>
+
+    <hr class="divider">
+
+    <p class="link-row">
+      New to THRYVIX? <a href="onboard/index.html">Start for free →</a>
+    </p>
+
+    <div class="demo-box">
+      <strong>Demo credentials</strong>
+      Email: <code>demo@thryvixai.com</code><br>
+      Password: <code>demo1234</code><br>
+      <span style="font-size:12px;color:var(--muted);margin-top:4px;display:block">Opens the Carewell Multispeciality Clinic portal</span>
+    </div>
+
+  </div>
+
+  <div class="auth-footer" style="margin-top:16px">
+    <a href="terms.html">Terms</a> &nbsp;·&nbsp;
+    <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+    <a href="mailto:hello@thryvixai.com">hello@thryvixai.com</a>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const pwdInput = document.getElementById('password');
+  const submitBtn = document.getElementById('submitBtn');
+  const errorAlert = document.getElementById('errorAlert');
+  const errorMsg = document.getElementById('errorMsg');
+  const pwdToggle = document.getElementById('pwdToggle');
+
+  pwdToggle.addEventListener('click', () => {
+    const isText = pwdInput.type === 'text';
+    pwdInput.type = isText ? 'password' : 'text';
+    pwdToggle.setAttribute('aria-label', isText ? 'Show password' : 'Hide password');
+    document.getElementById('eyeIcon').innerHTML = isText
+      ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+      : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  });
+
+  function setLoading(on) {
+    submitBtn.disabled = on;
+    submitBtn.classList.toggle('loading', on);
+  }
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorAlert.classList.add('show');
+    errorAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideError() {
+    errorAlert.classList.remove('show');
+  }
+
+  function validate() {
+    let ok = true;
+    const email = emailInput.value.trim();
+    const pwd = pwdInput.value;
+    const emailErr = document.getElementById('emailErr');
+    const pwdErr = document.getElementById('pwdErr');
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailInput.classList.add('err');
+      emailErr.style.display = 'block';
+      ok = false;
+    } else {
+      emailInput.classList.remove('err');
+      emailErr.style.display = 'none';
+    }
+
+    if (!pwd || pwd.length < 4) {
+      pwdInput.classList.add('err');
+      pwdErr.style.display = 'block';
+      ok = false;
+    } else {
+      pwdInput.classList.remove('err');
+      pwdErr.style.display = 'none';
+    }
+
+    return ok;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError();
+    if (!validate()) return;
+
+    setLoading(true);
+
+    const body = new URLSearchParams();
+    body.set('username', emailInput.value.trim());
+    body.set('password', pwdInput.value);
+
+    try {
+      const res = await fetch('https://api.thryvixai.com/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        showError(data.detail || 'Incorrect email or password. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+      localStorage.setItem('thryvix_token', data.access_token);
+      if (data.refresh_token) localStorage.setItem('thryvix_refresh_token', data.refresh_token);
+
+      window.location.href = 'https://health.thryvixai.com';
+    } catch (err) {
+      showError('Could not reach the server. Check your connection and try again.');
+      setLoading(false);
+    }
+  });
+
+  emailInput.addEventListener('input', hideError);
+  pwdInput.addEventListener('input', hideError);
+})();
+</script>
+</body>
+</html>
