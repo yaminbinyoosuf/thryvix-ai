@@ -526,6 +526,7 @@ body::before{
       Your 60-day free trial starts now. No card required.
     </p>
 
+    <div id="goLiveError" style="display:none;color:#DC2626;font-size:13px;margin-bottom:12px;padding:10px;background:#FEE2E2;border-radius:6px;"></div>
     <button class="ob-btn" id="goLiveBtn" onclick="goLive()">
       <span class="ob-btn-label">Go Live →</span>
       <div class="ob-spinner" aria-hidden="true"></div>
@@ -582,7 +583,7 @@ const fd = { doctors: [] };
 
 async function startSession() {
   try {
-    const res = await fetch(API + '/onboarding/start', {
+    const res = await fetch('https://api.thryvixai.com/onboarding/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({})
@@ -591,9 +592,14 @@ async function startSession() {
       const data = await res.json();
       sessionId = data.session_id;
       console.log('Session started:', sessionId);
+      return true;
+    } else {
+      console.error('Session start failed:', res.status);
+      return false;
     }
-  } catch (err) {
-    console.error('Start session error:', err);
+  } catch(e) {
+    console.error('Session start error:', e);
+    return false;
   }
 }
 
@@ -875,44 +881,122 @@ async function step3() {
 
 async function goLive() {
   const btn = document.getElementById('goLiveBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Going live...'; }
+  const errEl = document.getElementById('goLiveError');
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Setting up your clinic...'; }
+  if (errEl) errEl.style.display = 'none';
 
   try {
-    // If no session yet start one
+    // Retry session if missing
     if (!sessionId) {
-      const r = await fetch('https://api.thryvixai.com/onboarding/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({})
-      });
-      if (r.ok) { const d = await r.json(); sessionId = d.session_id; }
-    }
-
-    // Call complete
-    if (sessionId) {
-      const res = await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/complete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        clinicSlug = data.clinic_slug || '';
-
-        // Update booking link
-        const linkEl = document.getElementById('bookingLink');
-        if (linkEl && clinicSlug) {
-          linkEl.href = 'https://book.thryvixai.com/c/' + clinicSlug;
-          linkEl.textContent = 'book.thryvixai.com/c/' + clinicSlug;
+      const started = await startSession();
+      if (!started) {
+        if (errEl) {
+          errEl.textContent = 'Setup failed. Please try again.';
+          errEl.style.display = 'block';
         }
+        if (btn) { btn.disabled = false; btn.textContent = 'Go Live'; }
+        return;
       }
     }
+
+    // Submit all collected data first
+    // Step 1 data
+    const step1Data = {
+      clinic_name: document.getElementById('clinicName')?.value?.trim() || '',
+      owner_name: document.getElementById('ownerName')?.value?.trim() || '',
+      owner_phone: '+91' + (document.getElementById('phone')?.value?.trim() || ''),
+      owner_email: document.getElementById('email')?.value?.trim() || '',
+      city: document.getElementById('city')?.value?.trim() || '',
+      district: document.getElementById('district')?.value || null,
+      speciality: document.getElementById('speciality')?.value || null,
+      working_hours_start: document.getElementById('startTime')?.value || '09:00',
+      working_hours_end: document.getElementById('endTime')?.value || '20:00',
+      working_days: [...document.querySelectorAll('.day-btn.on')].map(b => b.dataset.day).join(',') || 'mon,tue,wed,thu,fri,sat'
+    };
+
+    await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/step1', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(step1Data)
+    });
+
+    // Step 2 doctors
+    const doctors = [];
+    document.querySelectorAll('.doctor-card').forEach(card => {
+      const name = card.querySelector('.doc-name')?.value?.trim();
+      if (name) {
+        doctors.push({
+          name: name,
+          speciality: card.querySelector('.doc-spec')?.value || 'General Medicine',
+          fee: parseFloat(card.querySelector('.doc-fee')?.value || '300'),
+          hours_start: card.querySelector('.doc-start')?.value || '09:00',
+          hours_end: card.querySelector('.doc-end')?.value || '13:00',
+          days: ['mon','tue','wed','thu','fri','sat']
+        });
+      }
+    });
+
+    if (doctors.length > 0) {
+      await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/step2', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ doctors })
+      });
+    }
+
+    // Step 3
+    await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/step3', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ whatsapp_number: '', staff_whatsapp: '' })
+    });
+
+    // Step 4
+    const selectedLang = document.querySelector('.lang-card.selected')?.dataset?.lang || 'en';
+    await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/step4', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ language: selectedLang, google_review_link: null })
+    });
+
+    // Complete
+    const completeRes = await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (completeRes.ok) {
+      const data = await completeRes.json();
+      clinicSlug = data.clinic_slug || '';
+      const linkEl = document.getElementById('bookingLink');
+      if (linkEl && clinicSlug) {
+        linkEl.href = 'https://book.thryvixai.com/c/' + clinicSlug;
+        linkEl.textContent = 'book.thryvixai.com/c/' + clinicSlug;
+      }
+    }
+
   } catch(e) {
     console.error('Go live error:', e);
   }
 
-  // Always go to step 5 even if API fails
-  showStep(5);
+  // Always show success screen
+  // Find success screen element
+  const success = document.getElementById('ob-success') ||
+                  document.getElementById('successScreen') ||
+                  document.getElementById('step5') ||
+                  document.querySelector('.success-screen');
+
+  if (success) {
+    // Hide all steps
+    document.querySelectorAll('.wizard-step, .step-panel, [id^="step"]').forEach(el => {
+      el.style.display = 'none';
+    });
+    success.style.display = 'flex';
+    success.classList.add('active');
+  }
+
+  window.scrollTo(0, 0);
 }
 
 function copyBookingLink() {
@@ -926,8 +1010,10 @@ function copyBookingLink() {
   });
 }
 
-// Initialize
-startSession().then(() => addDoctor());
+document.addEventListener('DOMContentLoaded', async function() {
+  await startSession();
+  addDoctor();
+});
 </script>
 </body>
 </html>
