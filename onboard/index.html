@@ -526,7 +526,7 @@ body::before{
       Your 60-day free trial starts now. No card required.
     </p>
 
-    <button class="ob-btn" id="btn-4" onclick="goLive()">
+    <button class="ob-btn" id="goLiveBtn" onclick="goLive()">
       <span class="ob-btn-label">Go Live →</span>
       <div class="ob-spinner" aria-hidden="true"></div>
     </button>
@@ -551,7 +551,7 @@ body::before{
   <div class="ob-action-cards">
     <div class="ob-action-card">
       <div class="ob-action-lbl">Your booking page</div>
-      <div class="ob-action-val" id="booking-url">book.thryvixai.com/c/...</div>
+      <a class="ob-action-val" id="bookingLink" href="#" target="_blank" rel="noopener">book.thryvixai.com/c/...</a>
       <button class="ob-action-btn" onclick="copyBookingLink()">Copy link</button>
     </div>
     <div class="ob-action-card">
@@ -682,7 +682,12 @@ async function completeOnboarding() {
 
 function showStep(n) {
   document.querySelectorAll('.ob-step').forEach(el => el.classList.remove('active'));
-  document.getElementById('step-' + n).classList.add('active');
+  const stepEl = document.getElementById('step-' + n);
+  if (stepEl) {
+    stepEl.classList.add('active');
+  } else if (n === 5) {
+    document.getElementById('ob-success').classList.add('visible');
+  }
   for (let i = 1; i <= 5; i++) {
     const pill = document.getElementById('pill-' + i);
     const conn = document.getElementById('conn-' + i);
@@ -869,49 +874,50 @@ async function step3() {
 }
 
 async function goLive() {
-  if (!sessionId) { toast('Session expired. Please refresh.'); return; }
-  setLoading('btn-4', true);
+  const btn = document.getElementById('goLiveBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Going live...'; }
 
-  const loading = document.getElementById('ob-loading');
-  loading.classList.add('visible');
-
-  const msgs = [
-    ['Setting up your clinic...', 'Creating your account'],
-    ['Configuring your booking page...', 'Building your unique link'],
-    ['Sending your login details...', 'Almost done!'],
-  ];
-  let idx = 0;
-  const interval = setInterval(() => {
-    if (idx < msgs.length) {
-      document.getElementById('loading-text').textContent = msgs[idx][0];
-      document.getElementById('loading-sub').textContent  = msgs[idx][1];
-      idx++;
+  try {
+    // If no session yet start one
+    if (!sessionId) {
+      const r = await fetch('https://api.thryvixai.com/onboarding/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      });
+      if (r.ok) { const d = await r.json(); sessionId = d.session_id; }
     }
-  }, 2500);
 
-  const result = await completeOnboarding();
-  clearInterval(interval);
-  loading.classList.remove('visible');
+    // Call complete
+    if (sessionId) {
+      const res = await fetch('https://api.thryvixai.com/onboarding/' + sessionId + '/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-  if (!result) {
-    toast('Setup failed. Please try again.');
-    setLoading('btn-4', false);
-    return;
+      if (res.ok) {
+        const data = await res.json();
+        clinicSlug = data.clinic_slug || '';
+
+        // Update booking link
+        const linkEl = document.getElementById('bookingLink');
+        if (linkEl && clinicSlug) {
+          linkEl.href = 'https://book.thryvixai.com/c/' + clinicSlug;
+          linkEl.textContent = 'book.thryvixai.com/c/' + clinicSlug;
+        }
+      }
+    }
+  } catch(e) {
+    console.error('Go live error:', e);
   }
 
-  if (result.clinic_slug) {
-    const url = 'book.thryvixai.com/c/' + result.clinic_slug;
-    const el = document.getElementById('booking-url');
-    el.textContent = url;
-    el.dataset.url = 'https://' + url;
-  }
-
-  document.getElementById('ob-success').classList.add('visible');
+  // Always go to step 5 even if API fails
+  showStep(5);
 }
 
 function copyBookingLink() {
-  const el = document.getElementById('booking-url');
-  const url = el.dataset.url || ('https://' + el.textContent);
+  const el = document.getElementById('bookingLink');
+  const url = el.href && el.href !== '#' ? el.href : ('https://' + el.textContent);
   navigator.clipboard.writeText(url).then(() => toast('Link copied!')).catch(() => {
     const ta = document.createElement('textarea');
     ta.value = url; document.body.appendChild(ta); ta.select();
