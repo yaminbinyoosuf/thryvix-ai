@@ -545,23 +545,24 @@ body::before{
 <!-- SUCCESS (Step 5) -->
 <div class="ob-success" id="ob-success">
   <div class="ob-success-check">
-    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    <svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:var(--acid);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
   </div>
-  <h1 class="ob-success-h">You are live on THRYVIX!</h1>
-  <p class="ob-success-sub">Your clinic is set up and patients can start booking right now. Share the link below.</p>
+  <h1 class="ob-success-h">Setup Complete!</h1>
+  <p class="ob-success-sub">We are reviewing your clinic details.<br>You will receive your login credentials on WhatsApp within 2 hours.</p>
   <div class="ob-action-cards">
     <div class="ob-action-card">
-      <div class="ob-action-lbl">Your booking page</div>
-      <a class="ob-action-val" id="bookingLink" href="#" target="_blank" rel="noopener">book.thryvixai.com/c/...</a>
-      <button class="ob-action-btn" onclick="copyBookingLink()">Copy link</button>
+      <div class="ob-action-lbl">What happens next</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+        <div style="font-size:13px;color:var(--dim)">✓ We review your clinic details</div>
+        <div style="font-size:13px;color:var(--dim)">✓ You receive WhatsApp confirmation</div>
+        <div style="font-size:13px;color:var(--dim)">✓ Login credentials sent to your WhatsApp</div>
+        <div style="font-size:13px;color:var(--dim)">✓ Your 60-day free trial begins</div>
+      </div>
     </div>
     <div class="ob-action-card">
-      <div class="ob-action-lbl">Your portal</div>
-      <div class="ob-action-val">health.thryvixai.com</div>
-      <a href="https://health.thryvixai.com" class="ob-action-btn-ghost">Open portal</a>
-    </div>
-    <div class="ob-action-card">
-      <div class="ob-action-lbl">Need help</div>
+      <div class="ob-action-lbl">Questions? We are here.</div>
       <div class="ob-action-val">hello@thryvixai.com</div>
       <div class="ob-action-val-dim">+91 90616 06343</div>
     </div>
