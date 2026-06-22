@@ -157,7 +157,7 @@ h1{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--txt);margin-
     <h1>Sign in to your clinic</h1>
     <p class="sub">Enter your credentials to continue.</p>
 
-    <div class="alert" id="loginError" role="alert"></div>
+    <div class="alert" id="loginError" role="alert" style="display:none"></div>
 
     <form id="loginForm" novalidate onsubmit="doLogin(); return false;">
 
@@ -181,7 +181,7 @@ h1{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--txt);margin-
         <div class="field-err" id="pwdErr">Please enter your password.</div>
       </div>
 
-      <button type="submit" class="btn-submit" id="loginBtn">
+      <button type="submit" class="btn-submit" id="loginBtn" onclick="doLogin()">
         <span class="btn-label">Sign in</span>
         <div class="spinner" aria-hidden="true"></div>
       </button>
@@ -203,77 +203,47 @@ h1{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--txt);margin-
 </div>
 
 <script>
-// Password toggle
-document.getElementById('pwdToggle').addEventListener('click', () => {
-  const pwdInput = document.getElementById('password');
-  const isText = pwdInput.type === 'text';
-  pwdInput.type = isText ? 'password' : 'text';
-  document.getElementById('pwdToggle').setAttribute('aria-label', isText ? 'Show password' : 'Hide password');
-  document.getElementById('eyeIcon').innerHTML = isText
-    ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
-    : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
-});
-
 async function doLogin() {
   const email = document.getElementById('email').value.trim();
   const pass = document.getElementById('password').value;
   const btn = document.getElementById('loginBtn');
   const err = document.getElementById('loginError');
-
+  if (err) err.style.display = 'none';
   if (!email || !pass) {
-    err.textContent = 'Please enter your email and password.';
-    err.style.display = 'block';
+    if (err) { err.textContent = 'Please enter your email and password.'; err.style.display = 'block'; }
     return;
   }
-
   btn.disabled = true;
   btn.textContent = 'Signing in...';
-  if (err) err.style.display = 'none';
-
   try {
     const body = new URLSearchParams();
     body.append('username', email);
     body.append('password', pass);
-
     const res = await fetch('https://api.thryvixai.com/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: body.toString()
     });
-
     if (res.ok) {
       const data = await res.json();
       if (data.access_token) {
         localStorage.setItem('thryvix_token', data.access_token);
-        if (data.refresh_token) {
-          localStorage.setItem('thryvix_refresh_token', data.refresh_token);
-        }
+        if (data.refresh_token) localStorage.setItem('thryvix_refresh_token', data.refresh_token);
         window.location.href = 'https://health.thryvixai.com';
         return;
       }
     }
-
     const errData = await res.json().catch(() => ({}));
-    if (err) {
-      err.textContent = errData.detail || 'Incorrect email or password.';
-      err.style.display = 'block';
-    }
+    if (err) { err.textContent = errData.detail || 'Incorrect email or password.'; err.style.display = 'block'; }
     document.getElementById('password').value = '';
-
   } catch(e) {
-    if (err) {
-      err.textContent = 'Unable to connect. Please try again.';
-      err.style.display = 'block';
-    }
-    console.error('Login error:', e);
+    if (err) { err.textContent = 'Unable to connect. Please try again.'; err.style.display = 'block'; }
   }
-
   btn.disabled = false;
   btn.textContent = 'Sign in';
 }
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin();
+document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
 });
 </script>
 </body>
