@@ -159,7 +159,7 @@ h1{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--txt);margin-
 
     <div class="alert" id="loginError" role="alert"></div>
 
-    <form id="loginForm" novalidate onsubmit="doLogin(event)">
+    <form id="loginForm" novalidate onsubmit="doLogin(); return false;">
 
       <div class="field">
         <label for="email">Email address</label>
@@ -214,39 +214,35 @@ document.getElementById('pwdToggle').addEventListener('click', () => {
     : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
 });
 
-async function doLogin(e) {
-  if (e) e.preventDefault();
-
+async function doLogin() {
   const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+  const pass = document.getElementById('password').value;
   const btn = document.getElementById('loginBtn');
-  const errEl = document.getElementById('loginError');
+  const err = document.getElementById('loginError');
 
-  if (!email || !password) {
-    errEl.textContent = 'Please enter your email and password.';
-    errEl.style.display = 'block';
+  if (!email || !pass) {
+    err.textContent = 'Please enter your email and password.';
+    err.style.display = 'block';
     return;
   }
 
   btn.disabled = true;
   btn.textContent = 'Signing in...';
-  errEl.style.display = 'none';
+  if (err) err.style.display = 'none';
 
   try {
     const body = new URLSearchParams();
     body.append('username', email);
-    body.append('password', password);
+    body.append('password', pass);
 
-    const response = await fetch('https://api.thryvixai.com/auth/login', {
+    const res = await fetch('https://api.thryvixai.com/auth/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: body.toString()
     });
 
-    if (response.ok) {
-      const data = await response.json();
+    if (res.ok) {
+      const data = await res.json();
       if (data.access_token) {
         localStorage.setItem('thryvix_token', data.access_token);
         if (data.refresh_token) {
@@ -257,15 +253,19 @@ async function doLogin(e) {
       }
     }
 
-    const errorData = await response.json().catch(() => ({}));
-    errEl.textContent = errorData.detail || 'Incorrect email or password.';
-    errEl.style.display = 'block';
+    const errData = await res.json().catch(() => ({}));
+    if (err) {
+      err.textContent = errData.detail || 'Incorrect email or password.';
+      err.style.display = 'block';
+    }
     document.getElementById('password').value = '';
 
-  } catch (err) {
-    console.error('Login error:', err);
-    errEl.textContent = 'Connection error. Please check your internet and try again.';
-    errEl.style.display = 'block';
+  } catch(e) {
+    if (err) {
+      err.textContent = 'Unable to connect. Please try again.';
+      err.style.display = 'block';
+    }
+    console.error('Login error:', e);
   }
 
   btn.disabled = false;
