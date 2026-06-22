@@ -571,28 +571,121 @@ body::before{
 <div class="ob-toast" id="ob-toast" role="alert" aria-live="polite"></div>
 
 <script>
-const API = 'https://api.thryvixai.com/onboarding';
+const API = 'https://api.thryvixai.com';
 let sessionId = null;
+let clinicSlug = null;
 let currentStep = 1;
 let doctorCount = 0;
 const fd = { doctors: [] };
 
-async function init() {
+// ── API layer ──
+
+async function startSession() {
   try {
-    const res = await fetch(`${API}/start`, { method: 'POST' });
-    const data = await res.json();
-    sessionId = data.session_id;
-  } catch(e) { console.error('Session init failed:', e); }
-  addDoctor();
+    const res = await fetch(API + '/onboarding/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    if (res.ok) {
+      const data = await res.json();
+      sessionId = data.session_id;
+      console.log('Session started:', sessionId);
+    }
+  } catch (err) {
+    console.error('Start session error:', err);
+  }
 }
-init();
+
+async function submitStep1(formData) {
+  if (!sessionId) await startSession();
+  try {
+    const res = await fetch(API + '/onboarding/' + sessionId + '/step1', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Step 1 error:', err);
+    return false;
+  }
+}
+
+async function submitStep2(doctors) {
+  try {
+    const res = await fetch(API + '/onboarding/' + sessionId + '/step2', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doctors: doctors })
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Step 2 error:', err);
+    return false;
+  }
+}
+
+async function submitStep3() {
+  try {
+    const res = await fetch(API + '/onboarding/' + sessionId + '/step3', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        whatsapp_number: '',
+        staff_whatsapp: ''
+      })
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Step 3 error:', err);
+    return false;
+  }
+}
+
+async function submitStep4(language, reviewLink) {
+  try {
+    const res = await fetch(API + '/onboarding/' + sessionId + '/step4', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        language: language || 'en',
+        google_review_link: reviewLink || null
+      })
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Step 4 error:', err);
+    return false;
+  }
+}
+
+async function completeOnboarding() {
+  try {
+    const res = await fetch(API + '/onboarding/' + sessionId + '/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      clinicSlug = data.clinic_slug;
+      return data;
+    }
+    return null;
+  } catch (err) {
+    console.error('Complete error:', err);
+    return null;
+  }
+}
+
+// ── UI helpers ──
 
 function showStep(n) {
   document.querySelectorAll('.ob-step').forEach(el => el.classList.remove('active'));
-  document.getElementById(`step-${n}`).classList.add('active');
+  document.getElementById('step-' + n).classList.add('active');
   for (let i = 1; i <= 5; i++) {
-    const pill = document.getElementById(`pill-${i}`);
-    const conn = document.getElementById(`conn-${i}`);
+    const pill = document.getElementById('pill-' + i);
+    const conn = document.getElementById('conn-' + i);
     pill.classList.remove('active', 'done');
     const num = pill.querySelector('.ob-step-num');
     if (i < n) {
@@ -635,6 +728,8 @@ function setLoading(btnId, on) {
   btn.classList.toggle('loading', on);
 }
 
+// ── Step handlers ──
+
 async function step1() {
   if (!req('clinicName')) { toast('Clinic name is required'); return; }
   if (!req('ownerName'))  { toast('Owner name is required'); return; }
@@ -648,7 +743,7 @@ async function step1() {
     clinic_name:         document.getElementById('clinicName').value.trim(),
     owner_name:          document.getElementById('ownerName').value.trim(),
     owner_email:         document.getElementById('ownerEmail').value.trim(),
-    owner_phone:         document.getElementById('ownerPhone').value.trim(),
+    owner_phone:         '+91' + document.getElementById('ownerPhone').value.trim(),
     city:                document.getElementById('city').value.trim(),
     district:            document.getElementById('district').value || null,
     speciality:          document.getElementById('speciality').value || null,
@@ -658,15 +753,12 @@ async function step1() {
   };
   Object.assign(fd, body);
 
-  try {
-    const res = await fetch(`${API}/${sessionId}/step1`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) throw new Error(await res.text());
+  const ok = await submitStep1(body);
+  if (ok) {
     showStep(2);
-  } catch(e) { toast('Failed to save. Please try again.'); }
+  } else {
+    toast('Failed to save. Please try again.');
+  }
   setLoading('btn-1', false);
 }
 
@@ -676,7 +768,7 @@ function addDoctor() {
   const list = document.getElementById('doc-list');
   const card = document.createElement('div');
   card.className = 'doc-card';
-  card.id = `dc-${n}`;
+  card.id = 'dc-' + n;
   card.innerHTML = `
     <div class="doc-card-head">
       <span class="doc-num">Doctor ${n}</span>
@@ -716,7 +808,7 @@ function addDoctor() {
 }
 
 function removeDoctor(n) {
-  const card = document.getElementById(`dc-${n}`);
+  const card = document.getElementById('dc-' + n);
   if (card) card.remove();
 }
 
@@ -727,61 +819,52 @@ async function step2() {
   const doctors = [];
   for (const card of cards) {
     const id = card.id.replace('dc-', '');
-    const name = document.getElementById(`dn${id}`)?.value?.trim();
+    const name = document.getElementById('dn' + id)?.value?.trim();
     if (!name) {
       toast('Doctor name is required');
-      document.getElementById(`dn${id}`)?.focus();
+      document.getElementById('dn' + id)?.focus();
       return;
     }
     doctors.push({
       name,
-      speciality:   document.getElementById(`ds${id}`)?.value || 'General Medicine',
-      fee:          parseFloat(document.getElementById(`df${id}`)?.value || 200),
-      hours_start:  document.getElementById(`dstart${id}`)?.value || '09:00',
-      hours_end:    document.getElementById(`dend${id}`)?.value || '18:00',
+      speciality:  document.getElementById('ds' + id)?.value || 'General Medicine',
+      fee:         parseFloat(document.getElementById('df' + id)?.value || 200),
+      hours_start: document.getElementById('dstart' + id)?.value || '09:00',
+      hours_end:   document.getElementById('dend' + id)?.value || '18:00',
     });
   }
   fd.doctors = doctors;
 
   setLoading('btn-2', true);
-  try {
-    const res = await fetch(`${API}/${sessionId}/step2`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doctors }),
-    });
-    if (!res.ok) throw new Error(await res.text());
+  const ok = await submitStep2(doctors);
+  if (ok) {
     showStep(3);
-  } catch(e) { toast('Failed to save doctors. Please try again.'); }
+  } else {
+    toast('Failed to save doctors. Please try again.');
+  }
   setLoading('btn-2', false);
 }
 
 async function step3() {
   const lang = document.querySelector('input[name="lang"]:checked')?.value || 'ml';
+  const reviewLink = document.getElementById('reviewLink').value.trim() || null;
   fd.language = lang;
-  fd.google_review_link = document.getElementById('reviewLink').value.trim() || null;
+  fd.google_review_link = reviewLink;
 
   setLoading('btn-3', true);
-  try {
-    await fetch(`${API}/${sessionId}/step3`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ whatsapp_number: '' }),
-    });
-    const res4 = await fetch(`${API}/${sessionId}/step4`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ language: lang, google_review_link: fd.google_review_link }),
-    });
-    if (!res4.ok) throw new Error(await res4.text());
+  const ok3 = await submitStep3();
+  const ok4 = await submitStep4(lang, reviewLink);
 
+  if (ok3 && ok4) {
     const langNames = { ml: 'Malayalam', en: 'English', ar: 'Arabic' };
     document.getElementById('sum-clinic').textContent = fd.clinic_name || '—';
-    document.getElementById('sum-owner').textContent  = `${fd.owner_name || '—'} · +91 ${fd.owner_phone || '—'}`;
-    document.getElementById('sum-docs').textContent   = `${fd.doctors.length} doctor${fd.doctors.length !== 1 ? 's' : ''}`;
+    document.getElementById('sum-owner').textContent  = (fd.owner_name || '—') + ' · ' + (fd.owner_phone || '—');
+    document.getElementById('sum-docs').textContent   = fd.doctors.length + ' doctor' + (fd.doctors.length !== 1 ? 's' : '');
     document.getElementById('sum-lang').textContent   = langNames[lang] || lang;
     showStep(4);
-  } catch(e) { toast('Failed to save. Please try again.'); }
+  } else {
+    toast('Failed to save. Please try again.');
+  }
   setLoading('btn-3', false);
 }
 
@@ -806,42 +889,29 @@ async function goLive() {
     }
   }, 2500);
 
-  try {
-    const res = await fetch(`${API}/${sessionId}/complete`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    clearInterval(interval);
-    loading.classList.remove('visible');
+  const result = await completeOnboarding();
+  clearInterval(interval);
+  loading.classList.remove('visible');
 
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      toast(err.detail || 'Setup failed. Please try again.');
-      setLoading('btn-4', false);
-      return;
-    }
-
-    const result = await res.json().catch(() => ({}));
-    const slug = result.clinic_slug || '';
-    if (slug) {
-      const url = `book.thryvixai.com/c/${slug}`;
-      const el = document.getElementById('booking-url');
-      el.textContent = url;
-      el.dataset.url = `https://${url}`;
-    }
-
-    document.getElementById('ob-success').classList.add('visible');
-  } catch(e) {
-    clearInterval(interval);
-    loading.classList.remove('visible');
-    toast('Network error. Please try again.');
+  if (!result) {
+    toast('Setup failed. Please try again.');
     setLoading('btn-4', false);
+    return;
   }
+
+  if (result.clinic_slug) {
+    const url = 'book.thryvixai.com/c/' + result.clinic_slug;
+    const el = document.getElementById('booking-url');
+    el.textContent = url;
+    el.dataset.url = 'https://' + url;
+  }
+
+  document.getElementById('ob-success').classList.add('visible');
 }
 
 function copyBookingLink() {
   const el = document.getElementById('booking-url');
-  const url = el.dataset.url || `https://${el.textContent}`;
+  const url = el.dataset.url || ('https://' + el.textContent);
   navigator.clipboard.writeText(url).then(() => toast('Link copied!')).catch(() => {
     const ta = document.createElement('textarea');
     ta.value = url; document.body.appendChild(ta); ta.select();
@@ -849,6 +919,9 @@ function copyBookingLink() {
     toast('Link copied!');
   });
 }
+
+// Initialize
+startSession().then(() => addDoctor());
 </script>
 </body>
 </html>
