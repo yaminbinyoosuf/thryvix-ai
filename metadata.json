@@ -1,0 +1,6 @@
+{
+  "name": "THRYVIX AI",
+  "description": "AI Operating System for Indian businesses. Includes an interactive live sandbox clinic booking simulator, real-time doctor queue dashboard, premium pristine white layout, and step-by-step clinic onboarding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
