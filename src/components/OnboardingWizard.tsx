@@ -290,7 +290,7 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
     };
 
     try {
-      const response = await fetch('https://api.thryvixai.com/onboard/complete', {
+      const response = await fetch('https://api.thryvixai.com/onboarding/complete-direct', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
@@ -1601,7 +1601,7 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
           <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl text-xs text-neutral-500 leading-normal flex items-start gap-2.5">
             <Info className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-emerald-800">We've sent details to your WhatsApp.</span> Your booking link and portal credentials have been sent via WhatsApp to <span className="font-bold text-black">{clinicPhone || ownerWhatsApp}</span>.
+              <span className="font-bold text-emerald-800">Clinic created! Check your email for login credentials.</span> We've also sent your booking link and portal credentials via WhatsApp to <span className="font-bold text-black">{ownerWhatsApp || clinicPhone}</span>{generatedEmail ? <> and to <span className="font-bold text-black">{generatedEmail}</span></> : null}.
             </div>
           </div>
 
