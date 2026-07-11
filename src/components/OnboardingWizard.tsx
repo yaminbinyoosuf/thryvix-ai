@@ -94,12 +94,7 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
   const [confirmAccurate, setConfirmAccurate] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
 
-  // --- SUCCESS RESPONSES ---
-  const [generatedSlug, setGeneratedSlug] = useState('');
-  const [generatedBookingUrl, setGeneratedBookingUrl] = useState('');
-  const [generatedEmail, setGeneratedEmail] = useState('');
-  const [generatedPassword, setGeneratedPassword] = useState('');
-  const [copySuccess, setCopySuccess] = useState(false);
+  // --- SUCCESS STATE ---
   const [submitError, setSubmitError] = useState('');
 
   // References for file uploads
@@ -308,12 +303,7 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
         return;
       }
 
-      const result = await response.json();
-
-      setGeneratedSlug(result.clinic_slug || '');
-      setGeneratedBookingUrl(result.booking_url || '');
-      setGeneratedEmail(result.portal_email || '');
-      setGeneratedPassword(result.portal_password || '');
+      await response.json();
 
       const onboardingPayload: OnboardingData = {
         clinicName,
@@ -352,77 +342,8 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 2000);
-  };
-
-  // Natively print the A4 flyer using the window printing overlay
-  const handlePrintPoster = () => {
-    window.print();
-  };
-
-  const bookingUrl = generatedBookingUrl || `https://book.thryvixai.com/c/${generatedSlug || 'my-clinic'}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(bookingUrl)}`;
-
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 md:py-16">
-      {/* Stylesheet injector for pristine A4 printing of the poster */}
-      <style>{`
-        @media print {
-          body * {
-            visibility: hidden !important;
-          }
-          #printable-qr-poster, #printable-qr-poster * {
-            visibility: visible !important;
-          }
-          #printable-qr-poster {
-            position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: white !important;
-            color: black !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            padding: 3.5in 1.5in !important;
-            box-sizing: border-box !important;
-            z-index: 999999 !important;
-          }
-        }
-      `}</style>
-
-      {/* Invisible Poster container for A4 Print */}
-      <div id="printable-qr-poster" className="hidden flex-col items-center justify-between text-center bg-white border-[12px] border-black p-12 min-h-screen">
-        <div className="space-y-4">
-          <div className="font-mono text-[14px] uppercase tracking-[0.25em] text-neutral-400 font-bold">// DIRECT BOOKING CHANNEL</div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black uppercase leading-none">{clinicName || "My Clinic"}</h1>
-          <p className="text-sm font-mono tracking-wider text-neutral-500 uppercase mt-1">{clinicType} · {city}</p>
-        </div>
-
-        <div className="flex flex-col items-center space-y-4">
-          <div className="text-2xl font-black text-black tracking-tight leading-none uppercase">Scan & Book Appointment</div>
-          <p className="text-xs text-neutral-500 max-w-xs mx-auto">Skip the phone queue. Get your real-time slot and live token in under 90 seconds.</p>
-          <div className="p-4 border-4 border-black rounded-3xl bg-white shadow-xl">
-            <img src={qrCodeUrl} alt="Booking QR Code" className="w-64 h-64 select-none" referrerPolicy="no-referrer" />
-          </div>
-          <div className="font-mono text-sm font-bold bg-neutral-100 px-4 py-2 rounded-xl text-black border border-black/5 mt-2">
-            book.thryvixai.com/c/{generatedSlug || 'clinic'}
-          </div>
-        </div>
-
-        <div className="border-t border-black/10 pt-6 w-full flex items-center justify-between">
-          <div className="flex items-center gap-1 font-mono text-xs font-bold tracking-wider text-black">
-            <span>THRYVIX</span><span className="text-neutral-400"> AI</span>
-          </div>
-          <span className="font-mono text-[8px] text-neutral-400 uppercase tracking-widest">STATE CLINIC COMPLIANCE ACT 2026</span>
-        </div>
-      </div>
-
       {/* Wizard Progress Indicator */}
       <div className="flex items-center justify-start sm:justify-between overflow-x-auto gap-1 mb-12 select-none pb-4 border-b border-black/5">
         {[
@@ -1465,192 +1386,33 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
         </div>
       )}
 
-      {/* STEP 6: Live Success Screen */}
+      {/* STEP 6: Application Received Screen */}
       {step === 6 && (
-        <div className="space-y-8 animate-in fade-in duration-300 max-w-2xl mx-auto">
-          {/* Header check */}
-          <div className="text-center space-y-3">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-100 shadow-lg shadow-emerald-500/5">
-              <Check className="w-8 h-8 animate-bounce-none" />
-            </div>
-            <h2 className="text-3xl font-black text-black tracking-tight">You're Live on THRYVIX!</h2>
+        <div className="space-y-8 animate-in fade-in duration-300 max-w-lg mx-auto text-center py-8">
+          <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-100 shadow-lg shadow-emerald-500/5">
+            <Check className="w-8 h-8" />
+          </div>
+          <div className="space-y-3">
+            <h2 className="text-3xl font-black text-black tracking-tight">Application Received!</h2>
             <p className="text-sm text-black/60 max-w-md mx-auto leading-relaxed">
-              Your booking database and live patient queue triggers have been compiled on AWS Mumbai servers.
+              Our team will review and activate your clinic within 24 hours.
+              You'll receive login details on WhatsApp and email.
             </p>
           </div>
-
-          {/* Live assets cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Booking URL Card */}
-            <div className="bg-white border border-black/5 p-6 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.01)] flex flex-col justify-between">
-              <div className="space-y-2">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 font-bold block">// PATIENT BOOKING CHANNEL</span>
-                <h4 className="text-base font-black text-black">Unique Booking Link</h4>
-                <p className="text-xs text-neutral-500 leading-normal">Place this link on your WhatsApp Profile, Google Maps listing, or SMS campaigns.</p>
-                <div className="font-mono text-[11px] bg-neutral-50 border border-black/5 p-3 rounded-xl break-all text-neutral-700 font-bold select-all mt-3">
-                  {bookingUrl}
-                </div>
-              </div>
-              <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                <button
-                  onClick={() => copyToClipboard(bookingUrl)}
-                  className="flex-1 min-h-11 py-2.5 text-xs font-mono tracking-wider uppercase font-bold border border-black/10 hover:border-black rounded-xl transition-all flex items-center justify-center gap-1.5"
-                >
-                  <Clipboard className="w-3.5 h-3.5" />
-                  {copySuccess ? 'Copied!' : 'Copy Link'}
-                </button>
-                <a
-                  href={bookingUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 min-h-11 py-2.5 text-xs font-mono tracking-wider uppercase font-bold bg-black text-white hover:bg-neutral-800 rounded-xl transition-all flex items-center justify-center gap-1.5"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  Open
-                </a>
-              </div>
-            </div>
-
-            {/* Portal Credentials Card */}
-            <div className="bg-white border border-black/5 p-6 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.01)] flex flex-col justify-between">
-              <div className="space-y-2">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 font-bold block">// STAFF PORTAL LOGIN</span>
-                <h4 className="text-base font-black text-black">Clinic Credentials</h4>
-                <p className="text-xs text-neutral-500 leading-normal">Access the staff dashboard to monitor live consultation rooms and queue sequences.</p>
-                
-                <div className="space-y-1.5 bg-neutral-50 border border-black/5 p-3.5 rounded-xl font-mono text-[11px] text-neutral-700 mt-3 font-bold">
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400 font-bold uppercase text-[9px]">Portal:</span>
-                    <span className="text-black">health.thryvixai.com</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400 font-bold uppercase text-[9px]">Email:</span>
-                    <span className="text-black truncate max-w-[150px]">{generatedEmail}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400 font-bold uppercase text-[9px]">Password:</span>
-                    <span className="text-black font-mono">{generatedPassword}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                <button
-                  onClick={() => copyToClipboard(`Email: ${generatedEmail}\nPassword: ${generatedPassword}`)}
-                  className="flex-1 min-h-11 py-2.5 text-xs font-mono tracking-wider uppercase font-bold border border-black/10 hover:border-black rounded-xl transition-all flex items-center justify-center gap-1.5"
-                >
-                  <Clipboard className="w-3.5 h-3.5" />
-                  Copy
-                </button>
-                <a
-                  href="https://health.thryvixai.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 min-h-11 py-2.5 text-xs font-mono tracking-wider uppercase font-bold bg-black text-white hover:bg-neutral-800 rounded-xl transition-all flex items-center justify-center gap-1.5"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  Go to Portal
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* QR Code Poster & WhatsApp notice */}
-          <div className="bg-white border border-black/5 p-6 md:p-8 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.01)] grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            {/* Poster design preview */}
-            <div className="md:col-span-5 flex justify-center">
-              <div className="border border-black/10 p-4 rounded-xl bg-neutral-50 shadow-sm flex flex-col items-center max-w-[200px] text-center space-y-3">
-                <span className="font-mono text-[7px] text-neutral-400 font-bold uppercase tracking-widest leading-none">A4 FLYER PREVIEW</span>
-                <div className="font-bold text-[9px] uppercase leading-none truncate w-full">{clinicName}</div>
-                <div className="p-2 border border-black/5 bg-white rounded-lg">
-                  <img src={qrCodeUrl} alt="scannable code" className="w-24 h-24" referrerPolicy="no-referrer" />
-                </div>
-                <span className="text-[8px] font-mono font-bold text-neutral-500 tracking-wider">book.thryvixai.com</span>
-              </div>
-            </div>
-
-            {/* Poster Download Action */}
-            <div className="md:col-span-7 space-y-4">
-              <div className="space-y-1">
-                <h4 className="text-lg font-black text-black">A4 Clinic Poster Poster</h4>
-                <p className="text-xs text-neutral-500 leading-relaxed">
-                  Print this clean, high-resolution flyer to paste on your reception glass or clinical entrance so patients scan and book instantly.
-                </p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={handlePrintPoster}
-                  className="flex-1 py-3 text-xs font-mono tracking-wider uppercase font-bold bg-black text-white hover:bg-neutral-800 rounded-xl transition-all flex items-center justify-center gap-2"
-                >
-                  <Printer className="w-4 h-4" /> Print QR Poster (A4)
-                </button>
-                <a
-                  href={qrCodeUrl}
-                  download={`${generatedSlug}-booking-qr.png`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="py-3 px-4 text-xs font-mono tracking-wider uppercase font-bold border border-black/10 hover:border-black rounded-xl transition-all flex items-center justify-center gap-1 text-black bg-white"
-                >
-                  <Download className="w-4 h-4" /> QR Code
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Local updates warning and WhatsApp notifications info banner */}
-          <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl text-xs text-neutral-500 leading-normal flex items-start gap-2.5">
-            <Info className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <span className="font-bold text-emerald-800">Clinic created! Check your email for login credentials.</span> We've also sent your booking link and portal credentials via WhatsApp to <span className="font-bold text-black">{ownerWhatsApp || clinicPhone}</span>{generatedEmail ? <> and to <span className="font-bold text-black">{generatedEmail}</span></> : null}.
-            </div>
-          </div>
-
-          {/* Navigation controls */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <p className="text-xs text-neutral-500">
+            Questions? WhatsApp us:{' '}
+            <a href="https://wa.me/919061606343" target="_blank" rel="noreferrer" className="font-bold text-black underline">
+              +91 90616 06343
+            </a>
+          </p>
+          {setActiveView && (
             <button
-              onClick={() => {
-                // Return to landing page but with updated context
-                onComplete({
-                  clinicName,
-                  clinicType,
-                  addressLine1,
-                  city,
-                  district,
-                  pincode,
-                  googleMapsLink,
-                  clinicPhone,
-                  whatsAppNumber,
-                  ownerWhatsApp,
-                  ownerName,
-                  website,
-                  workingDays,
-                  openingTime,
-                  closingTime,
-                  lunchBreak,
-                  lunchStart,
-                  lunchEnd,
-                  holidayNote,
-                  avgConsultationTime,
-                  doctors,
-                  clinicLogo,
-                  clinicPhotos,
-                  language: primaryLanguage,
-                  googleReviewLink
-                });
-                window.location.reload(); // Quick refresh to load client variables completely
-              }}
-              className="flex-1 py-4 text-xs font-mono tracking-wider uppercase font-bold bg-black text-white hover:bg-neutral-800 rounded-xl transition-all flex items-center justify-center gap-2"
+              onClick={() => setActiveView('landing')}
+              className="py-3 px-6 text-xs font-mono tracking-wider uppercase font-bold border border-black/10 hover:border-black text-black bg-white rounded-xl transition-all"
             >
-              <span>Explore Interactive Patient Booking</span>
-              <ArrowRight className="w-4 h-4" />
+              Back to Home
             </button>
-            <button
-              onClick={() => setStep(1)}
-              className="py-4 px-6 text-xs font-mono tracking-wider uppercase font-bold border border-black/10 hover:border-black text-black bg-white rounded-xl transition-all"
-            >
-              Create Another Clinic
-            </button>
-          </div>
+          )}
         </div>
       )}
     </div>
