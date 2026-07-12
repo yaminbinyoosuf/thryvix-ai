@@ -138,7 +138,8 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
       clinicPhone.trim() !== '' &&
       whatsAppNumber.trim() !== '' &&
       ownerWhatsApp.trim() !== '' &&
-      ownerName.trim() !== ''
+      ownerName.trim() !== '' &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ownerEmail.trim())
     );
   };
 
@@ -534,9 +535,10 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
             </div>
 
             <div>
-              <label className="block font-mono text-[9px] uppercase tracking-widest text-neutral-400 font-bold mb-2">Owner Email (For Portal Login)</label>
+              <label className="block font-mono text-[9px] uppercase tracking-widest text-neutral-400 font-bold mb-2">Owner Email (For Portal Login) *</label>
               <input
                 type="email"
+                required
                 placeholder="E.g. owner@clinic.com"
                 value={ownerEmail}
                 onChange={(e) => setOwnerEmail(e.target.value)}
