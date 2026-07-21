@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Heart, Layers, Activity, FileSpreadsheet, BellRing, CreditCard, BarChart4, ClipboardList, Sparkles } from 'lucide-react';
+import { Calendar, Heart, Layers, Activity, BellRing, BarChart4, ClipboardList, Sparkles } from 'lucide-react';
 
 export default function StickyFeatures() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -8,65 +8,58 @@ export default function StickyFeatures() {
     {
       num: '01',
       title: 'Online Booking Page',
-      desc: 'Your clinic gets a unique booking URL and QR code. Patients open it in any browser, pick their doctor and slot, and confirm in under 2 minutes. No app needed. No missed calls.',
+      desc: 'Your clinic gets a unique booking URL and QR code. Patients open it in any browser, pick their doctor and slot, confirm in under 2 minutes. No app download. No missed calls.',
       icon: <Calendar className="w-5 h-5 text-black" />,
       tag: 'Live Now'
     },
     {
       num: '02',
       title: 'Patient Health IDs',
-      desc: 'Every patient gets a unique THX Health ID. Full history, records, and bookings under one permanent identity — accessible in seconds.',
+      desc: 'Every patient gets a permanent THX Health ID. Full visit history, records, and bookings under one identity — accessible across every THRYVIX clinic.',
       icon: <Heart className="w-5 h-5 text-black" />,
       tag: 'Live Now'
     },
     {
       num: '03',
       title: 'Live Queue Management',
-      desc: 'Patients join from home. Staff sees real-time queue. Position updates sent automatically. Your waiting room stays calm.',
+      desc: 'Patients track their turn in real time from their phone. Staff sees the full queue. Position updates sent automatically via WhatsApp. Zero phone calls to reception.',
       icon: <Layers className="w-5 h-5 text-black" />,
       tag: 'Live Now'
     },
     {
       num: '04',
-      title: 'AI Doctor Brief',
-      desc: 'Before the patient arrives, the doctor gets a full summary — history, allergies, last complaint, medications. Every consultation starts with full context.',
-      icon: <Sparkles className="w-5 h-5 text-black" />,
-      tag: 'AI Feature'
+      title: 'No-Show Prediction',
+      desc: 'Every appointment gets a risk score. High-risk patients get automatic reminders. Clinics recover appointments before they\'re lost.',
+      icon: <Activity className="w-5 h-5 text-black" />,
+      tag: 'Live Now'
     },
     {
       num: '05',
-      title: 'Electronic Medical Records',
-      desc: 'Prescriptions, lab results, visit notes — all linked to patient Health ID. Full history retrievable in under 3 seconds.',
-      icon: <ClipboardList className="w-5 h-5 text-black" />,
-      tag: 'Coming Soon'
-    },
-    {
-      num: '06',
-      title: 'Smart Reminders',
-      desc: 'Appointment reminders 24 hours before. Follow-up after visit. Review requests at exactly the right moment. All automated, zero manual effort.',
+      title: 'WhatsApp Automation',
+      desc: 'Booking confirmations, arrival reminders, doctor-ready alerts, follow-up reminders, and visit ratings — all sent automatically via WhatsApp. Zero manual effort.',
       icon: <BellRing className="w-5 h-5 text-black" />,
       tag: 'Live Now'
     },
     {
-      num: '07',
-      title: 'Online Payment',
-      desc: 'Payment link sent after booking. Patient pays via UPI. Invoice auto-generated and delivered instantly. Zero paperwork.',
-      icon: <CreditCard className="w-5 h-5 text-black" />,
-      tag: 'Coming Soon'
-    },
-    {
-      num: '08',
-      title: 'Analytics Dashboard',
-      desc: 'Daily, weekly, monthly revenue and queue reports delivered to the clinic owner every morning before the first patient arrives.',
+      num: '06',
+      title: 'Weekly Intelligence Report',
+      desc: 'Every Monday at 8 AM, the clinic owner gets a full report — revenue, no-show patterns, busiest hours, doctor performance. Built from real operational data.',
       icon: <BarChart4 className="w-5 h-5 text-black" />,
       tag: 'Live Now'
     },
     {
-      num: '09',
-      title: 'Multi-Doctor Scheduling',
-      desc: 'Separate schedules per doctor. Patients choose their doctor. Slot availability managed automatically — no conflicts, no double bookings.',
-      icon: <FileSpreadsheet className="w-5 h-5 text-black" />,
-      tag: 'Live Now'
+      num: '07',
+      title: 'COGEXT Intelligence',
+      desc: 'Pattern recognition across every appointment, every patient, every interaction. The intelligence layer that makes THRYVIX smarter every day it runs.',
+      icon: <Sparkles className="w-5 h-5 text-black" />,
+      tag: 'Building'
+    },
+    {
+      num: '08',
+      title: 'Electronic Medical Records',
+      desc: 'Prescriptions, lab results, visit notes — all linked to patient Health ID. Full history retrievable in under 3 seconds.',
+      icon: <ClipboardList className="w-5 h-5 text-black" />,
+      tag: 'Coming Soon'
     }
   ];
 
@@ -81,7 +74,7 @@ export default function StickyFeatures() {
           <div className="flex items-center gap-2">
             <span className="font-mono font-bold text-black">{features[activeIdx].num}</span>
             <span className="text-black/20">/</span>
-            <span className="text-neutral-400 font-mono">09</span>
+            <span className="text-neutral-400 font-mono">08</span>
           </div>
 
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-mono tracking-widest uppercase border-black/5 text-neutral-500 bg-neutral-50/50">
@@ -100,7 +93,7 @@ export default function StickyFeatures() {
           <div className="h-1 bg-neutral-100 w-full rounded-full overflow-hidden">
             <div
               className="h-full bg-black rounded-full transition-all duration-300"
-              style={{ width: `${((activeIdx + 1) / 9) * 100}%` }}
+              style={{ width: `${((activeIdx + 1) / 8) * 100}%` }}
             />
           </div>
         </div>

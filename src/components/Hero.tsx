@@ -46,9 +46,9 @@ export default function Hero({ setActiveView }: HeroProps) {
     };
 
     animateCount(63, setCount1);
-    animateCount(90, setCount2);
-    animateCount(10, setCount3);
-    animateCount(18, setCount4);
+    animateCount(8, setCount2);
+    animateCount(22, setCount3);
+    animateCount(60, setCount4);
   }, []);
 
   return (
@@ -76,7 +76,7 @@ export default function Hero({ setActiveView }: HeroProps) {
       {/* Trust Badges Bar */}
       <div className="relative z-10 inline-flex items-center gap-2 border px-4 py-1.5 rounded-full border-black/10 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[10px] font-mono tracking-widest uppercase mb-10 select-none animate-in fade-in slide-in-from-top-2 duration-700">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-black/60 font-medium">THRYVIX Health — Live Queue Demo</span>
+        <span className="text-black/60 font-medium">THRYVIX Health — Live in Kerala · 22 clinics</span>
         <span className="text-black/20">|</span>
         <span className="text-black font-bold">Kerala, India</span>
       </div>
@@ -134,19 +134,19 @@ export default function Hero({ setActiveView }: HeroProps) {
       <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 border rounded-xl mt-16 divide-y md:divide-y-0 md:divide-x divide-black/5 border-black/5 max-w-4xl w-full bg-white overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.02)] animate-in fade-in slide-in-from-bottom-7 duration-1000">
         <div className="p-6 text-center hover:bg-neutral-50/50 transition-colors">
           <div className="font-mono text-3xl font-black text-black">{count1}M</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Indian Businesses</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Million Indian SMEs running on human memory</div>
         </div>
         <div className="p-6 text-center hover:bg-neutral-50/50 transition-colors">
-          <div className="font-mono text-3xl font-black text-black">{count2}s</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Average Booking</div>
+          <div className="font-mono text-3xl font-black text-black">{count2}L</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Lakh private clinics with no intelligence layer</div>
         </div>
         <div className="p-6 text-center hover:bg-neutral-50/50 transition-colors">
-          <div className="font-mono text-3xl font-black text-black">{count3}m</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Onboard To Live</div>
+          <div className="font-mono text-3xl font-black text-black">{count3}</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Clinics on THRYVIX today</div>
         </div>
         <div className="p-6 text-center hover:bg-neutral-50/50 transition-colors">
-          <div className="font-mono text-3xl font-black text-black">{count4}×</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Average Month 1 ROI</div>
+          <div className="font-mono text-3xl font-black text-black">{count4}</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Days free trial for Kerala clinics</div>
         </div>
       </div>
     </section>

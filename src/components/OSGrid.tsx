@@ -6,44 +6,44 @@ export default function OSGrid() {
     {
       num: '01',
       title: 'THRYVIX Health',
-      sector: 'Private Clinics & Labs',
-      desc: 'Online booking, live queue, AI doctor brief, automated notifications, billing and reviews.',
+      sector: 'Private Clinics & Hospitals',
+      desc: 'Queue management, patient booking, no-show prediction, Health ID, doctor brief, weekly intelligence reports.',
       status: 'Live Now'
     },
     {
       num: '02',
-      title: 'Ecommerce OS',
+      title: 'THRYVIX Commerce',
       sector: 'D2C & Online Stores',
-      desc: 'COD confirmation, order tracking, abandoned cart recovery and customer retention.',
-      status: 'Soon'
+      desc: 'COD cancellation prediction, cart recovery, supplier commitment tracking, direct customer channel independent of Zomato or Amazon.',
+      status: 'Month 6'
     },
     {
       num: '03',
-      title: 'Kirana OS',
-      sector: 'Neighbourhood Retail',
-      desc: 'Udhaar tracking, supplier orders, inventory alerts and credit account management.',
-      status: 'Soon'
+      title: 'THRYVIX Gov',
+      sector: 'Panchayats & Municipalities',
+      desc: 'Citizen grievance tracking, service delivery commitment memory, project tracking, budget utilisation intelligence.',
+      status: 'Month 12'
     },
     {
       num: '04',
-      title: 'Salon OS',
-      sector: 'Salons & Spas',
-      desc: 'Bookings, no-show prevention, stylist scheduling and automated loyalties.',
-      status: 'Soon'
+      title: 'THRYVIX Edu',
+      sector: 'Schools & Colleges',
+      desc: 'Fee payment patterns, student performance memory, parent communication tracking, attendance prediction.',
+      status: 'Month 12'
     },
     {
       num: '05',
-      title: 'Restaurant OS',
-      sector: 'Restaurants & Kitchens',
-      desc: 'Direct ordering, delivery tracking and loyalty — no third-party platform commissions.',
-      status: 'Soon'
+      title: 'THRYVIX Community',
+      sector: 'Cooperatives & NGOs',
+      desc: 'Member management, loan tracking, donor relationships, volunteer coordination, community event intelligence.',
+      status: 'Month 18'
     },
     {
       num: '06',
-      title: 'Compliance OS',
+      title: 'THRYVIX Finance',
       sector: 'CA & Legal Firms',
-      desc: 'GST deadline tracking, automated client follow-ups and statutory reminders.',
-      status: 'Soon'
+      desc: 'GST deadline tracking, client commitment memory, statutory reminders, 7 lakh CA firms as distribution.',
+      status: 'Month 28'
     }
   ];
 
@@ -52,10 +52,10 @@ export default function OSGrid() {
       <div className="max-w-6xl mx-auto px-6">
         <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-400 block mb-3">// Product Suite</span>
         <h2 className="text-3xl md:text-5xl font-black tracking-tight text-black leading-tight">
-          One OS.<br />Every Indian industry.
+          One intelligence layer.<br />Every Indian industry.
         </h2>
         <p className="text-sm text-black/60 max-w-md mt-3 mb-12">
-          THRYVIX Health is live. The rest are being built the same way — web-native, AI-powered, and Malayalam-first.
+          THRYVIX Health is live. Every OS runs on the same intelligence layer underneath — not a new product, a new configuration.
         </p>
 
         {/* The Grid */}

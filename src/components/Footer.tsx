@@ -22,7 +22,7 @@ export default function Footer({ setActiveView }: FooterProps) {
             </div>
           </div>
           <p className="text-[11px] leading-relaxed text-neutral-500">
-            The AI operating system for Indian business. Built for clinic automation, patient intelligence, and live queues.
+            The operating system for organised human activity. Starting with clinics. Every industry follows.
           </p>
           <div className="flex flex-wrap gap-1.5 pt-2">
             {['KSWIFT', 'MSME', 'DPDP', 'AWS Mumbai'].map((badge) => (
