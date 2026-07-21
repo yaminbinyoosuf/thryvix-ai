@@ -6,6 +6,7 @@ import DashboardPreview from './components/DashboardPreview';
 import OnboardingWizard from './components/OnboardingWizard';
 import StickyFeatures from './components/StickyFeatures';
 import OSGrid from './components/OSGrid';
+import Blog from './components/Blog';
 import FAQAccordion from './components/FAQAccordion';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
@@ -208,6 +209,9 @@ export default function App() {
 
             {/* Comprehensive Vertical OS Product Suite Grid */}
             <OSGrid />
+
+            {/* Blog Section */}
+            <Blog />
 
             {/* Premium Quote block */}
             <section className="py-24 bg-neutral-50 text-center relative overflow-hidden border-b border-black/5">

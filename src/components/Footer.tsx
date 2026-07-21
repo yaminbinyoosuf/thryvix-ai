@@ -6,7 +6,7 @@ interface FooterProps {
 
 export default function Footer({ setActiveView }: FooterProps) {
   return (
-    <footer className="bg-neutral-50 text-neutral-600 text-xs border-t border-black/5">
+    <footer id="footer" className="bg-neutral-50 text-neutral-600 text-xs border-t border-black/5">
       <div className="max-w-6xl mx-auto px-6 py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Brand block */}
@@ -141,6 +141,17 @@ export default function Footer({ setActiveView }: FooterProps) {
           </ul>
         </div>
 
+      </div>
+
+      {/* Careers note */}
+      <div className="max-w-6xl mx-auto px-6 pb-8 border-t border-black/5 pt-6">
+        <h5 className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 font-bold mb-2">Careers</h5>
+        <p className="text-[11px] text-neutral-500 leading-relaxed max-w-xl">
+          We are a solo founder building infrastructure for Indian businesses. No open positions right now. If you believe in what we are building, write to us at{' '}
+          <a href="mailto:hello@thryvixai.com" className="text-neutral-700 font-semibold hover:text-black transition-colors">
+            hello@thryvixai.com
+          </a>
+        </p>
       </div>
 
       {/* District index list */}

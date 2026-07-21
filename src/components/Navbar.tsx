@@ -52,17 +52,36 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
   const navLinks = [
     {
       label: 'Products',
-      dropdown: ['THRYVIX Health', 'Ecommerce OS', 'Kirana OS', 'Salon OS', 'Restaurant OS'],
+      dropdown: ['THRYVIX Health', 'THRYVIX Commerce', 'THRYVIX Gov', 'THRYVIX Edu', 'THRYVIX Community', 'THRYVIX Finance'],
     },
     {
       label: 'Resources',
-      dropdown: ['Blogs', 'Case study', 'About us', 'Careers'],
+      dropdown: ['About', 'Careers', 'Blog'],
     },
     {
       label: 'Pricing',
       href: '#pricing',
     },
   ];
+
+  // Maps dropdown items to the section id they should scroll to
+  const dropdownScrollTargets: { [key: string]: string } = {
+    'THRYVIX Health': 'clinic',
+    'About': 'products',
+    'Careers': 'footer',
+    'Blog': 'blog',
+  };
+
+  const handleDropdownItemClick = (item: string) => {
+    const targetId = dropdownScrollTargets[item];
+    if (targetId) {
+      setActiveView('landing');
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  };
 
   return (
     <>
@@ -116,15 +135,7 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
                   {link.dropdown.map((item) => (
                     <button
                       key={item}
-                      onClick={() => {
-                        if (item === 'THRYVIX Health') {
-                          setActiveView('landing');
-                          setTimeout(() => {
-                            const el = document.getElementById('clinic');
-                            if (el) el.scrollIntoView({ behavior: 'smooth' });
-                          }, 100);
-                        }
-                      }}
+                      onClick={() => handleDropdownItemClick(item)}
                       className="w-full text-left text-[11px] px-3 py-2 text-black/60 hover:text-black hover:bg-neutral-50 rounded transition-colors"
                     >
                       {item}
@@ -259,13 +270,7 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
                               key={item}
                               onClick={() => {
                                 setMobMenuOpen(false);
-                                if (item === 'THRYVIX Health') {
-                                  setActiveView('landing');
-                                  setTimeout(() => {
-                                    const el = document.getElementById('clinic');
-                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                                  }, 100);
-                                }
+                                handleDropdownItemClick(item);
                               }}
                               className="w-full text-left text-[11px] font-mono uppercase tracking-wider min-h-11 flex items-center text-neutral-500 hover:text-black transition-colors whitespace-normal break-words"
                             >

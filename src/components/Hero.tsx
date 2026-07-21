@@ -47,8 +47,8 @@ export default function Hero({ setActiveView }: HeroProps) {
 
     animateCount(63, setCount1);
     animateCount(8, setCount2);
-    animateCount(22, setCount3);
-    animateCount(60, setCount4);
+    animateCount(20, setCount3);
+    animateCount(30, setCount4);
   }, []);
 
   return (
@@ -76,7 +76,7 @@ export default function Hero({ setActiveView }: HeroProps) {
       {/* Trust Badges Bar */}
       <div className="relative z-10 inline-flex items-center gap-2 border px-4 py-1.5 rounded-full border-black/10 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[10px] font-mono tracking-widest uppercase mb-10 select-none animate-in fade-in slide-in-from-top-2 duration-700">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-black/60 font-medium">THRYVIX Health — Live in Kerala · 22 clinics</span>
+        <span className="text-black/60 font-medium">THRYVIX Health — 20 clinics on trial · Kerala</span>
         <span className="text-black/20">|</span>
         <span className="text-black font-bold">Kerala, India</span>
       </div>
@@ -142,11 +142,11 @@ export default function Hero({ setActiveView }: HeroProps) {
         </div>
         <div className="p-6 text-center hover:bg-neutral-50/50 transition-colors">
           <div className="font-mono text-3xl font-black text-black">{count3}</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Clinics on THRYVIX today</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Clinics on free trial in Kerala</div>
         </div>
         <div className="p-6 text-center hover:bg-neutral-50/50 transition-colors">
           <div className="font-mono text-3xl font-black text-black">{count4}</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Days free trial for Kerala clinics</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mt-2">Day free trial. No credit card.</div>
         </div>
       </div>
     </section>
