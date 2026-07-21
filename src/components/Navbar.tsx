@@ -97,14 +97,7 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
           onMouseEnter={triggerScramble}
           className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider hover:opacity-80 transition-opacity flex-shrink-0"
         >
-          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100" height="100" rx="22" fill="black" />
-            <text x="50" y="68" fontFamily="Arial Black, sans-serif" fontSize="52" fontWeight="900" fill="white" textAnchor="middle">TX</text>
-          </svg>
-          <div className="flex items-center">
-            <span className="font-bold">{scrambleText}</span>
-            <span className="text-black/40"> AI</span>
-          </div>
+          <img src="/thryvixlogo.png" alt="THRYVIX" className="h-8 w-auto" />
         </button>
 
         {/* Desktop Links (Hover Dropdowns) */}
@@ -230,14 +223,7 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
           {/* Drawer Header */}
           <div className="flex items-center justify-between border-b border-black/5 pb-4 flex-shrink-0">
             <div className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider">
-              <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="100" rx="22" fill="black" />
-                <text x="50" y="68" fontFamily="Arial Black, sans-serif" fontSize="52" fontWeight="900" fill="white" textAnchor="middle">TX</text>
-              </svg>
-              <div className="flex items-center">
-                <span className="font-bold">{scrambleText}</span>
-                <span className="text-black/40"> AI</span>
-              </div>
+              <img src="/thryvixlogo.png" alt="THRYVIX" className="h-8 w-auto" />
             </div>
             <button
               onClick={() => setMobMenuOpen(false)}

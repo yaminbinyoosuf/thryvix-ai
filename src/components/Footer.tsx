@@ -74,6 +74,8 @@ export default function Footer({ setActiveView }: FooterProps) {
             <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Commerce</span></li>
             <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Gov</span></li>
             <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Edu</span></li>
+            <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Community</span></li>
+            <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Finance</span></li>
           </ul>
         </div>
 

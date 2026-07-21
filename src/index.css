@@ -11,6 +11,12 @@ html, body, button, input, select, textarea, div, span, p, h1, h2, h3, h4, h5, h
   font-family: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif !important;
 }
 
+/* Prevent accidental horizontal scroll on mobile from oversized/absolute elements */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .font-mono {
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace !important;
 }
