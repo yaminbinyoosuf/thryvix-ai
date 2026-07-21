@@ -97,7 +97,7 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
           onMouseEnter={triggerScramble}
           className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider hover:opacity-80 transition-opacity flex-shrink-0"
         >
-          <img src="/thryvixlogo.png" alt="THRYVIX" className="h-8 w-auto" />
+          <div className="flex items-center gap-2"><div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0"><span className="text-white font-black text-xs">TX</span></div><span className="font-bold text-black">THRYVIX</span><span className="text-black/40">AI</span></div>
         </button>
 
         {/* Desktop Links (Hover Dropdowns) */}
@@ -223,7 +223,7 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
           {/* Drawer Header */}
           <div className="flex items-center justify-between border-b border-black/5 pb-4 flex-shrink-0">
             <div className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider">
-              <img src="/thryvixlogo.png" alt="THRYVIX" className="h-8 w-auto" />
+              <div className="flex items-center gap-2"><div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0"><span className="text-white font-black text-xs">TX</span></div><span className="font-bold text-black">THRYVIX</span><span className="text-black/40">AI</span></div>
             </div>
             <button
               onClick={() => setMobMenuOpen(false)}
