@@ -78,11 +78,12 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
           onMouseEnter={triggerScramble}
           className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider hover:opacity-80 transition-opacity flex-shrink-0"
         >
-          <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0 L15 9 L24 12 L15 15 L12 24 L9 15 L0 12 L9 9 Z" />
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="22" fill="black" />
+            <text x="50" y="68" fontFamily="Arial Black, sans-serif" fontSize="52" fontWeight="900" fill="white" textAnchor="middle">TX</text>
           </svg>
           <div className="flex items-center">
-            <span>{scrambleText}</span>
+            <span className="font-bold">{scrambleText}</span>
             <span className="text-black/40"> AI</span>
           </div>
         </button>
@@ -218,17 +219,18 @@ export default function Navbar({ activeView, setActiveView }: NavbarProps) {
           {/* Drawer Header */}
           <div className="flex items-center justify-between border-b border-black/5 pb-4 flex-shrink-0">
             <div className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider">
-              <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0 L15 9 L24 12 L15 15 L12 24 L9 15 L0 12 L9 9 Z" />
+              <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="black" />
+                <text x="50" y="68" fontFamily="Arial Black, sans-serif" fontSize="52" fontWeight="900" fill="white" textAnchor="middle">TX</text>
               </svg>
               <div className="flex items-center">
-                <span>{scrambleText}</span>
+                <span className="font-bold">{scrambleText}</span>
                 <span className="text-black/40"> AI</span>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => setMobMenuOpen(false)}
-              className="p-1.5 border border-black/5 rounded-full text-neutral-500 hover:text-black hover:bg-neutral-50 transition-all"
+              className="min-w-11 min-h-11 flex items-center justify-center border border-black/5 rounded-full text-neutral-500 hover:text-black hover:bg-neutral-50 transition-all"
             >
               <X className="w-4 h-4" />
             </button>

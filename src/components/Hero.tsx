@@ -83,13 +83,12 @@ export default function Hero({ setActiveView }: HeroProps) {
 
       {/* Core Display Typography */}
       <h1 className="relative z-10 max-w-4xl text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] text-black animate-in fade-in slide-in-from-bottom-3 duration-1000">
-        <span className="block mb-1">Connect the dots.</span>
-        <span className="block text-black/40">Skip the busywork.</span>
+        <span className="block">The operating system for organised human activity.</span>
       </h1>
 
       {/* Body Subtitle */}
       <p className="relative z-10 mt-8 max-w-lg text-sm sm:text-base text-black/60 leading-relaxed font-sans font-medium animate-in fade-in slide-in-from-bottom-4 duration-1000">
-        THRYVIX connects your entire clinic, so your staff spends less time wiring things up and more on what matters. Built Malayalam-first with local regional intelligence.
+        Starting with clinics. Every industry follows. THRYVIX sits underneath how organisations think, remember, and coordinate — making every organisation smarter over time without requiring technical expertise or an IT budget.
       </p>
 
       {/* Premium Actions */}

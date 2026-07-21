@@ -270,7 +270,7 @@ export default function BookingSimulator({ doctors, onAddQueueItem, setActiveVie
 
         {/* Right Hand: The Mock WhatsApp Smartphone Simulator */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="w-[310px] h-[580px] bg-neutral-950 rounded-[40px] border-[8px] border-neutral-800 shadow-2xl relative overflow-hidden flex flex-col ring-1 ring-neutral-700/30">
+          <div className="w-full max-w-[310px] aspect-[310/580] bg-neutral-950 rounded-[40px] border-[8px] border-neutral-800 shadow-2xl relative overflow-hidden flex flex-col ring-1 ring-neutral-700/30">
             {/* Phone Speaker/Camera notch */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-neutral-950 rounded-b-2xl z-30 flex items-center justify-center">
               <div className="w-12 h-1 bg-neutral-800 rounded-full" />

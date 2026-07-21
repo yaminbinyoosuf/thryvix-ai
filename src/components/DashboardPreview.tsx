@@ -156,7 +156,7 @@ export default function DashboardPreview({ queue, onUpdateStatus }: DashboardPre
                                 setSelectedPatient({ ...selectedPatient, status: 'called' });
                               }
                             }}
-                            className="p-2 rounded-lg bg-black text-white hover:bg-neutral-800 transition-colors"
+                            className="min-w-11 min-h-11 flex items-center justify-center rounded-lg bg-black text-white hover:bg-neutral-800 transition-colors"
                             title="Call Patient"
                           >
                             <Play className="w-3.5 h-3.5 fill-current" />
@@ -170,7 +170,7 @@ export default function DashboardPreview({ queue, onUpdateStatus }: DashboardPre
                                 setSelectedPatient({ ...selectedPatient, status: 'completed' });
                               }
                             }}
-                            className="p-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                            className="min-w-11 min-h-11 flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
                             title="Complete Consultation"
                           >
                             <Check className="w-3.5 h-3.5" />
@@ -184,7 +184,7 @@ export default function DashboardPreview({ queue, onUpdateStatus }: DashboardPre
                                 setSelectedPatient({ ...selectedPatient, status: 'cancelled' });
                               }
                             }}
-                            className="p-2 rounded-lg border border-black/5 text-neutral-400 hover:text-red-600 hover:border-red-600/25 transition-colors"
+                            className="min-w-11 min-h-11 flex items-center justify-center rounded-lg border border-black/5 text-neutral-400 hover:text-red-600 hover:border-red-600/25 transition-colors"
                             title="Cancel Appointment"
                           >
                             <X className="w-3.5 h-3.5" />

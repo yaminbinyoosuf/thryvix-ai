@@ -11,9 +11,15 @@ export default function Footer({ setActiveView }: FooterProps) {
         
         {/* Brand block */}
         <div className="space-y-4">
-          <div className="flex items-center gap-1 font-mono text-sm font-bold tracking-wider text-black select-none">
-            <span>THRYVIX</span>
-            <span className="text-neutral-400"> AI</span>
+          <div className="flex items-center gap-2 font-mono text-sm font-bold tracking-wider text-black select-none">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="black" />
+              <text x="50" y="68" fontFamily="Arial Black, sans-serif" fontSize="52" fontWeight="900" fill="white" textAnchor="middle">TX</text>
+            </svg>
+            <div className="flex items-center">
+              <span>THRYVIX</span>
+              <span className="text-neutral-400"> AI</span>
+            </div>
           </div>
           <p className="text-[11px] leading-relaxed text-neutral-500">
             The AI operating system for Indian business. Built for clinic automation, patient intelligence, and live queues.
