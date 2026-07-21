@@ -71,9 +71,9 @@ export default function Footer({ setActiveView }: FooterProps) {
                 THRYVIX Health — Live
               </button>
             </li>
-            <li><span className="block py-2 text-neutral-300 select-none font-medium">Ecommerce OS</span></li>
-            <li><span className="block py-2 text-neutral-300 select-none font-medium">Kirana OS</span></li>
-            <li><span className="block py-2 text-neutral-300 select-none font-medium">Salon OS</span></li>
+            <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Commerce</span></li>
+            <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Gov</span></li>
+            <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Edu</span></li>
           </ul>
         </div>
 
