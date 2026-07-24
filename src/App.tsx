@@ -14,7 +14,18 @@ import { Doctor, QueueItem, OnboardingData } from './types';
 import { AlertTriangle, Sparkles, Activity, ShieldCheck, HeartPulse, ChevronRight, FileText } from 'lucide-react';
 
 export default function App() {
-  const [activeView, setActiveView] = useState<'landing' | 'booking' | 'dashboard' | 'onboard' | 'privacy'>('landing');
+  const [activeView, setActiveView] = useState<'landing'|'booking'|'dashboard'|'onboard'|'privacy'>(() => {
+    const path = window.location.pathname;
+    if (path === '/onboard') return 'onboard';
+    if (path === '/privacy') return 'privacy';
+    return 'landing';
+  });
+
+  const navigate = (view: 'landing'|'booking'|'dashboard'|'onboard'|'privacy') => {
+    const path = view === 'landing' ? '/' : `/${view}`;
+    window.history.pushState(null, '', path);
+    setActiveView(view);
+  };
 
   // Initial Doctors List
   const [doctors, setDoctors] = useState<Doctor[]>([
@@ -118,7 +129,7 @@ export default function App() {
       {/* Premium Floating Header */}
       <Navbar
         activeView={activeView}
-        setActiveView={setActiveView}
+        setActiveView={navigate}
       />
 
       <main className="relative pt-16 font-sans">
@@ -127,7 +138,7 @@ export default function App() {
         {activeView === 'landing' && (
           <div className="animate-in fade-in duration-300">
             {/* Hero Banner */}
-            <Hero setActiveView={setActiveView} />
+            <Hero setActiveView={navigate} />
 
             {/* Trust Badges Compliance Row */}
             <section className="py-12 border-b border-neutral-100 bg-neutral-50/40 select-none">
@@ -242,13 +253,13 @@ export default function App() {
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
                   <button
-                    onClick={() => setActiveView('booking')}
+                    onClick={() => navigate('booking')}
                     className="w-full sm:w-auto font-sans text-xs font-bold rounded-full bg-black text-white px-8 py-4 hover:bg-neutral-800 transition-colors shadow-md"
                   >
                     Launch Patient Demo Link
                   </button>
                   <button
-                    onClick={() => setActiveView('onboard')}
+                    onClick={() => navigate('onboard')}
                     className="w-full sm:w-auto font-sans text-xs font-bold rounded-full border border-black/10 text-black bg-black/5 px-8 py-4 hover:bg-black/10 transition-colors"
                   >
                     Onboard New Clinic
@@ -258,7 +269,7 @@ export default function App() {
             </section>
 
             {/* Footer */}
-            <Footer setActiveView={setActiveView} />
+            <Footer setActiveView={navigate} />
           </div>
         )}
 
@@ -267,7 +278,7 @@ export default function App() {
           <BookingSimulator
             doctors={doctors}
             onAddQueueItem={handleAddQueueItem}
-            setActiveView={setActiveView}
+            setActiveView={navigate}
           />
         )}
 
@@ -281,12 +292,12 @@ export default function App() {
 
         {/* ONBOARDING CLINIC WIZARD VIEW */}
         {activeView === 'onboard' && (
-          <OnboardingWizard onComplete={handleCompleteOnboarding} setActiveView={setActiveView} />
+          <OnboardingWizard onComplete={handleCompleteOnboarding} setActiveView={navigate} />
         )}
 
         {/* PRIVACY POLICY VIEW */}
         {activeView === 'privacy' && (
-          <PrivacyPolicy setActiveView={setActiveView} />
+          <PrivacyPolicy setActiveView={navigate} />
         )}
 
       </main>
