@@ -68,7 +68,7 @@ export default function Footer({ setActiveView }: FooterProps) {
           <ul className="space-y-1 text-[11px]">
             <li>
               <button onClick={() => setActiveView('landing')} className="block py-2 hover:text-black transition-colors font-semibold">
-                THRYVIX Health — Live
+                THRYVIX Health
               </button>
             </li>
             <li><span className="block py-2 text-neutral-300 select-none font-medium">THRYVIX Commerce</span></li>

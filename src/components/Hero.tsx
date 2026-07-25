@@ -76,7 +76,7 @@ export default function Hero({ setActiveView }: HeroProps) {
       {/* Trust Badges Bar */}
       <div className="relative z-10 inline-flex items-center gap-2 border px-4 py-1.5 rounded-full border-black/10 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[10px] font-mono tracking-widest uppercase mb-10 select-none animate-in fade-in slide-in-from-top-2 duration-700">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-black/60 font-medium">THRYVIX Health — AI Operating System for Indian Clinics</span>
+        <span className="text-black/60 font-medium">THRYVIX Health</span>
         <span className="text-black/20">|</span>
         <span className="text-black font-bold">Kerala, India</span>
       </div>

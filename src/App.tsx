@@ -232,7 +232,7 @@ export default function App() {
                   Every other system stops when the patient books.<br />THRYVIX starts there.
                 </p>
                 <div className="font-mono text-[10px] uppercase tracking-widest text-neutral-400 font-bold">
-                  — Built in Kerala. Thinking for India.
+                  Built in Kerala. Thinking for India.
                 </div>
               </div>
             </section>
