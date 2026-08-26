@@ -47,7 +47,7 @@ export default function Hero({ setActiveView }: HeroProps) {
 
     animateCount(63, setCount1);
     animateCount(8, setCount2);
-    animateCount(60, setCount3);
+    animateCount(30, setCount3);
     animateCount(0, setCount4);
   }, []);
 
