@@ -106,7 +106,13 @@ export default function OnboardingWizard({ onComplete, setActiveView }: Onboardi
   const keralaDistricts = [
     'Thiruvananthapuram', 'Kollam', 'Pathanamthitta', 'Alappuzha', 'Kottayam',
     'Idukki', 'Ernakulam', 'Thrissur', 'Palakkad', 'Malappuram', 'Kozhikode',
-    'Wayanad', 'Kannur', 'Kasaragod'
+    'Wayanad', 'Kannur', 'Kasaragod',
+    'Bangalore Urban', 'Bangalore Rural', 'Mysuru', 'Tumkuru', 'Belagavi',
+    'Hubli-Dharwad', 'Mangaluru', 'Shivamogga', 'Kalaburagi', 'Davangere',
+    'Ballari', 'Vijayapura', 'Raichur', 'Hassan', 'Udupi', 'Kodagu',
+    'Chikkamagaluru', 'Chitradurga', 'Bidar', 'Gadag', 'Koppal',
+    'Ramanagara', 'Chamarajanagara', 'Mandya', 'Haveri', 'Bagalkot',
+    'Yadgir', 'Chikkaballapura', 'Kolar', 'Dharwad'
   ];
 
   // Clinic Types dropdown list
